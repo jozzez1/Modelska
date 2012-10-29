@@ -2,14 +2,13 @@
 
 set dim=($1)
 set con=($2)
-set imax=($3)
 set seed=0
 
-if ( $# == 4 ) then
-	seed=$4
+if ( $# == 3 ) then
+	set seed=($3)
 endif
 
-./prg $dim $con $imax $seed
+./prg $dim $con $seed
 
 set mfile="matrix-$1-$2.txt"
 set ofile="connectivity-$1-$2.txt"
