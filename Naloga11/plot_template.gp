@@ -5,6 +5,13 @@ set term epslatex color solid
 set output "GRAPH"
 
 set title '$N = NNODES$, $D = NCONNECTIOS$'
+set tics nomirror
+
+set yrange [0:5.2]
+set y2range [0:0.5]
+
+set ytics 1
+set y2tics 0.1
 
 set xlabel 'Indeks iteracije -- $i$'
 set ylabel 'Premer grafa -- $d$'

@@ -16,12 +16,18 @@ set mfile="matrix-$1-$2.txt"
 set ofile="connectivity-$1-$2.txt"
 set gfile="graph-$1-$2.tex"
 set pfile="plot-$1-$2.tex"
+set efile="graph-$1-$2.eps"
 
 # replace the stuff in the template
-sed 's|CONNECTIVITY|'"$ofile"'|' < plot_template.gp > $pfile
-sed 's|GRAPH|'"$gfile"'|' $pfile >> $pfile
-sed 's|NNODES|'"$1"'|' $pfile >> $pfile
-sed 's|NCONNECTIOS|'"$2"'|' $pfile >> $pfile
+sed 's|CONNECTIVITY|'"$ofile"'|' < plot_template.gp > tmpfile
+sed 's|GRAPH|'"$gfile"'|' < tmpfile > $pfile
+sed 's|NNODES|'"$1"'|' < $pfile > tmpfile
+sed 's|NCONNECTIOS|'"$2"'|' < tmpfile > $pfile
+
+rm tmpfile
+
+gnuplot $pfile
+epstopdf $efile
 
 exit 0
 
