@@ -5,9 +5,9 @@ set con=($2)
 set imax=($3)
 set seed=0
 
-if ( $argc == 4 ) then
+if ( $# == 4 ) then
 	seed=$4
-fi
+endif
 
 ./prg $dim $con $imax $seed
 
