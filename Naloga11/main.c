@@ -67,7 +67,7 @@ void fprint_matrix (dub * u)
 	for (int i = 0; i <= u->N-1; i++)
 	{
 		for (int j = 0; j <= u->N-1; j++)
-			fprintf (u->fmatrix, "%d  ", (int) gsl_matrix_get(u->A, i, j));
+			fprintf (u->fmatrix, "%d  ", (int) gsl_matrix_get(u->A, u->N-1 - i, j));
 		fprintf (u->fmatrix, "\n");
 	}
 }

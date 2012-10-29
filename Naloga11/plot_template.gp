@@ -22,3 +22,18 @@ plot "CONNECTIVITY" u 1:2 w l lt 1 axes x1y1 title '$d$', \
 
 unset output
 
+reset
+
+set output "MGRAPH"
+
+set view map
+set palette maxcolors 8 rgbformulae 21,22,23
+
+set title '$N = NNODES$, $D = NCONNECTIOS$'
+
+set cblabel 'matrix average value'
+
+splot "MATRIX" matrix w pm3d title ''
+
+unset output
+
