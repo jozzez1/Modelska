@@ -341,13 +341,7 @@ double norm (int diam, double clust)
 void propagate (dub * u)
 {
 	dump (u, 0);
-/*
-	for (int i = 1; i <= u->Imax; i++)
-	{
-		step(u);
-		dump (u, i);
-	}
-*/
+
 	int diam_old = 0,
 	    diam_new = u->diam;
 
