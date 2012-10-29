@@ -2,7 +2,7 @@
 \usepackage[slovene]{babel}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
-\usepackage{amsmath, amssymb, fullpage}
+\usepackage{amsmath, amssymb, fullpage, graphicx}
 
 \begin{document}
 
@@ -41,5 +41,14 @@ To po\v cnemo, dokler so izpolnjeni vsi izmed slede\v cih pogojev:
 	\item[(b)]{koeficient gru\v cavosti je ve\v cji od $0.001$,}
 	\item[(c)]{gru\v cavost se je zadnjih $100$ iteracij spremenila za ve\v c kot $0.001$.}
 \end{itemize}
+
+V kolikor je eden izmed teh pogojev neizpolnjen je se iteracijo prekine. Zadnji pogoj sem imel sprva nastavljen na
+vsakih 500 iteracij, vendar je na vsakih 100 zadosten pogoj.
+
+\begin{figure}[H]\centering
+	\input{graph-100-20.tex}
+	\caption{Za primerjavo lahko vidimo kako se s \v stevilom iteracij spreminjata koeficient gru\v cavosti
+		ter premer grafa.}
+\end{figure}
 
 \end{document}

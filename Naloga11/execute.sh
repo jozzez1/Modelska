@@ -20,6 +20,8 @@ set pfile="plot-$1-$2.tex"
 # replace the stuff in the template
 sed 's|CONNECTIVITY|'"$ofile"'|' < plot_template.gp > $pfile
 sed 's|GRAPH|'"$gfile"'|' $pfile >> $pfile
+sed 's|NNODES|'"$1"'|' $pfile >> $pfile
+sed 's|NCONNECTIOS|'"$2"'|' $pfile >> $pfile
 
 exit 0
 
