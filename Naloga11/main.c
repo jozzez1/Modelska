@@ -369,7 +369,7 @@ void propagate (dub * u)
 		step (u);
 		i++;
 		dump (u,i);
-		if (i%100 == 0)
+		if (i%500 == 0)
 		{
 			printf("i = %d\n", i);
 			clust_new = u->clust;

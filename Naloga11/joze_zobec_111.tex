@@ -2,7 +2,7 @@
 \usepackage[slovene]{babel}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
-\usepackage{amsmath, amssymb, fullpage, graphicx}
+\usepackage{amsmath, amssymb, fullpage, graphicx, float}
 
 \begin{document}
 
@@ -49,6 +49,26 @@ vsakih 500 iteracij, vendar je na vsakih 100 zadosten pogoj.
 	\input{graph-100-20.tex}
 	\caption{Za primerjavo lahko vidimo kako se s \v stevilom iteracij spreminjata koeficient gru\v cavosti
 		ter premer grafa.}
+	\label{fig:graph100}
+\end{figure}
+
+\begin{figure}[H]\centering
+	\input{mgraph-100-20.tex}
+	\caption{Matrika na koncu je res videti bolj ali manj razpr\v sena.}
+	\label{fig:mgraph100}
+\end{figure}
+
+\begin{figure}[H]\centering
+	\input{graph-300-40.tex}
+	\caption{Za primerjavo lahko vidimo kako se s \v stevilom iteracij spreminjata koeficient gru\v cavosti
+		ter premer grafa.}
+	\label{fig:graph300}
+\end{figure}
+
+\begin{figure}[H]\centering
+	\input{mgraph-300-40.tex}
+	\caption{Matrika na koncu je res videti bolj ali manj razpr\v sena.}
+	\label{fig:mgraph300}
 \end{figure}
 
 \end{document}
