@@ -27,7 +27,9 @@ reset
 set output "MGRAPH"
 
 set view map
-set palette maxcolors 8 rgbformulae 21,22,23
+set cbrange [0:1]
+set palette maxcolors 10 rgbformulae 21,22,23
+set cbtics 0.1
 
 set title '$N = NNODES$, $D = NCONNECTIOS$'
 
