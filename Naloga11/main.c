@@ -385,7 +385,7 @@ int main (int argc, char ** argv)
 	{
 		printf ("Wrong program usage!\n");
 		printf ("Correct usage:\n");
-		printf ("%s <N> <D> <Imax> [<S>]\n", argv[0]);
+		printf ("%s <N> <D> [<S>]\n", argv[0]);
 
 		exit (EXIT_FAILURE);
 	}
