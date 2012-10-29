@@ -21,5 +21,7 @@ set pfile="plot-$1-$2.tex"
 sed 's|CONNECTIVITY|'"$ofile"'|' < plot_template.gp > $pfile
 sed 's|GRAPH|'"$gfile"'|' $pfile >> $pfile
 
+# flags come into play
+
 exit 0
 
