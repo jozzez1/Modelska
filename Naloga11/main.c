@@ -60,6 +60,18 @@ void print_matrix (gsl_matrix * A)
 	}
 }
 
+/* to output the matrix */
+void fprint_matrix (dub * u)
+{
+	fprintf (u->fmatrix, "\n");
+	for (int i = 0; i <= u->N-1; i++)
+	{
+		for (int j = 0; j <= u->N-1; j++)
+			fprintf (u->fmatrix, "%d  ", (int) gsl_matrix_get(u->A, i, j));
+		fprintf (u->fmatrix, "\n");
+	}
+}
+
 /* code to set the matrix elements */
 void matrix_set_init (dub * u)
 {
@@ -370,7 +382,7 @@ void propagate (dub * u)
 				break;
 		}
 	}
-	gsl_matrix_fprintf (u->fmatrix, u->A, "%d");
+	fprint_matrix (u);
 }
 
 int main (int argc, char ** argv)
