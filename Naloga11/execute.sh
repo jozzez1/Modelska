@@ -21,19 +21,19 @@ set mgraph="mgraph-$1-$2.tex"
 set mefile="mgraph-$1-$2.eps"
 
 # replace the stuff in the template -- from the template we create the script
-sed 's|CONNECTIVITY|'"$ofile"'|' < plot_template.gp > tmpfile
-sed 's|GRAPH|'"$gfile"'|' < tmpfile > $pfile
-sed 's|NNODES|'"$1"'|' < $pfile > tmpfile
-sed 's|NCONNECTIOS|'"$2"'|' < tmpfile > $pfil
-sed 's|MGRAPH|'"$mgraph"'|' < $pfil > tmpfile
-sed 's|MATRIX|'"$mfile"'|' < tmpfile > $pfil
-
-rm tmpfile
+sed -e 's|CONNECTIVITY|'"$ofile"'|' \
+	-e 's|NNODES|'"$1"'|' \
+	-e 's|NCONNECTIOS|'"$2"'|' \
+	-e 's|MGRAPH|'"$mgraph"'|' \
+	-e 's|GRAPH|'"$gfile"'|' \
+	-e 's|MATRIX|'"$mfile"'|' < plot_template.gp > $pfile
 
 gnuplot $pfile
-
 epstopdf $efile
 epstopdf $mefile
+
+echo "$pfile created!"
+echo "Plots are $efile and $mefile."
 
 exit 0
 
