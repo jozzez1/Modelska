@@ -17,6 +17,14 @@ void change (int a, int b)
 	b = c;
 }
 
+/* my version of absolute value */
+int pos (int a)
+{
+	int re = a;
+	if (re <= 0) re = 1;
+	return re;
+}
+
 /* my struct definition */
 typedef struct
 {
@@ -198,7 +206,7 @@ void init (dub * u, int N, int D, int S, int Imax)
 	u->N = N;
 	u->D = D;
 	u->S = S;
-	u->Imax = Imax;
+	u->Imax = (u->N*u->D/2)*(u->N*u->D/2); // they shuffled enough now
 
 	if (u->S == 0)
 		u->S = 5489;
@@ -369,9 +377,14 @@ void propagate (dub * u)
 		step (u);
 		i++;
 		dump (u,i);
-		if (i%500 == 0)
-		{
+
+		int border = pos (300 + (u->N*u->D - 2000)/2);
+
+		if (i%100 == 0)
 			printf("i = %d\n", i);
+
+		if (i%border == 0)
+		{
 			clust_new = u->clust;
 			diam_new = u->diam;
 
@@ -407,8 +420,10 @@ int main (int argc, char ** argv)
 
 		dub * u = alloc ();
 		init (u, N, D, S, I);
-		propagate (u);
 
+		printf ("Imax = %d\n\n", u->Imax);
+
+		propagate (u);
 
 		printf ("Finished!\n");
 		printf ("%s created!\n%s created!\n", u->dat, u->mat);

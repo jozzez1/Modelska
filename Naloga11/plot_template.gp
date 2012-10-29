@@ -31,9 +31,14 @@ set cbrange [0:1]
 set palette maxcolors 10 rgbformulae 21,22,23
 set cbtics 0.1
 
+set xtics 20
+set ytics 20
+
 set title '$N = NNODES$, $D = NCONNECTIOS$'
 
 set cblabel 'matrix average value'
+set xtics nomirror out
+set ytics nomirror out
 
 splot "MATRIX" matrix w pm3d title ''
 
