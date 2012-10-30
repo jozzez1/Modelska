@@ -2,12 +2,12 @@
 
 # we pass the program arguments to the script
 
-while ($#argv > 0)
-	switch ($argv[1])
-		case -c:
-			shift
-			set compile=1
-			breaksw
+set seed=0
+set compile=0
+set gcccompile=0
+
+while (1)
+	switch ($1:q)
 		case -N:
 			shift
 			set dim=$argv[1]
@@ -20,22 +20,32 @@ while ($#argv > 0)
 			shift
 			set seed=$argv[1]
 			breaksw
+		case -c:
+			set compile=1
+			breaksw
 		case -C:
-			shift
 			set gcccompile=1
 			breaksw
-		default:
+		case --:
 			shift
-			set seed=0
-			set compile=0
-			set gcccompile=0
+			break
+		default:
+			echo Error!
+			exit 2
 		endif
 	endsw
 	shift
 end
 
-if (gcccompile=1) then
-	./compile
+if ( gcccompile == 1 ) then
+
+	set libdir=/usr/local/lib
+	set incdir=/usr/local/include
+	set prgnam=prg
+	set cflags=(-Wall -O2 -lgsl -lgslcblas -std=c99)
+	
+	gcc -I $incdir -L $libdir main.c -o $prgnam $cflags
+
 endif
 
 # run the program ...
@@ -63,8 +73,8 @@ echo "$pfile created!"
 echo "Plots are $graph.tex and $mgraph.tex."
 
 # flags come into play
-if ( $compile = 1 ) then
-	pdflatex jozze_zobec_111.tex
+if ( $compile == 1 ) then
+	pdflatex joze_zobec_111.tex
 endif
 
 exit 0
