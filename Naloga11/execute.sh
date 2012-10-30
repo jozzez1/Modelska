@@ -5,6 +5,9 @@
 set seed=0
 set compile=0
 set gcccompile=0
+set dim=0
+set con=0
+set help=0
 
 while ($#argv > 0)
 	switch ($argv[1])
@@ -20,13 +23,16 @@ while ($#argv > 0)
 			shift
 			set seed=$argv[1]
 			breaksw
-		case -c:
+		case -latex:
 			set compile=1
 			echo Setting up the latex compile.
 			breaksw
-		case -C:
+		case -gcc:
 			set gcccompile=1
 			echo Setting up the compilation of prg.
+			breaksw
+		case -h:
+			set help=1
 			breaksw
 		case --:
 			shift
@@ -38,6 +44,45 @@ while ($#argv > 0)
 	endsw
 	shift
 end
+
+if ( $dim == 0 || $con == 0 ) then
+	if ( $help == 0 ) then
+		echo Arguments N and D needed!
+		echo Correct usage:
+		echo "$0 -N <number of nodes> -D <number of connections>"
+
+		exit 1
+	else
+		echo
+		echo "Obligatory flags for $0"
+		echo "-------------------------------"
+		echo "-N <n>"
+		echo "	n is number of nodes you want for your graph"
+		echo
+		echo "-D <d>"
+		echo "	d is number of connections that each node has"
+		echo "	in the beginning -- must be an even number"
+		echo
+		echo "Optional flags for $0"
+		echo "-------------------------------"
+		echo "-S <s>"
+		echo "	s is the seed value of the Marsenne Twister"
+		echo "	pseudo-random generator."
+		echo 
+		echo "-gcc"
+		echo "	compile the source main.c and output it in the"
+		echo "	program prg"
+		echo
+		echo "-latex"
+		echo "	compile the report joze_zobec_111.tex with"
+		echo "	pdflatex"
+		echo
+		echo "-h"
+		echo "	print this message"
+
+		exit 0
+	endif
+endif
 
 if ( $gcccompile == 1 ) then
 
