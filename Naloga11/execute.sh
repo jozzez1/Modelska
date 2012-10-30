@@ -6,7 +6,7 @@ set seed=0
 set compile=0
 set gcccompile=0
 
-while (1)
+while ($#argv > 0)
 	switch ($1:q)
 		case -N:
 			shift
@@ -22,22 +22,24 @@ while (1)
 			breaksw
 		case -c:
 			set compile=1
+			echo Setting up the latex compile.
 			breaksw
 		case -C:
 			set gcccompile=1
+			echo Setting up the compilation of prg.
 			breaksw
 		case --:
 			shift
-			break
+			breaksw
 		default:
-			echo Error!
-			exit 2
+			shift
+			break
 		endif
 	endsw
 	shift
 end
 
-if ( gcccompile == 1 ) then
+if ( $gcccompile == 1 ) then
 
 	set libdir=/usr/local/lib
 	set incdir=/usr/local/include
