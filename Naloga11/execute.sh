@@ -7,7 +7,7 @@ set compile=0
 set gcccompile=0
 
 while ($#argv > 0)
-	switch ($1:q)
+	switch ($argv[1])
 		case -N:
 			shift
 			set dim=$argv[1]
