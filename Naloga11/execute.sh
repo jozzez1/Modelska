@@ -20,13 +20,23 @@ while ($#argv > 0)
 			shift
 			set seed=$argv[1]
 			breaksw
+		case -C:
+			shift
+			set gcccompile=1
+			breaksw
 		default:
+			shift
 			set seed=0
 			set compile=0
+			set gcccompile=0
 		endif
 	endsw
 	shift
 end
+
+if (gcccompile=1) then
+	./compile
+endif
 
 # run the program ...
 ./prg $dim $con $seed
