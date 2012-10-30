@@ -35,5 +35,7 @@ epstopdf $mefile
 echo "$pfile created!"
 echo "Plots are $efile and $mefile."
 
+# flags come into play
+
 exit 0
 
