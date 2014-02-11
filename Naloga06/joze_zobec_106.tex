@@ -1,0 +1,141 @@
+\documentclass[a4 paper, 12pt]{article}
+\usepackage[slovene]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[small, width=0.8\textwidth]{caption}
+\usepackage[pdftex]{graphicx}
+\usepackage{amssymb, amsmath, fullpage, float, hyperref, color}
+
+\newcommand{\diag}{
+	\operatorname{diag}
+}
+
+\begin{document}
+
+\begin{center}
+\textsc{Modelska analiza I}\\
+\textsc{2011/12}\\[0.5cm]
+\textbf{6. naloga -- Var\v cni modeli}
+\end{center}
+\begin{flushright}
+\textbf{Jo\v ze Zobec}
+\end{flushright}
+
+\section{Uvod}
+
+Teoreti\v cne parametre se v fiziki iz eksperimentov (slednji so lahko tudi numeri\v cni) ponavadi prebere iz
+prilagajanja modelske krivulje na merske to\v cke. Krivuljo prilagajamo tako, da za dolo\v cen nabor parametrov
+zadostimo arbitrarnim (po navadi minimizacijskim) zahtevam. Najbolj popularen kriterij je ti. $\chi^2$, ki parametre
+minimizira tako, da je vsota napak za posamezne merske to\v cke \v cim manj\v sa. Tudi za prilagajanje imamo na
+voljo dovolj \v sirok nabor metod, med najbolj znanimi je linearna regresija, katero bomo uporabili v tej
+nalogi.
+
+Linearna regresije prek $\chi^2$ sku\v sa prilagoditi vektor parametrov $\beta$ tako, da bo ena\v cba $y = X\beta +
+\varepsilon$ imela \v cim manj\v si vektor napak $\epsilon$. To naredimo prek minimizacije $\chi^2$, ki je kar
+kvadratna forma
+\begin{equation}
+	\chi^2 = 2J = (y - X\beta)^T R^{-1} (y - X\beta).
+	\label{chi}
+\end{equation}
+Zahteva, da je $\chi^2$ minimalen vrne, da so idealni parametri
+\begin{equation}
+	\beta = (X^T R^{-1} X)^{-1} X^T R^{-1} y, \qquad P = (X^T R^{-1} X)^{-1}.
+	\label{regres}
+\end{equation}
+kjer je $\beta$ vektor parametrov na\v sega modela, $X$ je strukturna matrika, ki $\beta$ povezuje z $y$, matrika $R$
+je kovarian\v cna matrika merskih to\v ck (kadar so slednje nekorelirane je to diagonalna matrika kvadratov napak
+posameznih to\v ck), matrika $P$ pa je kovarian\v cna matrika optimalnih parametrov $\beta$. Ena\v cbi~\eqref{chi}
+in~\eqref{regres} sta primer splo\v sne linearne regresije (zato, ker dopu\v s\v camo, da so merske to\v cke lahko
+korelirane in vsaka pri druga\v cni napaki -- tj. matrika $R$ ima lahko karseda splo\v sno obliko.
+
+Kaj pa, kadar nam teorija ne napoveduje oblike krivulje? V takem primeru enostavno posku\v samo, vendar se vsej ko
+prej lahko zgodi, da bo na\v sa modelska krivulja imela parametre, ki nimajo fizikalnega pomena -- red na\v sega
+modela je prevelik. Ho\v cemo seveda, da bo na\v s model karseda var\v cen -- tj. imel \v cim manj parametrov.
+To dose\v zemo s pomo\v cjo singularnega razcepa matrike $X$. Singularne vrednosti, ki so zelo majhne,
+namigujejo na to, da imamo preve\v c prostih parametrov v modelu in da niso vsi parametri linearno neodvisni.
+
+\section{Razmislek}
+
+V prvem primeru (tj. toplotna prevodnost) prilagajamo testno "`krivuljo"' $\lambda(T, P)$ in sku\v samo poiskati
+tako, ki bo imela najmanj parametrov in najbolj\v si $\chi^2$. Na\v s model bo najve\v c tretjega reda, tj.
+\[
+	\lambda = \sum_{i,j = 0}^3 \beta_{ij} T^i P^j.
+\]
+Parametrov $\beta_{ij}$ je najve\v c 10, nekateri izmed teh parametrov bodo ni\v c (oz. jih zavr\v zemo), torej
+lahko strukturno matriko $X$ ra\v cunamo le enkrat (ta matrika je dimenzije $n \times 10$, $n$ je \v stevilo merskih
+to\v ck) nato pa zavra\v camo stolpce. Najve\v c lahko zavr\v zemo 9 stolpcev (\v ce zavr\v zemo vseh 9, potem
+nima smisla), najmanj pa nobenega, torej dobimo $G$ na\v cinov, kako lahko to storimo:
+\[
+	G = \sum_{k = 0}^{9} \binom{10}{k} = 1023.
+\]
+To ni tako veliko. V tej nalogi bom sku\v saj izra\v cunati vse kombinacije (to\v ck je malo in $\sim 10^3$ mno\v zenj
+majnih matrik ni tako potratno) in potem nadaljeval z najbolj zanimivimi.
+
+Sedaj pridemo k drugemu problemu -- kako poiskati oz. predstaviti in klasificirati vse mo\v zne kombinacije? To je
+\v cisto preprosto. Vsako izbiro lahko predstavimo z binarnim \v stevilom -- vsak stolpec iz matrike $X$ bodisi izberemo,
+bodisi zavr\v zemo. Ker je teh stolpcev $10$ dobimo dvoji\v sko \v stevilo dol\v zine $10$. Od tod tudi pride, da je
+\v stevio kombinacij $1023$, saj
+\[
+	G = 2^n - 1,
+\]
+kjer `$-1$' pride zato, ker kombinacije $(00\ldots0)$ ne upo\v stevamo, saj ta nima smisla. Vendar ta
+dvoji\v ska \v stevila lahko enoli\v cno pretvorimo nazaj v deseti\v ska in dobimo indeks izbire $X$, ki je ravno med $1$
+in $1023$. Ta preslikava je bijektivna, tj. smo s tem posredno poiskali vse mo\v zne kombinacije.
+
+Kadar uporabimo $\chi^2$ za kvantitativno mero ujemanja na\v sega modela danimi eksperimentalnimi to\v ckami, je predvsem
+prikladno uporabiti $\overline{\chi^2}$, tj. reduciran $\chi^2$, ki je definiran kot
+\begin{equation}
+	\overline{\chi^2} \equiv \frac{\chi^2}{n - k - 1},
+\end{equation}
+kjer je $n$ \v stevilo merskih to\v ck, $k$ pa je \v stevilo parametrov $\beta_{ij}$ ki so razli\v cni od $0$ (spet torej
+koliko stolpcev smo sprejeli). Koli\v cina $\overline{\chi^2}$ ima predvsem to lepo lastnost, da je za krivulje, ki se
+bolje ujemajo s to\v ckami, bli\v zje $1$.
+
+Ko bomo izra\v cunali za vse mo\v zne primere izbire $X$ vse mo\v zne $\chi^2$, bomo izlu\v s\v cili primere, ki imajo
+$\overline{\chi^2} \sim 1$ in napravili dodatno analizo, tj. preverili \v stevilo prostih parametrov krivulje in
+napravili singularni razcep matrike $X$ ter pod drobnogled vzeli kovarian\v cno matriko $P$.
+
+\section{Rezultati}
+
+Tabela~\ref{tab1} prikazuje toplotno prevodnost $\lambda$ jekla Armco v odvisnosti od temperature in mo\v ci grelca.
+Temperaturo kot mo\v c bi lahko reskalirali tako, da bi bila med $0$ in $1$, vendar tu niti ni take potrebe
+(brezdimenzijsko transformacijo se po navadi uvaja v sisteme takrat, kadar ho\v cemo dobiti re\v sitev neodvisno od
+skale problema, te pa v tem primeru ni).
+
+\begin{table}[H]\centering
+	\caption{Tabela meritev za toplotno prevodnost jekla Armco.}
+	\begin{tabular}{r|c|c|l}
+		$T [^\circ\mathrm{F}]$ & $P[\mathrm{W}]$ & $\lambda[\mathrm{Btu/h\ ft\ {}^\circ F}]$ & $\sigma_{\lambda}$ \\
+		\hline
+		90  & 276 & 42.345  & 0.28 \\
+		100 & 545 & 41.60   & 0.16 \\
+		149 & 275 & 39.5375 & 0.28 \\
+		161 & 602 & 37.7875 & 0.16 \\
+		206 & 274 & 37.3525 & 0.28 \\
+		227 & 538 & 36.4975 & 0.16 \\
+		247 & 274 & 36.36   & 0.28 \\
+		270 & 550 & 35.785  & 0.16 \\
+		352 & 272 & 33.915  & 0.28 \\
+		362 & 522 & 34.53   & 0.16
+	\end{tabular}
+	\label{tab1}
+\end{table}
+
+Imamo $10$ merskih to\v ck, torej imamo najve\v c $10$ prostih parametrov za na\v s model, kar je v skladu s prej\v snjim
+razmislekom. Stolpci maksimalne matrike $X$ so
+\[
+	X = \Big[1\ |\ T\ |\ P\ |\ T^2\ |\ TP\ |\ P^2\ |\ T^3\ |\ T^2P\ |\ TP^2\ |\ P^3 \Big].
+\]
+Konfiguracija $(1001001000)$ predstavlja da v $X$ obdr\v zimo konstanto, $T^2$ in $T^3$, tj. da za model vzamemo
+$\lambda \approx \beta_{00} + \beta_{20} T^2 + \beta_{30} T^3$ in je o\v stevil\v cena z indeksom $2^9 + 2^6 + 2^3 = 584$.
+Matrika $R$ je diagonalna, $R = \diag(\sigma_{\lambda_1}^2, \sigma_{\lambda_2}^2, \ldots, \sigma_{\lambda_{10}}^2)$,
+vektor $y$ pa vsebuje $\lambda_i$, kjer je $i$ indeks meritve. Sedaj imamo vse kar potrebujemo za izra\v cun.
+
+\begin{figure}[H]
+	\input{file.tex}
+	\caption{kuga?}
+\end{figure}
+
+
+\end{document}
+
