@@ -131,11 +131,105 @@ $\lambda \approx \beta_{00} + \beta_{20} T^2 + \beta_{30} T^3$ in je o\v stevil\
 Matrika $R$ je diagonalna, $R = \diag(\sigma_{\lambda_1}^2, \sigma_{\lambda_2}^2, \ldots, \sigma_{\lambda_{10}}^2)$,
 vektor $y$ pa vsebuje $\lambda_i$, kjer je $i$ indeks meritve. Sedaj imamo vse kar potrebujemo za izra\v cun.
 
-\begin{figure}[H]
-	\input{file.tex}
-	\caption{kuga?}
+\begin{figure}[H]\centering
+	\input{prelim.tex}
+	\caption{Konstantni \v clen vstopi v konfiguraciji $512$. Vidimo, da lahko tudi brez konstantnega \v clena dobimo
+		dobre rezultate, vendar so redki. S konstantnim \v clenom je $\overline{\chi^2}$ takoj ni\v zji za
+		velikostni red.}
+\end{figure}
+Izmed vseh teh mo\v znosti sem se nato odlo\v cilo, da bom zavrgel vse, za katere je $\overline{\chi^2} < 0.5$,
+$\overline{\chi^2} > 8$, $k > 7$.
+
+Model z najmanj\v sim $k$, ki ustreza temu kriteriju ima $k = 3$ in nosi indeks $i = 832$. Model je
+$\lambda \approx \beta_{00} + \beta_{10}T + \beta_{20} T^2$ in je na sliki~\ref{najman}.
+\begin{figure}[H]\centering
+	\includegraphics[width=14cm, keepaspectratio=1]{832.png}
+	\caption{Odvisnost od $P$ v tem primeru zanemarimo, in upo\v stevamo paraboli\v cno odvisnost od $T$.}
+	\label{najman}
+\end{figure}
+Temu soroden je model $833$, ki predpostavlja $\lambda \approx \beta_{00} + \beta_{10}T + \beta_{20} T^2 + \beta_{03} P^3$.
+Vidimo ga na sliki~\ref{sestra}.
+\begin{figure}[H]\centering
+	\includegraphics[width=14cm, keepaspectratio=1]{833.png}
+	\caption{V tem modelu imamo splo\v sno paraboli\v cno odvisnost od temperature in strogo kubi\v cno od mo\v ci grelca.
+		Ujemanje je kar solidno, vendar se ni za prehvaliti.}
+	\label{sestra}
 \end{figure}
 
+Graf, ki ima $\overline{\chi^2}$ najblji\v zje $1$, je $i = 567$ s $\overline{\chi^2} = 1.35$. Tu imamo model
+$\lambda \approx \beta_{00} + \beta_{11} TP + \beta_{02} P^2 + \beta_{21} T^2P + \beta_{12} TP^2 + \beta_{03} P^3$,
+vendar ima eno izmed singularnih vrednosti precej majhno. Singularne vrednosti $X$ za ta model so
+$S = \diag(4.19 \cdot 10^8, 8.56 \cdot 10^7, 1.25 \cdot 10^7, 8.48 \cdot 10^4, 1.82 \cdot 10^4, 2.86 \cdot 10^{-1})$.
+Rezultat je na sliki~\ref{najmanjsi}.
+\begin{figure}[H]\centering
+	\includegraphics[width=14cm, keepaspectratio=1]{567.png}
+	\caption{\v Ceprav ima zelo dobro ujemanje v $\overline{\chi^2}$ ta graf mogo\v ce ni najbolj\v si sode\v c
+		po singularnih vrednostih.}
+	\label{najmanjsi}
+\end{figure}
+
+Grafov, ki so ustrezajo prej\v snjemu kriteriju je $152$, kar je preve\v c. Uvedel sem nov pogoj: vse singularne
+vrednosti morajo biti ve\v cje od $1$. To nam vrne 18 grafov, od so vsi brez konstantnega \v clena in imajo
+bodisi $5$, bodisi $6$ elementov. Te konfiguracije so v tabeli~\ref{tab2}.
+\begin{table}[H]\centering
+	\caption{Tu vidimo modele, ki so bili na koncu sprejeti. Zadnji stolpec predstavlja najmanj\v so singularno
+		vrednost.}
+	\begin{tabular}{r|c|c|l}
+		konf. & $\overline{\chi^2}$ & $k$ & $s_{min}$ \\
+		\hline\hline
+		183 & 2.36 & 6 & 40.15 \\
+		187 & 2.69 & 6 & 40.66 \\
+		217 & 6.48 & 5 & 56.38 \\
+		243 & 1.98 & 6 & 38.93 \\
+		245 & 7.19 & 6 & 41.96 \\
+		407 & 4.38 & 6 & 35.55 \\
+		409 & 3.28 & 5 & 46.16 \\
+		411 & 4.13 & 6 & 35.04 \\
+		413 & 4.05 & 6 & 35.31 \\
+		437 & 3.83 & 6 & 35.66 \\
+		438 & 1.78 & 6 & 14.95 \\
+		441 & 4.17 & 6 & 32.54 \\
+		442 & 6.55 & 6 & 16.75 \\
+		465 & 2.58 & 5 & 35.23 \\
+		467 & 3.17 & 6 & 29.45 \\
+		469 & 3.15 & 6 & 32.08 \\
+		473 & 2.02 & 6 & 7.81 \\
+		497 & 3.21 & 6 & 27.64
+	\end{tabular}
+	\label{tab2}
+\end{table}
+Iz tabele~\ref{tab2} nato izberemo graf, ki ima najmanj parametrov in je najblji\v zlje $\overline{\chi^2} = 1$ in dobimo
+konfiguracijo $465$. Ta najbolje zado\v s\v ca kriteriju po \v cim manj\v sem \v stevilu parametrov $k$. Ta model je
+\begin{equation}
+	\lambda = \beta_{10} T + \beta_{01} P + \beta_{20} T^2 - \beta_{02} P^2 + \beta_{03} P^3,
+\end{equation}
+parametri z napakami (ki smo jih prebrali iz kovarian\v cne matrike) so v tabeli~\ref{tab3}, graf pa je prikazan
+na sliki~\ref{zmaga}
+\begin{table}[H]\centering
+	\caption{Parametri najbolj ugodnega modela.}
+	\begin{tabular}{r|c|l}
+		             & $\beta_{ij}$& $\sigma_{\beta_{ij}}$ \\
+		\hline
+		$\beta_{10}$ & $-6.3 \cdot 10^{-2}$ & $\pm 3.9 \cdot 10^{-3}$ \\
+		$\beta_{01}$ & $3.2 \cdot 10^{-1}$  & $\pm 4.5 \cdot 10^{-3}$ \\
+		$\beta_{20}$ & $7.3 \cdot 10^{-5}$  & $\pm 8.6 \cdot 10^{-6}$ \\
+		$\beta_{02}$ & $-6.7 \cdot 10^{-4}$ & $\pm 1.9 \cdot 10^{-5}$ \\
+		$\beta_{03}$ & $4.3 \cdot 10^{-7}$  & $\pm 2.0 \cdot 10^{-8}$
+	\end{tabular}
+	\label{tab3}
+\end{table}
+Matrika singularnih vrednosti $X$ je
+\begin{equation}
+	S = \diag(3.85 \cdot 10^8,\ 1.85 \cdot 10^5,\ 6.16 \cdot 10^4,\ 89.57,\ 35.23).
+\end{equation}
+
+\begin{figure}[H]\centering
+	\includegraphics[width=14cm, keepaspectratio=1]{465.png}
+	\caption{To\v ckam prilagojen polinomski nastavek za $\lambda (T, P)$. To je na\v sa zadnja izbira, ki je dovolj
+		nizka v $\overline{\chi^2}$, ima vse singularne vrednosti ve\v cje od $10$ in hkrati najmanj koeficientov
+		v razvoju.}
+	\label{zmaga}
+\end{figure}
 
 \end{document}
 

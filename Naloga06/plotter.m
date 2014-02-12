@@ -1,4 +1,4 @@
-function plotter (conf)
+function plotter (conf, plotflag)
 
 [T, R, y] = matrixT ();
 [b, chi2, P, S, j, n] = regression (T, R, y, conf)
@@ -24,10 +24,10 @@ z = beta(1) .+ TT*beta(2) + PP*beta(3) + (TT.^2)*beta(4) + (TT .* PP)*beta(5) + 
 meshz (T, P, z);
 view (130, 30);
 
-xlabel ("Temperatura -- $T$");
-ylabel ("Elektricna moc -- $P$");
-zlabel ("Toplotna prevodnost -- $\\lambda$");
-tit = sprintf ("Rezultat za konfiguracijo %d, tj. %s", conf, n);
+xlabel ("Temperatura - T");
+ylabel ("Elektricna moc - P");
+zlabel ('Toplotna prevodnost - \lambda');
+tit = sprintf ("Rezultat za konfiguracijo %d, tj. %s.  \\chi^2 = %e", conf, n, chi2);
 title (tit);
 
 % we add the points on which we fit
@@ -46,7 +46,15 @@ plot3 (3.62000000e+02, 5.22000000e+02, 3.45300000e+01, "+");
 
 axis ([50 370 200 610]);
 
+h = get (gca, 'zlabel');
+set (h, 'position', [390 140 38]);
+
 hold off;
+
+if plotflag == 1
+	filename = sprintf ("%d.png", conf);
+	print (filename, '-Froman:14', '-color', '-dpng');
+endif
 
 endfunction
 
