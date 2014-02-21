@@ -1,0 +1,313 @@
+\documentclass[a4 paper, 12pt]{article}
+\usepackage[slovene]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[small]{caption}
+\usepackage[pdftex]{graphicx}
+\usepackage{amssymb, fullpage, float, pdflscape, subcaption, amsmath, mathrsfs}
+\usepackage{color, tikz}
+
+\captionsetup{
+	size=small,
+	labelfont=it,
+	width=0.9\textwidth
+}
+
+\renewcommand{\d}{
+	\ensuremath{\mathrm{d}}
+}
+
+\newcommand{\F}{
+	\operatorname{\mathcal{F}}
+}
+
+\newcommand{\w}{
+	\ensuremath{\omega}
+}
+
+\begin{document}
+
+\begin{center}
+\textsc{Modelska analiza I}\\
+\textsc{2011/12}\\[0.5cm]
+\textbf{13. naloga -- Filtriranje \v suma}\\
+\end{center}
+\begin{flushright}
+\textbf{Jože Zobec}\\
+\end{flushright}
+
+\section{Uvod}
+
+V tej nalogi se bomo lotili filtriranja \v suma z uporabo razli\v cnih filtrov, prvi med njimi je Wienerjev filter.
+Izhodni signal je konvolucija vhodnega sigala `$u(t)$' in odzivne funkcije na\v sega "`senzorja"'\ `$v(t)$', tj.
+\[
+	f(t) = \int_{-\infty}^{\infty} \d\tau\ u(\tau) v(t - \tau) = (u * v)(t).
+\]
+Vendar pa imamo poleg $f(t)$ prime\v san \v se \v sum, tako da
+\[
+	c(t) = f(t) + n(t)
+\]
+Naj bo $\F(\bullet) = \hat{\bullet}(\w)$ fourierova transformiranka, potem velja
+\begin{equation}
+	\hat{c} = \hat{f} + \hat{n}, \qquad \hat{f}(\w) = \hat{u}(\w)\cdot\hat{v}(\w).
+\end{equation}
+Osnovna predpostavka je
+\begin{equation}
+	\Phi \hat{c} \approx \hat{f},
+\end{equation}
+oz. poiskati $\Phi(\w)$, da bo $n(t)$ minimalen. S $\Phi$ mno\v zimo $\hat{c}$ pred dekonvolucijo. Na koncu
+dobimo, da je
+\begin{equation}
+	u(t) \approx -\frac{1}{2\pi}\F\bigg(\Phi(\w) \frac{\hat{c}(\w)}{\hat{v}(\w)}\bigg),
+\end{equation}
+kjer je multiplikativna konstanta $-1/2\pi$ spredaj zato, ker dvakrat naredimo Fourierovo transformacijo "`naprej"'.
+Wienerjev filter $\Phi(\w)$ je definiran kot
+\begin{equation}
+	\Phi(\w) \equiv \frac{|\hat{f}(\w)|^2}{|\hat{f}(\w)|^2 + |\hat{n}(\w)|^2} = \frac{1}{1 +
+		\displaystyle{\bigg|\frac{\hat{n}(\w)}{\hat{f}(\w)}\bigg|}^2},
+\end{equation}
+torej bolj za\v sumljene podatke manj upo\v stevamo v rekonstrukciji. Tu naletimo
+\v se na en problem -- ne vemo, kak\v sen je \v sum. Literatura priporo\v ca oceno \v suma $n(t)$ z opazovanjem $c(t)$
+po dolgem\v casu. Pri\v cakujemo, da na koncu pre\v zivi le \v sum, ki ga potem ekstrapoliramo na kratke \v case in
+dolo\v cimo tudi $f(t)$.
+
+Poleg filtra $\Phi(\w)$ lahko uporabimo tudi \v se kak\v sno okno $H(\w)$, s katerim lahko sliko dodatno izostrimo,
+meglimo itd.
+\begin{equation}
+	u(t) = \F^{-1}\bigg(H(\w)\Phi(\w) \frac{\hat{c}(\w)}{\hat{v}(\w)}\bigg).
+\end{equation}
+
+Kompresija slik s pomo\v cjo razcepa na singularne vrednosti mo\v cno spominja na "`trunkiranje"' iz TEBD DMRG in
+je precej intuitivno. Na\v sa slika je matrika $A = USV^\dagger$, $A \in \mathrm{Mat}\ n\times m$. Matrika $S$ je
+diagonalna matrika singularnih vrednosti. Majhne singularne vrednosti pore\v zemo pro\v c, popravimo \v stevilo
+vrstic matrike $V^\dagger$ in \v stevilo stolpcev matrike $U$. Ko zmno\v zimo nazaj, dobimo spet matriko dimenzije
+$n \times m$, vendar smo za opis potrebovali manj informacije, zaradi \v cesar potrebujemo manj ra\v cunalni\v skega
+spomina.
+
+\section{Rezultati}
+
+Za re\v sevanje sem uporabljal programski jezik {\tt C}, skriptni jezik {\tt sh} in {\tt Octave}.
+
+\subsection{Dekonvolucija signalov}
+Za datoteke {\tt signal\{1,2,3\}.dat} sem predpostavil, da je {\tt signal0.dat} brez \v suma in tako
+dobil $n(t)$ eksplicitno ven, kot razliko. Zdelo se mi je tudi, da je \v cisti signal \v se vedno nekoliko
+za\v sumljen zaradi efektov diskretne Fourierjeve transformacije, zato sem poleg Wienerjevega filtra dodal \v se
+Hammingovo okno, ki se je izkazalo da najbolje s\v cisti oscilacije na robovih.
+
+\begin{figure}[H]\centering
+	\input{res-signal0.tex}
+	\caption{Signal je tukaj videti res lep, vidimo 4 impulze. Ugibam, da gre za simuliranje
+		diskretne Diracove $\delta$-funkcije, in da imajo vsi \v stirje impulzi isto
+		plo\v s\v cino.}
+\end{figure}
+
+\begin{figure}[H]\centering
+	\input{res-signal1.tex}
+	\caption{Signal je nekoliko za\v sumljen, vendar \v se vedno vidimo jasno sliko.}
+\end{figure}
+
+\begin{figure}[H]\centering
+	\input{res-signal2.tex}
+	\caption{Anomalije med impulzi postajajo \v cedalje ve\v cje, vendar jih \v se vedno lahko
+		lo\v cimo od impulzov.}
+\end{figure}
+
+\begin{figure}[H]\centering
+	\input{res-signal3.tex}
+	\caption{Ta slika je preve\v c za\v sumljena, vendar smo kljub temu izlu\v s\v cili vsaj bistveno informacijo,
+		vendar bi te\v zko rekli, koliko sunkov je bilo na za\v cetku.}
+\end{figure}
+
+\v Suma smo se znebili po goljufiji. Kaj pa, \v ce ne bi imeli take sre\v ce? Kako bi potem ocenili\v sum?
+Vidimo, da funkcija na za\v cetku in na koncu prav prikladno pada proti ni\v c in je skoraj konstantna. Od tam
+preberemo amplitudo \v suma. Predpostavimo, da gre za beli \v sum, od koder lahko napovemo spekter
+$\hat{n}(\w) \approx 1/A$, kjer je $A$ amplituda, ki smo jo merili prej. Ker je napovedan $n(\w)$ zgolj
+konstanta, ta postopek ni najbolj\v si in tudi grafi, ki sem jih dobil niso jasni, zato jih ne bom kazal
+tukaj.
+
+\subsection{\v Ci\v s\v cenje Lincolnove brade}
+
+Slike biv\v sega predsednika severnoameri\v ske federacije so bile za\v sumljene z belim \v sumom poleg tega,
+da so bile zamazane z eksponentno prenosno funkcijo $v(t) = \exp(-t/\tau)/\tau$, $\tau = 30$.
+
+Dobljenim slikam sem, tako kot prej, s Hammingovim oknom dodatno s\v cistil \v crte, ki so se poznale po
+dekonvoluciji z Wienerjevim filtrom. Rezultati so prikazani na slikah~\ref{Sl1}, \ref{Sl2}, \ref{Sl3} in~\ref{Sl4}.
+
+\begin{figure}[H]\centering
+	\begin{subfigure}[b]{0.3\textwidth}
+		\includegraphics[width=\textwidth, keepaspectratio=1]{lincoln_L30_N00}
+		\caption{Originalna slika.}
+		\label{sl11}
+	\end{subfigure}
+	\begin{subfigure}[b]{0.3\textwidth}
+		\includegraphics[width=\textwidth, keepaspectratio=1]{fixed-lincoln_L30_N00-filter0}
+		\caption{Dekonvolucija brez filtra.}
+		\label{sl12}
+	\end{subfigure}
+	\begin{subfigure}[b]{0.3\textwidth}
+		\includegraphics[width=\textwidth, keepaspectratio=1]{fixed-lincoln_L30_N00-filter1}
+		\caption{Dodan filter.}
+		\label{sl13}
+	\end{subfigure}
+	\caption{Na sliki imamo prikazan postopek \v ci\v s\v cenja slike {\tt lincoln\_L30\_N00.pgm}. Filter,
+		dodan v sliki~\ref{sl13}, je Wienerjev filter, ki mu je dodano Hammingovo okno, zato je slika
+		nekoliko temnej\v sa.}
+	\label{Sl1}
+\end{figure}
+
+\begin{figure}[H]\centering
+	\begin{subfigure}[b]{0.3\textwidth}
+		\includegraphics[width=\textwidth, keepaspectratio=1]{lincoln_L30_N10}
+		\caption{Originalna slika.}
+		\label{sl21}
+	\end{subfigure}
+	\begin{subfigure}[b]{0.3\textwidth}
+		\includegraphics[width=\textwidth, keepaspectratio=1]{fixed-lincoln_L30_N10-filter0}
+		\caption{Dekonvolucija brez filtra.}
+		\label{sl22}
+	\end{subfigure}
+	\begin{subfigure}[b]{0.3\textwidth}
+		\includegraphics[width=\textwidth, keepaspectratio=1]{fixed-lincoln_L30_N10-filter1}
+		\caption{Dodan filter.}
+		\label{sl23}
+	\end{subfigure}
+	\caption{Na sliki imamo prikazan postopek \v ci\v s\v cenja slike {\tt lincoln\_L30\_N10.pgm}. Vidimo, da je kljub
+		relativno majhnemu originalnemu \v sumu, dekonvoluirana slika mo\v cno za\v sumljena. Uporaba Wienerjevega
+		filtra sliko mo\v cno izostri, defektov zaradi enodimenzionalnega branja slike skoraj ni ve\v c, ker smo
+		dodali \v se Hammingovo okno.}
+	\label{Sl2}
+\end{figure}
+
+\begin{figure}[H]\centering
+	\begin{subfigure}[b]{0.3\textwidth}
+		\includegraphics[width=\textwidth, keepaspectratio=1]{lincoln_L30_N30}
+		\caption{Originalna slika.}
+		\label{sl31}
+	\end{subfigure}
+	\begin{subfigure}[b]{0.3\textwidth}
+		\includegraphics[width=\textwidth, keepaspectratio=1]{fixed-lincoln_L30_N30-filter0}
+		\caption{Dekonvolucija brez filtra.}
+		\label{sl32}
+	\end{subfigure}
+	\begin{subfigure}[b]{0.3\textwidth}
+		\includegraphics[width=\textwidth, keepaspectratio=1]{fixed-lincoln_L30_N30-filter1}
+		\caption{Dodan filter.}
+		\label{sl33}
+	\end{subfigure}
+	\caption{Na sliki imamo prikazan postopek \v ci\v s\v cenja slike {\tt lincoln\_L30\_N30.pgm}. \v Sum je mo\v cno
+		prisoten, vendar je kon\v cna slika \v se vedno dovolj jasna. Defekti zaradi vrsti\v cnega branja so bolj
+		izraziti.}
+	\label{Sl3}
+\end{figure}
+
+\begin{figure}[H]\centering
+	\begin{subfigure}[b]{0.3\textwidth}
+		\includegraphics[width=\textwidth, keepaspectratio=1]{lincoln_L30_N40}
+		\caption{Originalna slika.}
+		\label{sl41}
+	\end{subfigure}
+	\begin{subfigure}[b]{0.3\textwidth}
+		\includegraphics[width=\textwidth, keepaspectratio=1]{fixed-lincoln_L30_N40-filter0}
+		\caption{Dekonvolucija brez filtra.}
+		\label{sl42}
+	\end{subfigure}
+	\begin{subfigure}[b]{0.3\textwidth}
+		\includegraphics[width=\textwidth, keepaspectratio=1]{fixed-lincoln_L30_N40-filter1}
+		\caption{Dodan filter.}
+		\label{sl43}
+	\end{subfigure}
+	\caption{Na sliki imamo prikazan postopek \v ci\v s\v cenja slike {\tt lincoln\_L30\_N40.pgm}. Slika~\ref{sl42} je
+	prakti\v cno nerazpoznavna, po uporabi filtra, na sliki~\ref{sl43}, pa je tako jasna, da skorajda ni mo\v c verjeti
+	kako mo\v cno orodje so filtri.}
+	\label{Sl4}
+\end{figure}
+
+\subsection{Kompresija slik z uporabo SVD}
+
+Obdr\v zimo $M$ singularnih vrednosti in originalno matriko aproksimiramo s tako, ki ima isto dimenzijo, a ima ni\v zji rang
+(rang $M$). Rezultata za sliki {\tt dexter.pgm} in {\tt a.pgm} sta na slikah~\ref{dexter} in~\ref{Sa}.
+
+\begin{figure}[H]\centering
+	\begin{subfigure}[b]{0.3\textwidth}
+		\includegraphics[width=\textwidth, keepaspectratio=1]{dexter}
+		\caption{{\tt dexter.pgm}}
+		\label{dexter1}
+	\end{subfigure}
+	\begin{subfigure}[b]{0.3\textwidth}
+		\includegraphics[width=\textwidth, keepaspectratio=1]{small-dexter-M30}
+		\caption{$M = 30$.}
+		\label{dexter2}
+	\end{subfigure}
+	\begin{subfigure}[b]{0.3\textwidth}
+		\includegraphics[width=\textwidth, keepaspectratio=1]{small-dexter-M20}
+		\caption{$M = 20$.}
+		\label{dexter3}
+	\end{subfigure}
+	\caption{Na sliki imamo prikazanih nekaj razli\v cnih izbir $M$ za sliko {\tt dexter.pgm}. Obe izbiri $M = 30$ in
+		$M = 20$ sta \v se dobri, vendar na $M = 20$ \v ze te\v zko lo\v cimo Dexterjevo privzdignjeno obrv.}
+	\label{dexter}
+\end{figure}
+
+\begin{figure}[H]\centering
+	\begin{subfigure}[b]{0.18\textwidth}
+		\includegraphics[width=\textwidth, keepaspectratio=1]{a}
+		\caption{{\tt a.pgm}}
+		\label{Sa1}
+	\end{subfigure}
+	\begin{subfigure}[b]{0.18\textwidth}
+		\includegraphics[width=\textwidth, keepaspectratio=1]{small-a-M30}
+		\caption{$M = 30$.}
+		\label{Sa2}
+	\end{subfigure}
+	\begin{subfigure}[b]{0.18\textwidth}
+		\includegraphics[width=\textwidth, keepaspectratio=1]{small-a-M20}
+		\caption{$M = 20$.}
+		\label{Sa3}
+	\end{subfigure}
+	\begin{subfigure}[b]{0.18\textwidth}
+		\includegraphics[width=\textwidth, keepaspectratio=1]{small-a-M10}
+		\caption{$M = 10$.}
+		\label{Sa4}
+	\end{subfigure}
+	\begin{subfigure}[b]{0.18\textwidth}
+		\includegraphics[width=\textwidth, keepaspectratio=1]{small-a-M8}
+		\caption{$M = 8$.}
+		\label{Sa5}
+	\end{subfigure}
+	\caption{Razli\v cne izbire kompresije prek SVD za sliko {\tt a.pgm}.}
+	\label{Sa}
+\end{figure}
+
+S preprostim ukazom\footnote{{\tt \$ du {}-{}-apparent-size ime\_datoteke}} lahko \emph{ocenimo}
+u\v cinkovitost na\v se kompresije s singularnim razcepom. Rezultati so v tabeli~\ref{tab1}.
+\begin{table}[H]\centering
+	\caption{Ocena velikosti datotek {\tt dexter} po kompresiji z SVD. Vse datoteke so
+	pretvorjene v format {\tt .png}. Izvirnik v formatu {\tt .png} potrebuje samo
+	14 kiB pomnilnika. Po spodnjih \v stevilih sode\v c SVD kompresija verjetno potrebuje
+ 	kak dodaten korak, saj na\v s rokodelski poskus kompresije klavrno propade in dose\v ze
+	ravno obratno -- pomnilnik, potreben za te datoteke, se \emph{pove\v ca} za ve\v c
+	kot $100\%$.}
+	\begin{tabular}{r|l}
+		$M$ & velikost [kiB] \\
+		\hline
+		2  & 32 \\
+		8  & 37 \\
+		10 & 37 \\
+		20 & 36 \\
+		30 & 36 \\
+		39 & 36 \\
+		50 & 36 \\
+		60 & 36 \\
+		80 & 36 \\
+		100& 35
+	\end{tabular}
+	\label{tab1}
+\end{table}
+Vidimo, da se taka kompresija ne izpla\v ca preve\v c. Tudi sicer obstajajo naprednej\v se metode.
+
+\section{Zaklju\v cek}
+
+Tekom te naloge smo se pobli\v ze seznanili s pomembnosmi filtrov in preproste kompresije s singularnim
+razcepom, ki v praksi verjetno ni najbolj\v si pristop.
+
+\end{document}
