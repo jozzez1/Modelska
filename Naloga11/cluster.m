@@ -1,28 +1,18 @@
 function C = cluster (M)
-	N = size(M)(1);
-	C = 0;
+	% this is actually just a wrapper for a program I wrote in C
+	% sources are in cluster.c + Makefile
+	% DO NOT use -O3 to compile!
 
-	% so we start
-	for i = 1:N		% column
-		for j = 1:N
-			if j == i
-				continue;
-			endif
-			for k = 1:N
-				if (k == i) || (k == j)
-					continue;
-				endif
-				
-				if (M (j, i) == 1) && (M (k, i) == 1) && (M (k, j) == 1)
-					C++;
-				endif
-			end
-		end
-	end
+	% first write it to a file
+	mprint (M);
 
-	% we also counted all the permutations,
-	% so we have to divide with 3! = 6
-	C /= 6;
+	% then the C program will process it
+	N = size (M)(1);
+	command = sprintf ("./ccluster %d", N);
+	[out, result] = system (command);
+
+	% and now we convert it back to number
+	C = str2num (result);
 
 	return;
 endfunction
