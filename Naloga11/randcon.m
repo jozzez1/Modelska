@@ -1,25 +1,38 @@
-function M = randomize (A)
+function M = randcon (A)
 	N = size(A)(1);
-	% we randomly select one of the nodes (column)
-	j = randi(N);
 
-	% now we have to select one of it's connections (row)
-	i = randi(N);
-	while (A(i, j) == 0) || (i == j)
-		i = randi(N);
-	endwhile
+	j = randi (N);
+	while (sum(A(:,j)) == N) || (sum(A(:,j)) == 1)
+		j = randi (N);
+	end
 
-	% now we select place to move it to
-	k = randi(N);
-	while (A(k,j) == 1) || (k == j)
-		k = randi(N);
-	endwhile
+	% to prevent dead loops we will first
+	% check which connections exist
+	x = [];
+	y = [];
+	kx = 1;
+	ky = 1;
+	for i = 1:N
+		if (A(i,j) == 1) && (i != j)
+			x(kx) = i;
+			kx++;
+		elseif (A(i,j) == 0)
+			y(ky) = i;
+			ky++;
+		endif
+	end
 
-	% and now we make the move
-	% 1.) we cut the former connection j <--> i
+	% now we pick one of the connections to move
+	Nx = kx-1;
+	Ny = ky-1;
+
+	i = x(randi (Nx));
+	k = y(randi (Ny));
+
+	% and now we move the stuff
 	A (i,j) = 0;
 	A (j,i) = 0;
-	% 2.) we assign a new connection j <--> k
+
 	A (k,j) = 1;
 	A (j,k) = 1;
 
