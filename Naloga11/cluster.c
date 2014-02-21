@@ -45,9 +45,13 @@ int main (int argc, char ** argv)
 
 	// so everything seems to be in order, let's calculate
 	// the clustering with brute force
-	double C = 0;
+	double C = 0,
+	       T, K;
 	for (i = 0; i <= N-1; i++)
 	{
+		T = 0;
+		K = 0;
+		// count the triangles on 'i'
 		for (j = 0; j <= N-1; j++)
 		{
 			if (j == i) continue;
@@ -56,9 +60,16 @@ int main (int argc, char ** argv)
 				if ((k == i) || (k == j)) continue;
 
 				if ((M[j][i] == 1) && (M[k][i] == 1) && (M[k][j] == 1))
-					C++;
+					T++;
 			}
+
+			K += M[j][i];
 		}
+		K = K*(K-1)/2;
+		T /= 2;
+
+		if (K != 0)
+			C += (T/K)/N;
 	}
 
 	// now we have to free the allocated space
@@ -66,7 +77,6 @@ int main (int argc, char ** argv)
 		free (M[i]);
 	free (M);
 
-	C /= (N * (N-1) * (N-2));
 	printf ("%e\n", C);
 
 	exit (EXIT_SUCCESS);
