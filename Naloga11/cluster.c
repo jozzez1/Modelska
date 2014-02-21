@@ -61,8 +61,13 @@ int main (int argc, char ** argv)
 		}
 	}
 
+	// now we have to free the allocated space
+	for (i = 0; i <= N-1; i++)
+		free (M[i]);
+	free (M);
+
 	C /= (N * (N-1) * (N-2));
-	printf ("C = %e\n", C);
+	printf ("%e\n", C);
 
 	exit (EXIT_SUCCESS);
 }
