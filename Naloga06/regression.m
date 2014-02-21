@@ -6,9 +6,11 @@ function [b, chi2, P, S, j, n] = regression (T, R, y, k)
 	P = inv(transpose(X) * inv(R) * X);
 	b = P * transpose(X) * inv(R) * y;
 
+	[nr, nc] = size (X);
+
 	chi2 = (y - X*b).' * inv(R) * (y - X*b);
 
-	chi2 /= (10 - j - 1);
+	chi2 /= (nr - j - 1);
 
 	return;
 endfunction

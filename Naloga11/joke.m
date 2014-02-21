@@ -1,7 +1,7 @@
 function [t, r] = joke (M)
 	N = size (M)(1);
 	tmax = radiusz (M) * N;
-	tmax = 10;
+	tmax = 40;
 
 	x = zeros (1,N);
 	x (1) = 1;	% joke starts from the "patient" zero
@@ -9,7 +9,7 @@ function [t, r] = joke (M)
 
 	t (1) = 0;
 	r (1) = sum(x)/N;
-	p = 0.2;	% probability that the joke will spread
+	p = 0.1;	% probability that the joke will spread
 
 	for k = 2:tmax
 		for j = 1:N

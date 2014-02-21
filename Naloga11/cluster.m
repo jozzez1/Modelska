@@ -10,6 +10,7 @@ function C = cluster (M)
 	N = size (M)(1);
 	command = sprintf ("./ccluster %d", N);
 	[out, result] = system (command);
+	system ("rm *.txt");
 
 	% and now we convert it back to number
 	C = str2num (result);
