@@ -220,24 +220,18 @@ int main (int argc, char ** argv)
 	// so everything seems to be in order, let's randomize and get the plots
 	srandom (time(NULL));
 
-	FILE * fout,
-	     * fmat;
 	
 	int D = 0;
 	for (i = 0; i <= N-1; i++)
 		D += sum (M, i, N);
 	D = D/N-1;
 
-	char dat1 [40],
-	     dat2 [40];
+	FILE * fout;
+	char dat1 [40];
+	sprintf (dat1, "progress-N%d-D%d.txt",N, D);
+	if (p) fout = fopen (dat1, "w");
 
-	sprintf (dat1, "matrix-N%d-D%d.txt", N, D);
-	sprintf (dat2, "progress-N%d-D%d.txt",N, D);
-	
-	if (p) fout = fopen (dat2, "w");
-	fmat = fopen (dat1, "w");
-
-	int Imax = N*(N-1)/2;
+	int Imax = N*D/2;
 	for (i = 0; i <= Imax-1; i++)
 	{
 		randcon (M, N);
@@ -245,7 +239,6 @@ int main (int argc, char ** argv)
 
 		if (p)
 		{
-		
 			int r = radiusz (M, N);
 			double C = clustering (M, N);
 		
@@ -257,14 +250,16 @@ int main (int argc, char ** argv)
 	if (p) fclose (fout);
 
 	// the final output
+	fin = fopen (dat, "w+");
+
 	for (i = 0; i <= N-1; i++)
 	{
 		for (j = 0; j <= N-1; j++)
-			fprintf (fmat, "%d ", M[i][j]);
-		fprintf (fmat, "\n");
+			fprintf (fin, "%d ", M[i][j]);
+		fprintf (fin, "\n");
 	}
 
-	fclose (fmat);
+	fclose (fin);
 
 	// now we have to free the allocated space
 	for (i = 0; i <= N-1; i++)

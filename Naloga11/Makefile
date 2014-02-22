@@ -8,7 +8,7 @@ all:
 	$(CC) $(SRCNAM) -o $(PRGNAM) $(WFLAGS) $(OPTFLAGS)
 
 random:
-	gcc47 randomize.c -o crandomize $(WFLAGS) $(OPTFLAGS)
+	gcc47 randomize.c -o crandomize $(WFLAGS) $(OPTFLAGS) -g
 
 clean:
 	rm -f $(PRGNAM) crandomize
