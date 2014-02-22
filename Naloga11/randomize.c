@@ -176,12 +176,14 @@ int radiusz (int ** M, const int N)
 
 int main (int argc, char ** argv)
 {
-	if (argc != 3)
+	if (argc != 4)
 		exit (EXIT_FAILURE);
 
 	// OK let's open the file
 	const int N = atoi (argv[1]),
 	          p = atoi (argv[2]);
+
+	double percent = atof (argv[3]);
 
 	int i = 0,
 	    j = 0;
@@ -231,11 +233,12 @@ int main (int argc, char ** argv)
 	sprintf (dat1, "progress-N%d-D%d.txt",N, D);
 	if (p) fout = fopen (dat1, "w");
 
-	int Imax = N*D/2;
+	int Imax = N*D*percent/2;
+	printf ("Imax = %d\n", Imax);
 	for (i = 0; i <= Imax-1; i++)
 	{
 		randcon (M, N);
-		printf ("%d/%d\n", i, Imax-1);
+//		printf ("%d/%d\n", i, Imax-1);
 
 		if (p)
 		{
