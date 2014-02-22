@@ -1,7 +1,9 @@
-function [t, r] = joke (M)
+function [t, r] = joke (M, percent)
 	N = size (M)(1);
 	tmax = radiusz (M) * N;
 	tmax = 40;
+
+	D = sum(sum(M))/N-1;
 
 	x = zeros (1,N);
 	x (1) = 1;	% joke starts from the "patient" zero
@@ -26,6 +28,9 @@ function [t, r] = joke (M)
 		t(k) = k-1;
 		r(k) = sum(x)/N;
 	end
+
+	A = [t', r'];
+	save ('-ascii', sprintf ("joke-%d-%d-%.2f.txt", N, D, percent), 'A');
 
 	return;
 endfunction
