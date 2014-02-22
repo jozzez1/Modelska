@@ -70,7 +70,7 @@ ni bila izbrana. \v Stevilo vseh povezav je $T = ND/2$, torej je $\sigma = \kapp
 stohasti\v cno zamenjanih povezav.
 \begin{figure}[H]\centering
 	\input{plot1.tex}
-	\caption{Premer grafa zelo hitro pade -- mimimum dose\v ze \v ze ko smo \v sele eno desetino povezav.}
+	\caption{Premer grafa zelo hitro pade -- mimimum dose\v ze \v ze ko smo zamenjali \v sele eno desetino povezav.}
 	\label{gr1}
 \end{figure}
 \begin{figure}[H]\centering
@@ -87,5 +87,70 @@ V vsakem koraku je verjetnost, da se bosta soseda pogovarjala o tej pikolovski p
 		Vidimo, da se hitrost \v sirjenja govorice prakti\v cno ne spreminja, ko dose\v zemo $\sigma \sim 0.6$.}
 	\label{gr3}
 \end{figure}
+
+\subsection{Sekularni model \v clove\v ske populacije}
+
+\subsection{Svetovna mesta}
+
+Za svetovna mesta naj bi veljala relacija
+\[
+	U(R) = U_0 \frac{\log U_0}{R + \log U_0},
+\]
+kjer je $R$ rang mesta (katero po velikosti je) in $U$ populacije tega mesta. Veljavnost zakona sem preveril po
+podatkih za Slovenijo, ZDA, Kitajsko in Indijo. Presenetljivo ta zakon za ta mesta v veliki meri ne velja.
+\begin{figure}[H]\centering
+	\input{mest1.tex}
+	\caption{Na za\v cetku je opis dober, vendar potem funkcija pada prepo\v casi, kot ka\v ze trend iz podatkov.}
+	\label{gr:mest1}
+\end{figure}
+Ker je slika~\ref{gr:mest1} pri\v ca, da taka izbira ni najbolj\v sa (tudi tabela~\ref{tab1} tako pravi), bomo poskusili
+\v se s preprosto poten\v cno funkcijo.
+\begin{figure}[H]\centering
+	\input{mest2.tex}
+	\caption{Celotno ujemanje je veliko bolje, kot je bilo prej, vendar pa smo pri tem izgubili lepo
+		zaobljeno obliko na za\v cetku, ki pa je tako ali tako relevantna le v mestih Republike Indije.}
+	\label{gr:mest2}
+\end{figure}
+Za prilagajanje sem v sliki~\ref{gr:mest2} uporabil model
+\[
+	U(R) = A \cdot R^{\alpha},
+\]
+ki sem ga re\v seval kar z linearno regresijo. Parametri za posamezen graf so na tabeli~\ref{tab2}.
+\begin{table}[H]\centering
+	\caption{Parametri krivulj prilagojene podatkom s slike~\ref{gr:mest1}. Kot vidimo je $\overline{\chi^2}$
+		mo\v cno prevelik, kar pomeni da se testna krivulja zelo slabo prilega podatkom.}
+	\begin{tabular}{r|c|c|c|c}
+		& Slovenija & ZDA & Indija & Kitajska \\
+		\hline
+		$U_0$          & $6.6 \cdot 10^4$ & $2.5 \cdot 10^6$ & $5.8 \cdot 10^6$ & $1.2 \cdot10^7$ \\
+		$\delta_{U_0}$ & $\pm 19.5 \%$    & $\pm 4.3 \%$     & $\pm 3.7 \%$     & $\pm 5.3 \%$ \\
+		\hline
+		$\overline{\chi^2}$ & $1.44 \cdot 10^{9}$ & $1.58 \cdot 10^{11}$ & $7.03 \cdot 10^{11}$ & $4.36 \cdot 10^{12}$
+	\end{tabular}
+	\label{tab1}
+\end{table}
+\begin{table}[H]\centering
+	\caption{Parametri prilagojenih funkcij s slike~\ref{gr:mest2} in njihove relativne napake. Vidimo, da je
+		$\overline{\chi^2} \sim 1$, kar je bistveno bolje, kot prej.}
+	\begin{tabular}{c|c|c|c|c|c|c|c}
+		\multicolumn{2}{c|}{Slovenija} &
+		\multicolumn{2}{c|}{ZDA} &
+		\multicolumn{2}{c|}{Indija} &
+		\multicolumn{2}{c}{Kitajska} \\
+		\hline
+		$A$ & $\alpha$ & $A$ & $\alpha$ & $A$ & $\alpha$ & $A$ & $\alpha$ \\
+		\hline\hline
+		1.59 $\cdot 10^5$ & -0.99 & 6.18 $\cdot 10^6$ & -0.73 & 2.27 $\cdot 10^7$ & -0.86& 2.55 $\cdot 10^7$ &-0.64 \\
+		$\pm$ 4.5 \% & $\pm$ 19.2 \% & $\pm$ 1.9 \% & $\pm$ 8.4 \% & $\pm$ 1.9 \% & $\pm$ 8.7 \% &
+			$\pm$ 3.0 \% & $\pm$ 27.4 \% \\
+		\hline
+		\multicolumn{2}{c|}{$\overline{\chi^2} = 0.71$} &
+		\multicolumn{2}{c|}{$\overline{\chi^2} = 0.55$} &
+		\multicolumn{2}{c|}{$\overline{\chi^2} = 1.60$} &
+		\multicolumn{2}{c}{$\overline{\chi^2} = 0.19$}
+	\end{tabular}
+	\label{tab2}
+\end{table}
+
 
 \end{document}
