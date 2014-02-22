@@ -1,0 +1,91 @@
+\documentclass[a4 paper, 12pt]{article}
+\usepackage[slovene]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[small]{caption}
+\usepackage[pdftex]{graphicx}
+\usepackage{amssymb, fullpage, float, pdflscape, subcaption, amsmath, color}
+
+\captionsetup{
+	size=small,
+	labelfont=it,
+	width=0.7\textwidth
+}
+
+\newcommand{\tr}{
+	\operatorname{tr}
+}
+
+\begin{document}
+
+\begin{center}
+\textsc{Modelska analiza I}\\
+\textsc{2011/12}\\[0.5cm]
+\textbf{11. naloga -- Izbolj\v sani populacijski modeli}
+\end{center}
+\begin{flushright}
+\textbf{Jože Zobec}\\
+\end{flushright}
+
+\section{Uvod}
+
+V tem poglavju se bomo spet posvetili odbiranju parametrov s pomo\v cjo metode najmanj\v sih kvadratov in
+modeliranja populacijskih modelov s krajevno odvisnostjo, ali druga\v ce povedano, grafov.
+
+Algoritem, ki ga bomo uporabili za modeliranje, sta prva uporabila Watts in Strogatz in ni popolnoma realisti\v cen,
+vendar pa je dovolj dober, da ga lahko u\v cinkovito uporabimo modeliranje manj\v sih skupin. Za\v cnemo s
+s periodi\v cnim neorientiranim grafom z $N$ elementi, ki je povezan z $D$ sosedi (tj. $D/2$ na vsako stran). Tak
+graf lahko predstavimo z matriko povezav, $M$ in ker je graf neorientiran (povezave te\v cejo v obe smeri) je matrika
+simetri\v cna. Da lahko pravilno ra\v cunamo premer grafa, bomo predpostavili, da je vsak povezan sam s seboj,
+tj. velja $\tr(M) = N$, kjer smo vsako med $i$ in $j$ v matriki ozna\v cili z $M_{ij} = M_{ji} = 1$.
+
+Kot je povedal profesor na predavanjih ima tak graf predvsem dva neodvisna parametra -- povpre\v cno razdaljo poti in
+gru\v cavost grafa. A ker je povpre\v cno pot zahtevno ra\v cunati, jo bomo nadomestili s premerom grafa, to je
+najdalj\v sa pot v grafu. Premer grafa je tista potenca $r$ matrike $M$, pri kateri je $M_{ij} > 0,\ \forall\ i,j$.
+Za povpre\v cno razdaljo bi morali pri vsaki potenci pogledati koliko elementov matrike je postalo neni\v celnih -- tisto
+so nove povezave, dol\v zine, ki je eneka potenci te matrike $M$.
+
+Gru\v cavost meri koliko sosedov nekega vozli\v s\v ca ostane sosedov, \v ce tisto vozli\v s\v ce odmislimo, povpre\v ceno
+po vseh vozli\v s\v cih.
+
+V drugem delu se bomo seznanili spet s prilagajanjem krivulj, tokrat so to krivulje, ki so samopodobne. S tujko
+jih lahko imenujemo tudi renormalizabilne krivulje. Renormalizabilnost je lastnost sistemov, ki so neodvisni od
+skale na kateri jih opazujemo. Tak primer krivulje je eksponentna funkcija.
+
+\section{Rezultati}
+
+Deloma sem programiranje opravil v {\tt Octave}, deloma v programskem jeziku {\tt C}, da bi dosegel optimalno
+razmerje med hitrostjo delovanja in nazornostjo programa/skripte.
+
+\subsection{Model mali svet}
+
+Pred kratkim se je v Kranju vr\v silo sre\v canje oktetov, ki je imelo $\sim 320$ poslu\v salcev. Mislimo si, da
+je nekdo sredi nastopa Okteta Gallus iz Ribnice imel hodomu\v sno pripombo. Poglejmo, kako hitro bi ta novica pri\v sla
+do njihovih u\v ses.
+
+Pri\v cnemo torej z matriko povezav $N = 320$ in $D = 8$, saj je oktet spremljal tudi njihov umetni\v ski vodja, ki
+z njimi ni nastopal -- to je devet ljudi. Sedaj moramo povezave stohasti\v cno premikati, kar prikazujeta grafa~\ref{gr1}
+in~\ref{gr2}. \v Stevilo stohasti\v cnih povezav sem ra\v cunal z oceno, da vsaki\v c izberemo drugo povezavo, ki \v se
+ni bila izbrana. \v Stevilo vseh povezav je $T = ND/2$, torej je $\sigma = \kappa \cdot 2/ND$, kjer je $\kappa$ \v stevilo
+stohasti\v cno zamenjanih povezav.
+\begin{figure}[H]\centering
+	\input{plot1.tex}
+	\caption{Premer grafa zelo hitro pade -- mimimum dose\v ze \v ze ko smo \v sele eno desetino povezav.}
+	\label{gr1}
+\end{figure}
+\begin{figure}[H]\centering
+	\input{plot2.tex}
+	\caption{Gru\v cavost pada dosti po\v casneje.}
+	\label{gr2}
+\end{figure}
+
+V vsakem koraku je verjetnost, da se bosta soseda pogovarjala o tej pikolovski pripombi je $p = 10\%$.
+\begin{figure}[H]\centering
+	\input{joke.tex}
+	\caption{V primeru, ko povezav ne preme\v samo, dobimo linerano \v sirjenje informacije. Sicer
+		pa \v ze za zelo majhno \v stevilo stohasti\v cno zamenjanih povezav dobimo ti. logisti\v cno funkcijo.
+		Vidimo, da se hitrost \v sirjenja govorice prakti\v cno ne spreminja, ko dose\v zemo $\sigma \sim 0.6$.}
+	\label{gr3}
+\end{figure}
+
+\end{document}
