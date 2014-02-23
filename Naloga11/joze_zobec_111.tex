@@ -16,6 +16,14 @@
 	\operatorname{tr}
 }
 
+\renewcommand{\d}{
+	\ensuremath{\mathrm{d}}
+}
+
+\newcommand{\der}[2]{
+	\ensuremath{\frac{\partial #1}{\partial #2}}
+}
+
 \begin{document}
 
 \begin{center}
@@ -90,6 +98,92 @@ V vsakem koraku je verjetnost, da se bosta soseda pogovarjala o tej pikolovski p
 
 \subsection{Sekularni model \v clove\v ske populacije}
 
+Osnovni predlagani model je
+\[
+	N(t) \propto (T - T_0)^\alpha
+\]
+katerega prilagojeni podatki so
+\[
+	N(t) \approx 2\cdot10^{11} (T - 2025)^{-1}.
+\]
+Ta model torej leta $2025$ napoveduje prej \v se nikoli tako izrazit "`baby boom"' zaradi \v cesar pod vpra\v saj postavlja
+lastno verodostojnost. Peter Kapitsa, ki je predlagal prej\v snji model, je pokazal kako lahko ta model popravimo.
+Na\v sa nova modelska krivulja je re\v sitev te diferencialne ena\v cbe:
+\[
+	\dot{n} = \frac{\mathrm{d}n}{\mathrm{d}t} = K\sin^2(n/K) + 1/K,
+\]
+kjer je $n = N/K$ in $t = (T - T_0)/\tau$. Ena\v cba je separabilna, torej lahko odvod jemljemo kot pravi ulomek
+in na levi strani integriramo vse $n$, na desni pa vse $t$. Re\v sitev te ena\v cbe je
+\[
+	n(t) = K \cdot \arctan\Bigg\{\frac{\tan\big[(t - t_1)\sqrt{1 + K^2}/K\big]}{\sqrt{1 + K^2}}\Bigg\}.
+\]
+\v Ce ta izraz pretvorimo v enote $N$ in $T$ dobimo
+\begin{align*}
+	N(T) &= K^2 \arctan\Bigg\{\frac{\tan\big[(T - T_0)\sqrt{1 + K^2}/K^2\tau\big]}{\sqrt{1 + K^2}}\Bigg\} \\
+	     &\stackrel{K \to \infty}{\longrightarrow} K^2 \arctan\Bigg\{\frac{\tan\big[(T - T_0)/K\tau\big]}{K}\Bigg\}
+\end{align*}
+Funkcija ima pri polu tangensa populacijski prehod, ki ga ne opi\v se pravilno. Tam moramo zato upo\v stevati
+periodi\v cnost in pri\v steti $K^2 \pi$.
+
+Vendar pa se je izkazalo, da tak model \v se vedno ni zvezen! \v Ce ho\v cemo zveznost, se mora ta skok zgoditi
+natanko enkrat! Potem, ga lahko dolo\v cimo takrat, ko raste populacija, to je redefiniramo $T_0 \to T_0 + \tau K\pi/2$,
+torej se skok zgodi v okolici $T_0$:
+\begin{equation}
+	N(T) = K^2 \arctan\Bigg\{\frac{\tan\big[(T - T_0)/K\tau + \pi/2\big]}{K}\Bigg\} + \left\{
+		\begin{matrix}
+			0; & T < T_0 \\
+			\pi K^2; & T \geq T_0
+		\end{matrix}
+		\right.
+\end{equation}
+Za prilagajanje sem uporabil metodo Levenberg-Marqardt, ki potrebuje \v se parcialne odvode po parametrih:
+\begin{align*}
+	\der{N}{K} =& K^2\bigg[K^2 + \tan^2\bigg(\frac{T - T_0}{K\tau} + \frac{\pi}{2}\bigg)\bigg]^{-1}
+	\bigg[-\frac{(T - T_0)/K\tau}{\cos^2\big(\frac{T-T_0}{K\tau} + \pi/2\big)} - \tan\bigg(\frac{T - T_0}{K\tau}
+	+ \pi/2\bigg)\bigg] + \\
+	&+ K \arctan\Bigg\{\frac{\tan\big[(T - T_0)/K\tau + \pi/2\big]}{K}\Bigg\}  + \left\{
+	\begin{matrix}
+		0; & T < T_0 \\
+		\pi K; & T \geq T_0
+	\end{matrix}
+	\right. \\
+	\der{N}{\tau} =& K^2\bigg[K^2 + \tan^2\bigg(\frac{T - T_0}{K\tau} + \frac{\pi}{2}\bigg)\bigg]^{-1}
+	\bigg[- \frac{T - T_0}{\tau^2 \cos^2\big(\frac{T - T_0}{K\tau} + \pi/2\big)}\bigg] \\
+	\der{N}{T_0} =& K^2\bigg[K^2 + \tan^2\bigg(\frac{T - T_0}{K\tau} + \frac{\pi}{2}\bigg)\bigg]^{-1}
+	\bigg[- \frac{1}{\tau} \frac{1}{\cos^2\big(\frac{T - T_0}{K\tau} + \pi/2\big)} \bigg]
+\end{align*}
+Izkazalo se je, da je bolje odvode ra\v cunati numeri\v cno, zato sem jih ra\v cunal z diskretnimi diferencami.
+Uporabil sem paket {\tt optim} iz {\tt Octave Forge}, funkcijo {\tt leasqr}, ki vrne rezultate z vsemi pritiklinami.
+Za more "`dobrote"' prilagajanja ta funkcija uporablja $R^2$, ki ga lahko interpretiramo kar kot verjetnost, da
+na\v s model ustreza naboru to\v ck. Prilagajal sem na dve razli\v cni datoteki. V prvem
+primeru sem zavrgel vse kar ja bilo pred letom 1800. Drugi\v c sem upo\v steval vse podatke. Rezultati so v
+tabeli~\ref{tab0}. Graf je prikazan na sliki~\ref{sl:clo}
+
+\begin{table}[H]\centering
+	\caption{Rezultati za prilagaganje testne funkcije na datoteko {\tt zgodovina.dat}. Vidimo, dobimo v obeh
+		primerih sprejemljivo vrednost $R^2$, vendar opazimo, da se okle\v s\v cena datoteka veliko bolje
+		prilega, kar se vidi tudi na tem, da so relativne napake parametrov dosti manj\v se.}
+	\begin{tabular}{c|c|c||c|c}
+		& \multicolumn{2}{c|}{\tt 1800-} & \multicolumn{2}{c}{\tt zgodovina.dat} \\
+		\hline
+		& $P$ & $\delta_P$ & $P$ & $\delta_P$ \\
+		\hline\hline
+		$K$ & $63.249$ & $\pm 0.25 \%$    & $81.518$ & $\pm 11.58 \%$ \\
+		$\tau$ & $38.411$ & $\pm 1.80 \%$ & $169.439$ & $\pm 11.55 \%$ \\
+		$T_0$ & $1999.604$ & $\pm 0.03\%$ & $2141.002$ & $\pm 2.48 \%$ \\
+		\hline
+		& \multicolumn{2}{c|}{$R^2 = 0.99918$} & \multicolumn{2}{c}{$R^2 = 0.82215$}
+	\end{tabular}
+	\label{tab0}
+\end{table}
+
+\begin{figure}[H]\centering
+	\input{clovestvo.tex}
+	\caption{Vidimo, da je bolj upo\v stevati le podatke po letu $1800$. Na ta ra\v cun lahko pravilno opi\v semo
+		grbino, sicer bi s seboj nosili negotove podatke, ki tako ali tako nimajo tiste prave verodostojnosti.}
+	\label{sl:clo}
+\end{figure}
+
 \subsection{Svetovna mesta}
 
 Za svetovna mesta naj bi veljala relacija
@@ -151,6 +245,5 @@ ki sem ga re\v seval kar z linearno regresijo. Parametri za posamezen graf so na
 	\end{tabular}
 	\label{tab2}
 \end{table}
-
 
 \end{document}
