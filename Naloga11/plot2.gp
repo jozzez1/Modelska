@@ -1,8 +1,8 @@
 reset
 set term epslatex color solid
 set out 'clovestvo.tex'
-set xlabel '$leto$'
-set ylabel '$svetovna populacija$ [$10^6$]'
+set xlabel 'leto'
+set ylabel 'svetovna populacija [$10^6$]'
 set key bot
 set tics out
 set tics nomirror
