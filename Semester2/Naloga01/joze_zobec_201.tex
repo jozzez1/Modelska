@@ -1,0 +1,86 @@
+\documentclass[a4 paper, 12pt]{article}
+\usepackage[slovene]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[small]{caption}
+\usepackage[pdftex]{graphicx}
+\usepackage{amssymb, fullpage, float, pdflscape, subcaption, amsmath, color}
+
+\newcommand{\e}{
+	\ensuremath{\varepsilon}
+}
+
+\newcommand{\w}{
+	\ensuremath{\omega}
+}
+
+\begin{document}
+
+\begin{center}
+\textsc{Modelska analiza II}\\
+\textsc{2011/12}\\[0.5cm]
+\textbf{1. naloga -- Metoda maksimalne entropije}
+\end{center}
+\begin{flushright}
+\textbf{Jože Zobec}\\
+\end{flushright}
+
+\section{Uvod}
+
+V tej nalogi se bomo posvetili prilagajanju modelske funkcije na frekven\v cni spekter. Poznamo \v casovno
+odvisen odziv. Prek diskretne Fourierove transformacije dobimo frekven\v cni spekter. Zaradi eksperimentalnih
+in numeri\v cnih defektov je ta spekter za\v sumljen. Na\v s cilj je zmanj\v sati \v sum in oja\v cati signal.
+To storimo s prilagajanjem modelske funkcije na spekter. Prilagajanje ne poteka po metodi najmanj\v sih kvadratov,
+je pa z njo intimno povezana. To je tako imenovana avtoregresijska metoda~\cite[str.~302]{sirca}.
+
+Avtoregresijski model je rekurzijska zveza
+\[
+	x(t) = x_t = - \sum_{i = 1}^p a_i x_{t - i} + \e_t,
+\]
+kjer je $x_t$ \v casovno odvisen signal, $\e_t$ pa \v sum. Koeficienti $a_i$ so v splo\v snem lahko kompleksni.
+Koeficiente $a_i$ lahko dolo\v cimo na razli\v cne na\v cine -- enoli\v cno jih izra\v cunamo glede na avtokorelacijsko
+ali kovarian\v cno matriko z Levinson-Durbinovo metodo, lahko pa jih dolo\v cimo tudi z maksimiziranjem entropije z
+Burgovo metodo~\cite{sirca}.
+
+Spekter dobimo prek karakteristi\v cnega polinoma avtoregresijskega modela, $p_\mathrm{AR}$:
+\[
+	p_\mathrm{AR}(x) = x^p + \sum_{i = 1}^p a_i x^{p-i} = \prod_{i = 1}^{p+1} (x - z_i),
+\]
+kjer so $z_i$ ni\v cle tega polinoma, ki jih imenujemo tudi resonance avtoregresijskega modela. Spektralno gostoto
+dobimo kot
+\[
+	P (\w) = \frac{\sigma^2_\e}{|p_\mathrm{AR}\big(\exp(2\pi i\w/N)\big)|^2}, \quad \sigma^2_\e = \text{konst.},
+\]
+izpeljava je v~\cite[str. 308-9]{sirca}.
+Predpostavki sta, da je spekter stacionaren in da je $\e_t$ beli \v sum z varianco $\sigma^2_\e$. Ker predpostavimo,
+da je $\e_t$ beli \v sum z maksimalno varianco se ta metoda imenuje metoda maksimalne entropije (ni ista metoda
+maksimalne entropije, s katero izra\v cunamo koeficiente $a_i$). Vse "`dobre"' resonance (torej tiste, ki nosijo
+informacijo), so znotraj enotske kro\v znice, resonance, ki pa predstavljajo \v sum, so zunaj enotske kro\v znice. Kadar
+imamo vse koeficiente znotraj enotske kro\v znice, pravimo da je na\v s model stabilen.
+
+Burgov algoritem vrne koeficiente stabilnega modela, tj. so vse resonance znotraj enotskega kroga
+\v ze po sami konstrukciji metode. V primeru, da je katera izmed resonanc ve\v cja od 1, jo popravimo
+$z_i \to \hat{z_i} = z_i/|z_i|$~\cite[str. 305]{sirca}, pri \v cemer s tem ne spremenimo faze.
+
+Glavna prednost avtoregresijskih modelov je ta, da za izra\v cun spektra ne potrebujemo Fourierove transformacije,
+ki ima $\mathcal{O}(N \log N)$, ampak zado\v s\v ca zgolj izra\v cun avtokorelacijskih koeficientov, ki imajo
+zahtevnost $\mathcal{O}(p^2)$. Ker je $p \ll N$ se to izpla\v ca, saj pove\v cini $p < 40$ popolnoma
+zado\v s\v ca~\cite[str. 309]{sirca}. Poleg tega s tem lahko poi\v s\v cemo glavne resonance (ki nastopajo v
+konjugiranih parih) in zaradi rekurzijske narave, tudi napovemo \v casovni potek, ki bo sledil.
+
+\section{Rezultati}
+Implementacije Burgove metode ima aplikacijo razli\v cnih numeri\v cnih orodjih -- {\tt Matlab}, {\tt GSL} \ldots
+Uporabil sem svobodno razli\v cico iz paketa {\tt tsa}, ki spada v {\tt Octave Forge}, natan\v cneje funkcijo {\tt lattice}.
+Ta poleg tega, da dolo\v ci optimalne parametre tudi poi\v s\v ce optimalen red (kateraga zgornja in spodnja meja
+je prepu\v s\v cena uporabniku)
+
+\begin{thebibliography}{9}
+	\bibitem{sirca}
+		S. \v Sirca in M. Horvat,
+		{\em Ra\v cunske metode za fizike},
+		DMFA Zalo\v zni\v stvo,
+		(2010)
+\end{thebibliography}
+
+
+\end{document}
