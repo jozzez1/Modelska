@@ -2,7 +2,7 @@
 \usepackage[slovene]{babel}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
-\usepackage[small]{caption}
+\usepackage[small, width=0.9\textwidth,labelfont=it]{caption}
 \usepackage[pdftex]{graphicx}
 \usepackage{amssymb, fullpage, float, pdflscape, subcaption, amsmath, color}
 
@@ -34,23 +34,25 @@ To storimo s prilagajanjem modelske funkcije na spekter. Prilagajanje ne poteka 
 je pa z njo intimno povezana. To je tako imenovana avtoregresijska metoda~\cite[str.~302]{sirca}.
 
 Avtoregresijski model je rekurzijska zveza
-\[
+\begin{equation}
 	x(t) = x_t = - \sum_{i = 1}^p a_i x_{t - i} + \e_t,
-\]
+	\label{avtoregresija}
+\end{equation}
 kjer je $x_t$ \v casovno odvisen signal, $\e_t$ pa \v sum. Koeficienti $a_i$ so v splo\v snem lahko kompleksni.
 Koeficiente $a_i$ lahko dolo\v cimo na razli\v cne na\v cine -- enoli\v cno jih izra\v cunamo glede na avtokorelacijsko
-ali kovarian\v cno matriko z Levinson-Durbinovo metodo, lahko pa jih dolo\v cimo tudi z maksimiziranjem entropije z
-Burgovo metodo~\cite{sirca}.
+ali kovarian\v cno matriko z Levinson-Durbinovo metodo, lahko pa jih dolo\v cimo tudi z maksimiziranjem entropije po
+Burgovi metodi~\cite{sirca}.
 
 Spekter dobimo prek karakteristi\v cnega polinoma avtoregresijskega modela, $p_\mathrm{AR}$:
-\[
-	p_\mathrm{AR}(x) = x^p + \sum_{i = 1}^p a_i x^{p-i} = \prod_{i = 1}^{p+1} (x - z_i),
-\]
+\begin{equation}
+	p_\mathrm{AR}(w) = w^p + \sum_{i = 1}^p a_i w^{p-i} = \prod_{i = 1}^p (w - z_i),
+\end{equation}
 kjer so $z_i$ ni\v cle tega polinoma, ki jih imenujemo tudi resonance avtoregresijskega modela. Spektralno gostoto
 dobimo kot
-\[
-	P (\w) = \frac{\sigma^2_\e}{|p_\mathrm{AR}\big(\exp(2\pi i\w/N)\big)|^2}, \quad \sigma^2_\e = \text{konst.},
-\]
+\begin{equation}
+	P (\w) = \frac{\sigma^2_\e}{|p_\mathrm{AR}\big(\exp(2\pi i\nu/N)\big)|^2}, \quad \sigma^2_\e = \text{konst.},
+	\label{spekter}
+\end{equation}
 izpeljava je v~\cite[str. 308-9]{sirca}.
 Predpostavki sta, da je spekter stacionaren in da je $\e_t$ beli \v sum z varianco $\sigma^2_\e$. Ker predpostavimo,
 da je $\e_t$ beli \v sum z maksimalno varianco se ta metoda imenuje metoda maksimalne entropije (ni ista metoda
@@ -66,13 +68,114 @@ Glavna prednost avtoregresijskih modelov je ta, da za izra\v cun spektra ne potr
 ki ima $\mathcal{O}(N \log N)$, ampak zado\v s\v ca zgolj izra\v cun avtokorelacijskih koeficientov, ki imajo
 zahtevnost $\mathcal{O}(p^2)$. Ker je $p \ll N$ se to izpla\v ca, saj pove\v cini $p < 40$ popolnoma
 zado\v s\v ca~\cite[str. 309]{sirca}. Poleg tega s tem lahko poi\v s\v cemo glavne resonance (ki nastopajo v
-konjugiranih parih) in zaradi rekurzijske narave, tudi napovemo \v casovni potek, ki bo sledil.
+konjugiranih parih) in zaradi rekurzijske narave koeficientov, tudi napovemo \v casovni potek, ki bo sledil.
+To naredimo kar po ena\v cbi~\eqref{avtoregresija}, tj.
+\begin{equation}
+	x_{t+1} = -\sum_{i = 1}^p a_i x_{t - i + 1} \pm \sigma_\e,
+	\label{napoved}
+\end{equation}
+kjer pa \v zal napake ne poznamo, lahko pa jo ocenimo z varianco od prej, tj. $\sigma^2_\e$.
 
 \section{Rezultati}
-Implementacije Burgove metode ima aplikacijo razli\v cnih numeri\v cnih orodjih -- {\tt Matlab}, {\tt GSL} \ldots
-Uporabil sem svobodno razli\v cico iz paketa {\tt tsa}, ki spada v {\tt Octave Forge}, natan\v cneje funkcijo {\tt lattice}.
-Ta poleg tega, da dolo\v ci optimalne parametre tudi poi\v s\v ce optimalen red (kateraga zgornja in spodnja meja
-je prepu\v s\v cena uporabniku)
+Za izra\v cun ${a_i}$ sem uporabil sem svobodno razli\v cico iz paketa {\tt tsa}, ki spada v {\tt Octave Forge},
+natan\v cneje funkcijo {\tt lattice}.
+
+Izra\v cunal sem tudi $\sigma_\e^2$. To koli\v cino sem uporabil za Wienerjev filter in tudi za avtoregresijske
+spektre, kot je v en.~\eqref{spekter}.
+
+Rezultati so na slikah~\ref{gr1}, \ref{gr2} in \ref{gr3}.
+
+Preveril sem tudi, \v ce so poli postavljeni znotraj enotskega kroga. Burgova metoda koeficiente $a_i$ res dolo\v ci
+tako, da so vse ni\v cle $z_i$ znotraj enotske kro\v znice. Primer za {\tt co2.dat} je na sliki~\ref{graf0}.
+
+\begin{figure}[H]\centering
+	\includegraphics[width=12cm, keepaspectratio=1]{co2-poli}
+	\caption{Ni\v cle karakteristi\v cnega polinoma na kompleksni ravnini (tj. abscisa predstavlja realno komponento,
+		ordinata pa imaginarno). Graf je narejen za primer $p = 36$, {\tt co2-detrend.dat}. Iz argumenta tega
+		kompleksnega \v stevila lahko preberemo, kateri resonanci slike~\ref{gr3} ustreza. Poli, ki so
+		najblji\v zji enotski kro\v znici so na\v se resonance.}
+	\label{graf0}
+\end{figure}
+
+\begin{figure}[H]\centering
+	\input{val2-spectra.tex}
+	\caption{Vidimo, da je $p = 10$ premalo, saj resonanc ne dose\v ze dovolj natan\v cno, prav tako pa so tudi
+		preve\v c razmazane. Na spodnji sliki vidimo, da je \v sum avtoregresijskega spektra bistveno manj\v si,
+		vendar so zato tudi vrhovi resonanc na ta ra\v cun ni\v zji.Pravi spekter je pomno\v zen z Wienerjevim
+		filtrom.}
+	\label{gr1}
+\end{figure}
+
+\begin{figure}[H]\centering
+	\input{val3-spectra.tex}
+	\caption{V tem primeru je $p = 10$ bolj\v si za opis \v suma, vendar \v se vedno ne more dobro opisati
+		vrhov. Po drugi strani $p = 30$ in $p = 40$ dobro opi\v seta vrhove, vendar dobimo defekte in
+		nastane umeten \v sum. Ker so vrhovi pomembnej\v si od \v suma, je smiselno dati prednost rezultatom,
+		kjer $p \geq 20$. Pravi spekter je pomno\v zen z Wienerjevim filtrom.}
+	\label{gr2}
+\end{figure}
+
+\begin{figure}[H]\centering
+	\input{co2-detrend-spectra.tex}
+	\caption{Za odstranitev trenda sem uporabljal razli\v cne polinome. Najbolje se je obnesel polinom petega
+		reda. Kot vidimo, so rezultati za $p = 30$ solidni in primerljivi s sliko~\ref{gr1}. Pravi spekter je
+		pomno\v zen v Wienerjevim filtrom. Kro\v zna rekvenca $\w$ je enaka argumentu kompleksnega
+		\v stevila, pri katerem dobimo pol na sliki~\ref{graf0}.}
+	\label{gr3}
+\end{figure}
+
+Sode\v c po teh rezultatih je te\v zko re\v ci, kaj je bolje. Odvisno od situacije. \v Ce \v zelimo zgolj poiskati
+resonance je to verjetno najbolje narediti z avtoregresijo, \v ce pa nas zanima spekter je za to verjetno bolje
+narediti z eksaktno Fourierjevo transformacijo. Prav tako, \v ce bi radi manj za\v sumljene podatke je spet
+odvisno od situacije. \v Ce je \v stevilo resonanc majhno se spla\v ca avtoregresija, sicer pa Wienerjev filter.
+
+\subsection{Linearna napoved}
+
+Po ena\v cbi~\eqref{napoved} uporabimo prvo polovico signala za podatke, na podlagi katerih izra\v cunamo avtoregresijske
+koeficiente, drugo polovico pa za kontrolo. Napako sem ocenil iz variance \v suma, $\sigma_\e^2$, katere oceno sem
+dolo\v cil s pomo\v cjo Burgove metode. Opazil sem, da vsem grafom amplitude pojenjajo. To je zato, ker za vse pole
+velja $|z_i| < 1$, tj. ni nobenega, ki bi bil $|z_i| = 1$.
+
+\begin{figure}[H]\centering
+	\input{val2-predict.tex}
+	\caption{Na za\v cetku so rezultati v fazi in znotraj pri\v cakovane napake, vendar se \v ze po kratkem
+		\v casu amplituda zmanj\v sa in pademo iz faze. Znotraj napake ostanemo ves \v cas \v sele pri
+		$p = 136$.}
+	\label{pred1}
+\end{figure}
+
+\begin{figure}[H]\centering
+	\input{val3-predict.tex}
+	\caption{Tu je signal dlje \v casa znotran pri\v cakovane napake. Tudi v fazi smo dlje. To je verjetno zato,
+		ker spektralna gostota signala manj za\v sumljena.}
+	\label{pred2}
+\end{figure}
+
+\begin{figure}[H]\centering
+	\input{co2-detrend-predict.tex}
+	\caption{Tu napoved ostane najdlje, vendar amplituda kar hitro preneha slediti spremembam.}
+	\label{pred3}
+\end{figure}
+
+\begin{figure}[H]\centering
+	\input{luna-RA-predict.tex}
+	\caption{Tu napoved ostane najdlje, vendar amplituda kar hitro preneha slediti spremembam.}
+	\label{pred4}
+\end{figure}
+
+\begin{figure}[H]\centering
+	\input{luna-T-predict.tex}
+	\caption{Tu napoved ostane najdlje, vendar amplituda kar hitro preneha slediti spremembam.}
+	\label{pred5}
+\end{figure}
+
+\begin{figure}[H]\centering
+	\input{borza-predict.tex}
+	\caption{Tu napoved ostane najdlje, vendar amplituda kar hitro preneha slediti spremembam.}
+	\label{pred6}
+\end{figure}
+
+
 
 \begin{thebibliography}{9}
 	\bibitem{sirca}
