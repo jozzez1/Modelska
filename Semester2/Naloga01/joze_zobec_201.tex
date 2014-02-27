@@ -159,23 +159,51 @@ velja $|z_i| < 1$, tj. ni nobenega, ki bi bil $|z_i| = 1$.
 
 \begin{figure}[H]\centering
 	\input{luna-RA-predict.tex}
-	\caption{Tu napoved ostane najdlje, vendar amplituda kar hitro preneha slediti spremembam.}
+	\caption{Da bi lahko pravilno izra\v cunal koeficiente sem moral podatke centrirati, tako da sem
+		od\v stel povpre\v cje. Kljub temu ne dobimo dobrih rezultatov.}
 	\label{pred4}
 \end{figure}
 
 \begin{figure}[H]\centering
 	\input{luna-T-predict.tex}
-	\caption{Tu napoved ostane najdlje, vendar amplituda kar hitro preneha slediti spremembam.}
+	\caption{Relativno hitro pademo iz faze, amplituda pada dokaj hitro.}
 	\label{pred5}
+\end{figure}
+Za opazovanje borze je tudi "`\v sum"' lahko zelo pomemben, zato sem vzel veliko polov, kot tudi ka\v zeta sliki~\ref{pred6}
+in~\ref{pred7}.
+\begin{figure}[H]\centering
+	\input{borza-predict.tex}
+	\caption{Napaka je ogromna, zato so tudi meritve videti to\v cne, vendar naj vas graf ne zavede.
+		Avtoregresija tu ni primerna, tudi trend ki ga napoveduje je zgre\v sen -- borza je dosegla rast,
+		avtoregresija pa kljub 240-tim koeficientom napoveduje padec.}
+	\label{pred6}
+\end{figure}
+Ker je na borzi avtoregresija tako slabo delovala, sem se odlo\v cil, da bom tudi tukaj sku\v sal odstraniti
+trend -- uporabil sem polinom tretje stopnje.
+\begin{figure}[H]\centering
+	\input{borza-detrend-predict.tex}
+	\caption{Napaka je tu bistveno manj\v sa, vendar \v se vedno relativno velika. V svetu ekonomije so
+		zelo pomembni nenadni skoki in avtoregresija jih \v zal ni pravilno opisala, kljub temu, da so
+		rezultati bolj\v si, kot tisti s slike~\ref{pred6}.}
+	\label{pred7}
+\end{figure}
+
+Da bi preveril vpliv \v suma na linearno napoved, sem na podake, ki so se najbolje ujemali,
+to je datoteko {\tt co2-detrend.dat}, natrosil beli \v sum z varianco $\sigma_\e^2 = 2$.
+\begin{figure}[H]\centering
+	\input{co2-sum-predict.tex}
+	\caption{Glede na sliko~\ref{pred3} tu amplituda pada veliko hitreje. Varianco \v suma je algoritem
+		kar dobro zadel.}
+	\label{pred8}
 \end{figure}
 
 \begin{figure}[H]\centering
-	\input{borza-predict.tex}
-	\caption{Tu napoved ostane najdlje, vendar amplituda kar hitro preneha slediti spremembam.}
-	\label{pred6}
+	\input{co2-compare-predict.tex}
+	\caption{Vidimo, da se napovedi razlikujeta samo po amplitudi. Fazi se ujemata do konca. To je zato,
+		ker ima beli \v sum konstanten spekter, zaradi \v cesar ne dodajamo novih polov, torej tak
+		pristop dosti bolj "`imun"' na razne tresljaje.}
+	\label{pred9}
 \end{figure}
-
-
 
 \begin{thebibliography}{9}
 	\bibitem{sirca}
