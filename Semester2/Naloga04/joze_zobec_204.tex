@@ -1,0 +1,181 @@
+\documentclass[a4 paper, 12pt]{article}
+\usepackage[slovene]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[small, width=0.9\textwidth,labelfont=it]{caption}
+\usepackage[pdftex]{graphicx}
+\usepackage{amssymb, fullpage, float, pdflscape, subcaption, amsmath, color}
+
+\renewcommand{\d}{
+	\ensuremath{\mathrm{d}}
+}
+
+\newcommand{\e}{
+	\ensuremath{\mathrm{e}}
+}
+
+\begin{document}
+
+\begin{center}
+\textsc{Modelska analiza II}\\
+\textsc{2011/12}\\[0.5cm]
+\textbf{4. naloga -- Lastne energije Schr\" odingerjeve ena\v cbe}
+\end{center}
+\begin{flushright}
+\textbf{Jože Zobec}\\
+\end{flushright}
+
+\section{Uvod}
+
+V poro\v cilu bom uporabljal isto notacijo, kot je v navodilih. Torej re\v sujemo radialno
+Schr\" odingerjevo ena\v cbo
+\begin{equation}
+	\bigg[-\frac{1}{2}\frac{\d^2}{\d x^2} \underbrace{- \frac{1}{x} + \frac{\ell(\ell + 1)}
+		{2x^2}}_{V_\text{eff}(x)} - \frac{e}{2}\bigg] R(x) = 0,
+\end{equation}
+kar lahko prepi\v semo v
+\begin{equation}
+	\bigg[\frac{\d^2}{\d x^2} - 2 V_\text{eff}(x) + e\bigg] R(x) = 0.
+	\label{hamilton}
+\end{equation}
+Takoj ugotovimo, da mora biti $R(0) = 0$, kar sledi iz pogoja po normalizabilnosti valovne funkcije
+$\Psi(x) = R(x)/x$, drugi pa je standard za kvantno mehaniko -- verjetnost, da se delec nahaja pro\v c
+od jedra pada proti ni\v c, torej $\lim_{x \to \infty} R(x) = 0$.
+
+Poiskati bomo morali tudi elentri\v cni potencial, $\Phi(x)$ ki nastane okrog jedra. Dobimo ga kot re\v sitev
+ena\v cbe
+\begin{equation}
+	-\nabla^2 \Phi(\mathbf{r}) = |\Psi(\mathbf{r})|^2,
+\end{equation}
+katere radialni del lahko v sferi\v cnih koordinatah zapi\v smo kot
+\begin{equation}
+	\frac{\d^2 \varphi}{\d x^2} = -R(x)^2/x.
+	\label{laplace}
+\end{equation}
+Za re\v sevanja torej potrebujemo dva integratorja: enega za~\eqref{hamilton}, drugega pa za~\eqref{laplace}.
+Da bi ostali konsistentni, je dobro \v ce sta oba integratorja istega reda, tj. oba $\mathcal{O}(h^k)$.
+
+\section{Razmislek}
+
+Za prvi integrator bomo izbrali metodo Numerova. Prostor bomo razrezali na rezine z indeksi
+$i \in I = \{1, \ldots, N\}$, med njimi pa je razdalja $h$. Za\v cetne energije $e$ ne poznamo,
+prav tako nam manjka odvod $R'(0)$, s katerim bi za metodo Numerova lahko dobili $R_{1}$.
+Naredili bomo to: ker je $R_0 = 0$, je $R_1$ enoli\v cno dolo\v cen z normalizacijo, ki pa je arbitrarna.
+Sicer bi lahko $R_1$ izra\v cunali prek razvoja v Taylorjevo vrsto do reda $\mathcal{O}(h^6)$, vendar
+je to nepotrebno.
+
+Energijo $e$ dolo\v cimo s strelsko metodo tako, da bomo zadostili drugemu robnemu pogoju, $R(x_\text{max} = 0)$.
+Strelsko metodo sem tako kombiniral z bisekcijo, saj se funkcija obna\v sa precej divje in sekantna metoda
+hitro zbe\v zi k sipalnim stanjim.
+
+Potencial $\Phi (x)$ lahko izra\v cunamo z integralom, ki je v poro\v cilu, vendar ima ta shema zahtevnost
+$\mathcal{O}(N^2)$, poleg tega pa so standardni numeri\v cni integracijski postopki manj natan\v cni od metode
+Numerova. Namesto tega sem zato Laplaceov operator aproksimiral z matriko simetri\v cnih kon\v cnih diferenc,
+\begin{equation}
+	L_{ij}\ \varphi_j = - y_j, \quad y_i = \frac{R^2_i}{x_i}.
+\end{equation}
+Tak sistem lahko re\v simo z zahtevnostjo $\mathcal{O}(N)$ (podobno, kot za tridiagonalne matrike), kar
+je bistevna izbolj\v sava.
+Pri tem moramo paziti na robni pogoj, zato moramo dobljenemu $\varphi (x)$ pri\v steti \v se homogeno
+re\v sitev `$kx + n$', kjer $k$ in $n$ dolo\v cimo iz robnih pogojev  $\varphi(0) = 0$ in
+$\varphi(x_\text{max}) = - 1$. Pravi potencial dobimo le, \v ce je bila funkcija $R(x)$ pravilno
+normirana, tj.
+\begin{equation}
+	\int_0^{r_\text{max}} \d r\ r^2|\Psi(r)|^2 = \int_0^{r_\text{max}} \d r\ r^2 \frac{|R(r)|^2}
+	{r^2} = \int_{0}^{x_\text{max}} \d x |R(x)|^2 = 1.
+\end{equation}
+Poka\v zimo, na\v si robni pogoji res zadostijo robnim pogojem integrala iz naloge:
+\begin{align*}
+	\lim_{x \to 0}\varphi(x) &= -\lim_{x \to 0} \bigg[\int_0^x \d y\ R^2(y) + x\int_x^\infty
+		\d y\ R^2(y)/y\bigg] \\
+		&= 0 + 0\cdot \int_0^\infty \d y\ R^2(y)/y = 0, \\
+	\lim_{x \to \infty}\varphi(x) &= -\lim_{x \to \infty} \bigg[\int_0^x \d y\ R^2(y) + x\int_x^\infty
+		\d y\ R^2(y)/y\bigg] \\
+		&= -1 + \lim_{x \to \infty} x \int_x^\infty \d y\ R^2(y)/y, \\
+		&= -1,
+\end{align*}
+v drugem integralu smo upo\v stevali, da ima integral Lebesgue-vo mero $0$, torej je pre\v zivi le konstanta.
+Vektor $R_i$ moramo torej normirati tako, da bo $|R| = \sqrt{N/x_\text{max}}$. To seveda velja le v 
+prvem redu, zaradi \v cesar nam lahko natan\v cnost pade.
+
+Ta postopek se izpla\v ca, ker je bisekcija ra\v cunsko zahtevna, in bi dodatna integracija
+povzro\v cila \v se ve\v c preglavic, pri tem pa bi izgubili preciznost, ki nam jo da metoda
+Numerova.
+
+\section{Rezultati}
+
+Najprej poglejmo energije.
+\begin{table}[H]\centering
+	\caption{Vidimo, da je razlika energij med $e_{2,0}$ in $e_{2,1}$ zelo majhna, torej
+		vrtilna koli\v cina zelo malo vpliva na energijo.}
+	\begin{tabular}{r|l}
+		$n,\ \ell$ & $e_{n, \ell}$ \\
+		\hline
+		1, 0 & -0.9948 \\
+		2, 0 & -0.2994 \\
+		2, 1 & -0.2998
+	\end{tabular}
+\end{table}
+
+Rezultati so na slikah~\ref{gr1} in~\ref{gr2}, $h = 1/200$. Poleg natan\v cnosti $R(x)$ sem preveril tudi $\varphi(x)$,
+ki ima analiti\v cne re\v sitve
+\begin{align*}
+	\varphi_{n = 1,\ell = 0} (x) &= (1 - x)\e^{-2x} - 1, \\
+	\varphi_{2,0} (x) &= \frac{\e^{-x}}{8}\big(x^3 + 2x^2 + 6x + 8\big) - 1, \\
+	\varphi_{2,1} (x) &= \frac{\e^{-x}}{24}\big(x^3 + 6x^2 + 18x + 24\big) - 1.
+\end{align*}
+\begin{figure}[H]\centering
+	\input{radials.tex}
+	\caption{Lastne re\v sitve za vodikov atom. Na grafu vidimo $R(x)$ in $\varphi(x)$. Posebej je zanimiv
+		$\varphi(x)$ za $n = 2,\ \ell = 0$, saj $R(x)$ pre\v cka ni\v clo, zato je presenetljivo, da se
+		to ne pozna bolj. Kljub temu je izra\v cunan prav, kot pri\v ca slika~\ref{gr2}. Graf pri $n = 1$ ima
+		$x_\text{max} = 20$, grafa pri $n = 2$ pa $x_\text{max} = 40$.}
+	\label{gr1}
+\end{figure}
+
+\begin{figure}[H]\centering
+	\input{errors.tex}
+	\caption{Deseti\v ski logaritem napake nam da oceno to\v cnih decimalk. $R(x)$ imajo to\v cna tri decimalna
+		mesta, vendar so ve\v cino \v casa natan\v cna celo na 4. To sploh dr\v zi za $\varphi(x)$, razen
+		za primer $n = 1,\ \ell = 0$, ki je izra\v cunan z izjemno nenatan\v cnostjo. Zelena \v crta se
+		pridru\v zi modri in z njo skupaj nadaljuje do $x = 40$.}
+	\label{gr2}
+\end{figure}
+
+\section{Ionizacijska energija helija}
+
+Naloga je na mo\v c podobna prej\v snji, le ta imamo tu \v se majhno iteracijo in druga\v cen efektivni potencial,
+\[
+	V_\text{eff} = -\frac{Z}{x} -\frac{\varphi(x)}{x},
+\]
+ki pa ga vstavimo v isto ena\v cbo~\eqref{hamilton}. Pri\v cnemo z za\v cetnim pribli\v zkom $R(x)$, od tam
+prek~\eqref{laplace} dobimo $\varphi(x)$, ki ga vstavimo v~\eqref{hamilton} in dobimo nov $R(x)$ itd. Iteracija
+se kon\v ca, ko se $R(x)$ in $\varphi(x)$ ne spreminjata ve\v c (oz. je sprememba majhna). Takrat energijo
+izra\v cunamo z integralom
+\[
+	E = 2E_0 \int_0^\infty \d x\ \bigg[R'(x)^2 - \frac{2Z}{x}R(x)^2 - \Phi(x)R(x)^2\bigg],\quad
+		\Phi(x) = \varphi(x)/x,
+\]
+lahko pa kar kot $E = \varepsilon E_0$, kjer je $\varepsilon$ Lagrangejev multiplikator iz navodil.
+Vse to res zelo mo\v cno spominja na metodo DFT (density functional theory).
+
+Iteracijo prekinemo, ko
+\[
+	\sum_{j = 1}^N \big|R_i^k - R_i^{k-1}\big|^2 + \sum_{j = 1}^N \big|\varphi_i^k - \varphi_i^{k-1}\big|^2 < 10^{-8},
+\]
+kjer je $k$ zgornji inteks iteracije.
+
+Ker bomo ta integral ra\v cunali numeri\v cno z nata\v cnostjo $\mathcal{O}(h)$, bomo tudi prvi odvod aproksimirali
+kar s prvo diferenco:
+\[
+	R'(x_i) \approx \frac{R_i - R_{i-1}}{h}, \quad R'(0) = 0.
+\]
+Dobimo $\varepsilon E_0 = -24.947$ in $E = 25.908$. Kon\v cna $R(x)$ in $\varphi(x)$ sta na sliki~\ref{gr3}, spodaj.
+\begin{figure}[H]\centering
+	\input{helij.tex}
+	\caption{Kombinirana radialna funkcija za helijeva elektrona in njun elektri\v cni potencial.}
+	\label{gr3}
+\end{figure}
+
+
+\end{document}
