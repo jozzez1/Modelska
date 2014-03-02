@@ -5,6 +5,7 @@
 
 #include <math.h>
 #include <stdlib.h>
+#include <gsl/gsl_linalg.h>
 
 typedef struct
 {
@@ -23,13 +24,50 @@ typedef struct
 	zax * v;	// velocity at each vertex
 
 	double ** No;
-	long int ** To;
+	int ** To;
 	
 	double *** A,
 	       ** skal,
 	       ** S,
-	       * g;
+	       * g,
+	       * c;
 } tr;
+
+void destroy_tr (tr * u)
+{
+	return;
+	int i, j;
+	// free velocities and vectors
+//	if (u->v) free (u->v);
+	if (u->g) free (u->g);
+	if (u->c) free (u->c);
+
+	// now the matrices
+	for (i = 0; i <= u->N-1; i++)
+	{
+		if (u->No[i]) free (u->No[i]);
+		if (u->S[i]) free (u->S[i]);
+	}
+	if (u->No) free (u->No);
+	if (u->S) free (u->S);
+
+	for (i = 0; i <= u->T-1; i++)
+	{
+		if (u->To[i]) free (u->To[i]);
+		if (u->skal[i]) free (u->skal[i]);
+
+		for (j = 0; j <= 2; j++)
+			if (u->A[i][j]) free (u->A[i][j]);
+
+		if (u->A[i]) free (u->A[i]);
+	}
+	if (u->To) free (u->To);
+	if (u->skal) free (u->skal);
+	if (u->A) free (u->A);
+
+	// and lastly free the pointer
+	if (u) free (u);
+}
 
 // creates the "*.poly" file
 void PolyFile (int segments)
@@ -99,7 +137,7 @@ void getTriangles (int segments, tr * u)
 	FILE * fnode,
 	     * fele;
 
-	if (segments)
+	if (segments != 0)
 	{
 		fnode = fopen ("semicircle.1.node", "r");
 		fele  = fopen ("semicircle.1.ele", "r");
@@ -117,14 +155,14 @@ void getTriangles (int segments, tr * u)
 	}
 
 	// let's do the nodes first
-	fscanf (fnode, "%d %*d %*d\n", &N);
+	fscanf (fnode, "%d %*d %*d %*d\n", &N);
 
 	u->N = N;
 	u->No = (double **) malloc (N * sizeof (double *));
 	for (i = 0; i <= N-1; i++)
 	{
 		u->No[i] = (double *) malloc (4 * sizeof (double));
-		fscanf (fnode, "%lf %lf %lf %lf\n",
+		fscanf (fnode, "%lf\t%lf\t%lf\t%lf\n",
 				&u->No[i][0],	// vertice index
 				&u->No[i][1],	// "x" component
 				&u->No[i][2],	// "y" component
@@ -136,11 +174,11 @@ void getTriangles (int segments, tr * u)
 	fscanf (fele, "%d %*d %*d\n", &N);
 
 	u->T = N;
-	u->To = (long int **) malloc (N * sizeof (long int *));
+	u->To = (int **) malloc (N * sizeof (int *));
 	for (i = 0; i <= N-1; i++)
 	{
-		u->To[i] = (long int *) malloc (4 * sizeof (long int));
-		fscanf (fele, "%lu %lu %lu %lu\n",
+		u->To[i] = (int *) malloc (4 * sizeof (int));
+		fscanf (fele, "%d %d %d %d\n",
 				&u->To[i][0],	// triangle index
 				&u->To[i][1],	// 1st vertice index
 				&u->To[i][2],	// 2nd vertice index
@@ -174,7 +212,7 @@ double surf (tr * u, int i)
 }
 
 // double we gotta get all the matrices 'A'
-void calculateA (tr * u)
+void calculateAscal (tr * u)
 {
 	int t, m, n;
 
@@ -194,31 +232,43 @@ void calculateA (tr * u)
 		for (m = 0; m <= 2; m++)
 		{
 			double xm [3],
-			       ym [3];
+			       ym [3],
+			       wm = u->No[u->To[t][(m+0)%3 + 1]][3];
 
-			xm[0] = u->No[u->To[t][(m+0)%3]][1];
-			xm[1] = u->No[u->To[t][(m+1)%3]][1];
-			xm[2] = u->No[u->To[t][(m+2)%3]][1];
+			if (wm == 0)
+				wm = 1;
+			else if (wm > 0)
+				wm = 0;
 
-			ym[0] = u->No[u->To[t][(m+0)%3]][2];
-			ym[1] = u->No[u->To[t][(m+1)%3]][2];
-			ym[2] = u->No[u->To[t][(m+2)%3]][2];
+			xm[0] = u->No[u->To[t][(m+0)%3 + 1]][1];
+			xm[1] = u->No[u->To[t][(m+1)%3 + 1]][1];
+			xm[2] = u->No[u->To[t][(m+2)%3 + 1]][1];
+
+			ym[0] = u->No[u->To[t][(m+0)%3 + 1]][2];
+			ym[1] = u->No[u->To[t][(m+1)%3 + 1]][2];
+			ym[2] = u->No[u->To[t][(m+2)%3 + 1]][2];
 
 			for (n = 0; n <= 2; n++)
 			{
 				double xn [3],
-				       yn [3];
+				       yn [3],
+				       wn = u->No[u->To[t][(n+0)%3 + 1]][3];
 
-				xn[0] = u->No[u->To[t][(n+0)%3]][1];
-				xn[1] = u->No[u->To[t][(n+1)%3]][1];
-				xn[2] = u->No[u->To[t][(n+2)%3]][1];
+				if (wn == 0)
+					wn = 1;
+				else if (wm > 0)
+					wn = 0;
+
+				xn[0] = u->No[u->To[t][(n+0)%3 + 1]][1];
+				xn[1] = u->No[u->To[t][(n+1)%3 + 1]][1];
+				xn[2] = u->No[u->To[t][(n+2)%3 + 1]][1];
                                                          
-				yn[0] = u->No[u->To[t][(n+0)%3]][2];
-				yn[1] = u->No[u->To[t][(n+1)%3]][2];
-				yn[2] = u->No[u->To[t][(n+2)%3]][2];
+				yn[0] = u->No[u->To[t][(n+0)%3 + 1]][2];
+				yn[1] = u->No[u->To[t][(n+1)%3 + 1]][2];
+				yn[2] = u->No[u->To[t][(n+2)%3 + 1]][2];
 
-				u->A[t][m][n]  = (ym[1] - ym[2])*(yn[1] - yn[2]);
-				u->A[t][m][n] += (xm[2] - xm[1])*(xn[2] - xn[1]);
+				u->A[t][m][n]  = /*wm*wn* */(ym[1] - ym[2])*(yn[1] - yn[2]);
+				u->A[t][m][n] += /*wm*wn* */(xm[2] - xm[1])*(xn[2] - xn[1]);
 				u->A[t][m][n] /=  (4 * T);
 			}
 
@@ -226,6 +276,96 @@ void calculateA (tr * u)
 			u->skal[t][m] -= (xm[2] - xm[0])*(ym[1] - ym[0]);
 			u->skal[t][m] /= (-6);
 		}
+	}
+}
+
+// we impose Dirichlet boundary conditions
+void dirichlet (tr * u)
+{
+	int i, j;
+	for (i = 0; i <= u->N-1; i++)
+	{
+		if (u->No[i][3] == 2)
+		{
+			// first we clean both the row and the column
+			for (j = 0; j <= u->N-1; j++)
+			{
+				u->S[i][j] = 0;
+				u->S[j][i] = 0;
+			}
+
+			// now we fix g and S[i][i]
+			u->S[i][i] = 1;	// now it's not singular anymore
+			u->g[i] = 0;
+		}
+	}
+}
+
+void calc_gS (tr * u)
+{
+	// at this point we have calculated A and scan
+	// we only need to fill this in the matrix S and vector g
+	u->S = (double **) malloc (u->N * sizeof (double *));
+	u->g = (double *) calloc (u->N, sizeof (double));
+
+	int t, m, n;
+	for (t = 0; t <= u->N; t++)
+		u->S[t] = (double *) calloc (u->N, sizeof (double));
+
+	// now all is initialized so we just have to fill it
+	for (t = 0; t <= u->T-1; t++)
+	{
+		for (m = 0; m <= 2; m++)
+		{
+			for (n = 0; n <= 2; n++)
+				u->S[u->To[t][m+1]][u->To[t][n+1]] += u->A[t][m][n];
+
+			u->g[u->To[t][m+1]] += u->skal[t][m];
+		}
+	}
+
+	dirichlet (u);
+}
+
+
+// solve for c
+void c_solver (tr * u)
+{
+	gsl_matrix * S = gsl_matrix_alloc (u->N, u->N);
+	gsl_vector * g = gsl_vector_alloc (u->N);
+	gsl_vector * c = gsl_vector_alloc (u->N);
+	gsl_permutation * p = gsl_permutation_alloc (u->N);
+	int signum;
+
+	int i, j;
+	for (i = 0; i <= u->N-1; i++)
+	{
+		gsl_vector_set (g, i, u->g[i]);
+		for (j = 0; j <= u->N-1; j++)
+			gsl_matrix_set (S, i, j, u->S[i][j]);
+	}
+
+	gsl_linalg_LU_decomp (S, p, &signum);
+	gsl_linalg_LU_solve (S, p, g, c);
+	u->c = (double *) malloc (u->N * sizeof(double));
+
+	gsl_vector_fprintf (stdout, c, "% e");
+
+	for (i = 0; i <= u->N-1; i++)
+		u->c[i] = gsl_vector_get (c, i);
+
+	gsl_permutation_free (p);
+	gsl_vector_free (c);
+	gsl_vector_free (g);
+	gsl_matrix_free (S);
+
+	u->v = (zax *) malloc (u->N * sizeof (zax));
+	for (i = 0; i <= u->N-1; i++)
+	{
+		u->v[i].x	= u->No[i][1];
+		u->v[i].y	= u->No[i][2];
+		u->v[i].val	= u->c[i];
+		u->v[i].attribute = u->No[i][3];
 	}
 }
 
