@@ -2,10 +2,10 @@ CC=		clang
 PRGNAM=		prg
 SRCNAM=		main.c
 OPTFLAG=	-O3
-CPUOPT=		-march=corei7 -ffast-math
-LIBFLAGS=	-L/usr/local/lib -lm
+CPUOPT=		-march=corei7
+LIBFLAGS=	-L/usr/local/lib -lm -lgsl -lgslcblas
 INCLUDE=	-I/usr/local/include
-WARN=		-Wall -pedantic
+WARN=		-Wall
 
 all:
-	$(CC) -o $(PRGNAM) $(SRCNAM) $(OPTFLAG) $(CPUOPT) $(INCLUDE) $(LIBFLAGS) $(WARN) -g -pg
+	$(CC) -o $(PRGNAM) $(SRCNAM) $(OPTFLAG) $(CPUOPT) $(INCLUDE) $(LIBFLAGS) $(WARN) -g

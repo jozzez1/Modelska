@@ -38,7 +38,7 @@ void destroy_tr (tr * u)
 	return;
 	int i, j;
 	// free velocities and vectors
-//	if (u->v) free (u->v);
+	if (u->v) free (u->v);
 	if (u->g) free (u->g);
 	if (u->c) free (u->c);
 
@@ -327,6 +327,17 @@ void calc_gS (tr * u)
 	dirichlet (u);
 }
 
+void zax_fprintf (char * dat, tr * u)
+{
+	FILE * fout = fopen (dat, "w");
+	int i;
+
+	for (i = 0; i <= u->N-1; i++)
+		fprintf (fout, "% .12e\t % .12e\t % .12e\n",
+				u->v[i].x, u->v[i].y, u->v[i].val);
+
+	fclose (fout);
+}
 
 // solve for c
 void c_solver (tr * u)
@@ -367,6 +378,8 @@ void c_solver (tr * u)
 		u->v[i].val	= u->c[i];
 		u->v[i].attribute = u->No[i][3];
 	}
+
+	zax_fprintf ("solution.dat", u);
 }
 
 #endif
