@@ -1,0 +1,53 @@
+\documentclass[a4 paper, 12pt]{article}
+\usepackage[slovene]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[small, width=0.9\textwidth,labelfont=it]{caption}
+\usepackage[pdftex]{graphicx}
+\usepackage{amssymb, fullpage, float, pdflscape, subcaption, amsmath, color, hyperref}
+
+\renewcommand{\d}{
+	\ensuremath{\mathrm{d}}
+}
+
+\newcommand{\e}{
+	\ensuremath{\mathrm{e}}
+}
+
+\begin{document}
+
+\begin{center}
+\textsc{Modelska analiza II}\\
+\textsc{2011/12}\\[0.5cm]
+\textbf{7. naloga -- Metoda kon\v cnih elementov: Poissonova ena\v cba}
+\end{center}
+\begin{flushright}
+\textbf{Jože Zobec}\\
+\end{flushright}
+
+\section{Uvod}
+
+Spet se vra\v camo k Poissonovi ena\v cbi, ki se v brezdim. obliki zapi\v se kot
+\begin{equation}
+	\nabla^2 v = -1.
+\end{equation}
+Prostor diskretiziramo tako, da ga najprej tlakujemo s poljubnimi liki. Najprikladnej\v si so
+trikotniki, saj lahko z njmi relativno natan\v cno opi\v semo vsako obliko.
+Za to je posebej prikladna Delaunayeva triangulacija, ki ima implementacije v raznoterih
+knji\v znicah in programih. Uporabil sem preprost odprtokoden program \texttt{Triangle},
+za katerega je dovolj, da le podamo robove, s trikotniki jih pa zapolni sam in jih po potrebi
+tudi izri\v se. Napisan je v jeziku {\tt C}, ima nadvse prijazen vmesnik (za razliko od knji\v znice
+{\tt GCAL}, ta program razumemo v 10 min, \v ce smo vsaj malo vajeni dela z ukazno vrstico)
+in je primeren tudi za skriptiranje v konzolah.
+
+\begin{thebibliography}{9}
+	\bibitem{sirca}
+		S. \v Sirca in M. Horvat,
+		{\em Ra\v cunske metode za fizike},
+		DMFA Zalo\v zni\v stvo,
+		(2010)
+	\bibitem{triangle}
+		{\tt http://www.cs.cmu.edu/\~{}quake/triangle.html}
+\end{thebibliography}
+
+\end{document}
