@@ -57,6 +57,8 @@ int main (int argc, char ** argv)
 	calc_gS (u);
 	printf ("Computing LU and c\n");
 	c_solver (u);
+	printf ("Calculating the flux\n");
+	poiseuille (seg, u);
 
 	destroy_tr (u);
 

@@ -4,6 +4,7 @@
 \usepackage[T1]{fontenc}
 \usepackage[small, width=0.9\textwidth,labelfont=it]{caption}
 \usepackage[pdftex]{graphicx}
+\usepackage[usenames, dvipsnames]{xcolor}
 \usepackage{amssymb, fullpage, float, pdflscape, subcaption, amsmath, color, hyperref}
 
 \renewcommand{\d}{
@@ -16,6 +17,13 @@
 
 \renewcommand{\r}{
 	\ensuremath{\mathbf{r}}
+}
+
+\hypersetup{
+	colorlinks=true,
+	linkcolor=black!60!red,
+	citecolor=black!60!green,
+	urlcolor=black!60!cyan
 }
 
 \begin{document}
@@ -50,7 +58,7 @@ poi\v s\v cemo tak $A(w, v)$, da
 \end{equation}
 kjer $t$ predstavlja indeks po trikotnikih, $A(w,v)^{(t)}$ in $\langle w, f\rangle^{(t)}$ pa sta
 \begin{equation}
-	A (w, v)^{(t)} = \int_{T_t} \big[(\nabla w)^T \cdot (\nabla v) + wv\big]\ \d x~\d y,\quad
+	A (w, v)^{(t)} = \int_{T_t} \big[(\nabla w)^T \cdot (\nabla v)\big]\ \d x~\d y,\quad
 	\langle w, f\rangle^{(t)} = \int_{T_t} w f\ \d x~\d y.
 	\label{crap-pap}
 \end{equation}
@@ -84,8 +92,7 @@ Lokalne prispevke znotraj trikotnika $t$ lahko potem z indeksoma $m$, $n$, ki te
 ogli\v s\v cih trikotnika, opi\v semo z lokalnimi prispevki k togostni matriki $A$ in lokalnim
 skalarnim produktom
 \begin{align*}
-	A^{(t)}_{m,n} (w, v) &= \int_{T_t} \d x\d y\ \big[(\nabla \phi_m)^T \nabla \phi_n+ \phi_m
-		\phi_n\big], \\
+	A^{(t)}_{m,n} (w, v) &= \int_{T_t} \d x\d y\ \big[(\nabla \phi_m)^T \nabla \phi_n\big], \\
 		\langle w, f\rangle_m^{(t)} &= \int_{T_t} \d x\d y\ \big[\phi_m f\big],
 \end{align*}
 na koncu pa moramo iz teh matrik $A_{m,n}^{(t)}$ dobiti globalno matriko $\mathbf{S}$ in vektor
@@ -96,16 +103,19 @@ Koeficiente $c_j$ dobimo tako, da re\v simo sistem
 \begin{align*}
 	\mathbf{S} \mathbf{c} = \mathbf{g},
 \end{align*}
-s \v cimer je potem naloga re\v sena.
+v katerem pa moramo \v se pravilno upo\v stevati (Dirichletove) robne pogoje. To storimo tako, da za
+vsak $j$, ki te\v ce po robnih to\v ckah, postavimo
+\[
+	S_{ji} = S_{ji} = 0,\ \forall i \neq j\quad S_{jj} = 1, \quad g_j = 0,
+\]
+s \v cimer smo prisiljeni vzeti $c_j = 0$. V na\v sem primeru je $f = 1$.
 
 
 \section{Rezultati}
 Uporabil sem preprost odprtokoden program \texttt{Triangle}~\cite{triangle},
 za katerega je dovolj, da le podamo robove, s trikotniki jih pa zapolni sam in jih po potrebi
-tudi izri\v se. Napisan je v jeziku {\tt C}, ima nadvse prijazen vmesnik (za razliko od knji\v znice
-{\tt GCAL}, ta program razumemo v 10 min, \v ce smo vsaj malo vajeni dela z ukazno vrstico)
-in je primeren tudi za skriptiranje v konzolah.
-
+tudi izri\v se. Napisan je v jeziku {\tt C}, ima nadvse prijazen vmesnik. Primer triangulacije
+je na sliki~\ref{gr1}. Od tiste triangulacije dobimo pretoka na slikah~\ref{gr2} in~\ref{gr3}.
 \begin{figure}[H]\centering
 	\begin{subfigure}[b]{0.57\textwidth}
 		\includegraphics[width=\textwidth, keepaspectratio=1]{semicircle.pdf}
@@ -117,7 +127,44 @@ in je primeren tudi za skriptiranje v konzolah.
 	\end{subfigure}
 	\caption{Delaunayeva triangulacija s programom \texttt{Triangle} za prvi in drugi del naloge.
 		V obeh primerih je na\v sa mre\v za sestavljena iz $\sim 1000$ to\v ck.}
+	\label{gr1}
 \end{figure}
+
+\begin{figure}[H]\centering
+	\input{polkrog.tex}
+	\vspace{-32pt}
+	\caption{Hitrostni profil je tak, kot bi ga pri\v cakovali. Naloga ja torej gotovo
+		pravilno re\v sena.}
+	\label{gr2}
+\end{figure}\vspace{-45pt}
+
+\begin{figure}[H]\centering
+	\input{bat.tex}
+	\vspace{-20pt}
+	\caption{Profil se ne razlikuje dosti od tistega, ki smo ga dobili pri peti nalogi.}
+	\label{gr3}
+\end{figure}
+Izra\v cun je bil kon\v can v $\sim 10\ s$, sam izris je bil pa bolj problemati\v cen, vendar
+je \v slo kar s programom {\tt gnuplot}.
+
+\subsection{Pretok}
+Sedaj, ko imamo hitrostni profil, lahko izra\v cunamo tudi pretok:
+\[
+	\Phi = \int \d S\ v (x,y) \approx \sum_{t = 1}^M \int_{T_t} \d x\d y\ v(x,y),
+\]
+vsakega izmed teh integralov pa lahko izra\v cunamo analit\v cno,
+\[
+	\Phi = |T|\sum_{t = 1}^N \sum_{m = 1}^3 \frac{v_m^{(t)}}{3},
+\]
+hitrost v vozli\v s\v cu $\mathbf{r}_i$ pa je kar $c_i$.
+
+V petem poglavju smo raje ra\v cunali Poiseuillov koeficient, saj slednji poskrbi za to, da "`normira"'
+pretok skozi cev na njihovo povr\v sino in je zaradi tega bolj\v si za primerjavo:
+\[
+	C = 8\pi\frac{\Phi}{S}.
+\]
+Poiseuillova koeficienta sta $C = 1.63 \cdot 10^{-2}$ za prirezano cev in $-7.44 \cdot 10^{-2}$ za
+polkro\v zno cev. Oba sem dobil s $\sim 10^4$ to\v ckami, da bi izostril natan\v cnost.
 
 \begin{thebibliography}{9}
 	\bibitem{sirca}
@@ -126,7 +173,7 @@ in je primeren tudi za skriptiranje v konzolah.
 		DMFA Zalo\v zni\v stvo,
 		(2010)
 	\bibitem{triangle}
-		{\tt http://www.cs.cmu.edu/\~{}quake/triangle.html}
+		{\tt \url{http://www.cs.cmu.edu/\~quake/triangle.html}}
 \end{thebibliography}
 
 \end{document}

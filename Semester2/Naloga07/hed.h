@@ -90,12 +90,12 @@ void PolyFile (int segments)
 
 	if (!segments)
 	{
-		edge [0].x =  0; edge[0].y =  0; edge[0].val = 0; edge[0].attribute = 2;
-		edge [1].x = 15; edge[1].y =  0; edge[1].val = 1; edge[1].attribute = 2;
-		edge [2].x = 15; edge[2].y = 15; edge[2].val = 2; edge[2].attribute = 2;
-		edge [3].x = 10; edge[3].y = 10; edge[3].val = 3; edge[3].attribute = 2;
-		edge [4].x =  5; edge[4].y = 10; edge[4].val = 4; edge[4].attribute = 2;
-		edge [5].x =  0; edge[5].y = 15; edge[5].val = 5; edge[5].attribute = 2;
+		edge [0].x =  0.0; edge[0].y =  0.0; edge[0].val = 0; edge[0].attribute = 2;
+		edge [1].x = 15.0; edge[1].y =  0.0; edge[1].val = 1; edge[1].attribute = 2;
+		edge [2].x = 15.0; edge[2].y = 15.0; edge[2].val = 2; edge[2].attribute = 2;
+		edge [3].x = 10.0; edge[3].y = 10.0; edge[3].val = 3; edge[3].attribute = 2;
+		edge [4].x =  5.0; edge[4].y = 10.0; edge[4].val = 4; edge[4].attribute = 2;
+		edge [5].x =  0.0; edge[5].y = 15.0; edge[5].val = 5; edge[5].attribute = 2;
 	}
 	else
 	{
@@ -115,7 +115,7 @@ void PolyFile (int segments)
 	
 	fprintf (fout, "# Boundary vertices\n");
 	for (i = 0; i <= N-1; i++)
-		fprintf (fout, "%d\t %e\t %e\t %d\n",
+		fprintf (fout, "%d\t %.16e\t %.16e\t %d\n",
 				(int) edge[i].val, edge[i].x, edge[i].y, edge[i].attribute);
 	
 	fprintf (fout, "# Segments\n");
@@ -360,8 +360,6 @@ void c_solver (tr * u)
 	gsl_linalg_LU_solve (S, p, g, c);
 	u->c = (double *) malloc (u->N * sizeof(double));
 
-	gsl_vector_fprintf (stdout, c, "% e");
-
 	for (i = 0; i <= u->N-1; i++)
 		u->c[i] = gsl_vector_get (c, i);
 
@@ -380,6 +378,36 @@ void c_solver (tr * u)
 	}
 
 	zax_fprintf ("solution.dat", u);
+}
+
+double poiseuille (int seg, tr * u)
+{
+	double Phi = 0,
+	       C = 0,
+	       S = 0;
+	int i;
+	for (i = 0; i <= u->T-1; i++)
+	{
+		double v [3];
+		v[0] = u->c[u->To[i][1]];
+		v[1] = u->c[u->To[i][2]];
+		v[2] = u->c[u->To[i][3]];
+
+		double vt = (v[0] + v[1] + v[2])/3,
+		       T = surf (u, i);
+
+		Phi += vt * T;
+	}
+
+	if (seg == 0)
+		S = 175;
+	else
+		S = M_PI*M_PI*0.5;
+	C = 8*M_PI*(Phi/S);
+
+	printf ("Poiseuille coeff. = % .12e\n", Phi);
+
+	return C;
 }
 
 #endif
