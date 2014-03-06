@@ -35,7 +35,8 @@ typedef struct
 	
 	double a, q;
 
-	int w_eig;
+	int w_eig,	// flag that greenlights the eigenvalue
+	    showme;	// flag that greenlights the "showme" of the domain
 } tr;
 
 void destroy_tr (tr * u)
@@ -205,7 +206,7 @@ void Triangulate (int segments, tr * u, double q, double a)
 
 	getTriangles (segments, u);
 
-	system ("showme file.1.ele");
+	if (u->showme) system ("showme file.1.ele");
 }
 
 // returns surface of `i-th' the triangle
@@ -405,7 +406,7 @@ void solve (int seg, tr * u, double q, double a)
 		zax_fprintf ("mode", u);
 	}
 
-//	system ("rm -rf file.poly file.1.*");
+	system ("rm -rf file.poly file.1.*");
 }
 
 #endif

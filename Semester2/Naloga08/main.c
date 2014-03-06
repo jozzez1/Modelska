@@ -10,6 +10,7 @@ int main (int argc, char ** argv)
 
 	int seg		= 100,
 	    w_eig	= 0,
+	    showme	= 0,
 	    arg;
 
 	struct option longopts[] =
@@ -19,6 +20,7 @@ int main (int argc, char ** argv)
 		{ "angle",      required_argument,     NULL,    'q' },
 		{ "solve",      no_argument,           NULL,    'y' },
 		{ "help",       no_argument,           NULL,    'h' },
+		{ "showme",     no_argument,           NULL,    'v' },
 		{ NULL,         0,                     NULL,      0 }
 	};
 
@@ -38,6 +40,9 @@ int main (int argc, char ** argv)
 			case 'y':
 				w_eig = 1;
 				break;
+			case 'v':
+				showme = 1;
+				break;
 			case 'h':
 				printf ("List of commands:\n");
 				printf ("--seg=<Int>, -s<Int>\n");
@@ -55,7 +60,9 @@ int main (int argc, char ** argv)
 	}
 
 	tr * u = (tr *) malloc (sizeof (tr));
+	u->showme = showme;
 	u->w_eig = w_eig;
+
 	solve (seg, u, angle, area);
 
 	destroy_tr (u);
