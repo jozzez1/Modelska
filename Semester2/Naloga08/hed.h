@@ -19,12 +19,14 @@ typedef struct
 typedef struct
 {
 	size_t T,	// number of triangles
-	       N;	// number of vertices
+	       N,	// number of vertices
+	       n;	// number of vertices that are not on the boundary -- Dirichlet
 
 	zax ** p;	// height at each vertex
 
 	double ** No;	// vertex matrix
-	int ** To;	// triangle matrix
+	int ** To,	// triangle matrix
+	    * no;	// vector of indices of non-edge vertices -- Dirichlet
 	
 	double *** A,	// matrix A -- look Sirca
 	       ** S,	// matrix S
@@ -42,6 +44,7 @@ void destroy_tr (tr * u)
 	int i, j;
 	// free the vector
 	if (u->e) free (u->e);
+	if (u->no) free (u->no);
 
 	// now the matrices
 	for (i = 0; i <= u->N-1; i++)
@@ -144,7 +147,9 @@ void getTriangles (int segments, tr * u)
 	fscanf (fnode, "%d %*d %*d %*d\n", &N);
 
 	u->N = N;
+	u->n = 0;
 	u->No = (double **) malloc (N * sizeof (double *));
+	u->no = (int *) malloc (sizeof (int));
 	for (i = 0; i <= N-1; i++)
 	{
 		u->No[i] = (double *) malloc (4 * sizeof (double));
@@ -153,6 +158,13 @@ void getTriangles (int segments, tr * u)
 				&u->No[i][1],	// "x" component
 				&u->No[i][2],	// "y" component
 				&u->No[i][3]);	// if we are on the edge or not
+
+		if (u->No[i][3] == 0)
+		{
+			u->n++;
+			u->no = (int *) realloc (u->no, u->n * sizeof (int));
+			u->no[u->n-1] = u->No[i][0];
+		}
 	}
 	fclose (fnode);
 
@@ -193,7 +205,7 @@ void Triangulate (int segments, tr * u, double q, double a)
 
 	getTriangles (segments, u);
 
-	system ("rm -rf file.poly file.1.node");
+	system ("showme file.1.ele");
 }
 
 // returns surface of `i-th' the triangle
@@ -282,31 +294,6 @@ void calculateA (tr * u)
 	}
 }
 
-// we impose Dirichlet boundary conditions
-void dirichlet (tr * u)
-{
-	int i, j;
-	for (i = 0; i <= u->N-1; i++)
-	{
-		if (u->No[i][3] == 2)
-		{
-			// first we clean both the row and the column
-			for (j = 0; j <= u->N-1; j++)
-			{
-				u->S[i][j] = 0;
-				u->S[j][i] = 0;
-
-				u->B[i][j] = 0;
-				u->B[j][i] = 0;
-			}
-
-			// now we fix g[i], S[i][i] and B[i][i]
-			u->S[i][i] = 1;	// now it's not singular anymore
-			u->B[i][i] = 0; 
-		}
-	}
-}
-
 void calc_SB (tr * u)
 {
 	// at this point we have calculated A and scan
@@ -335,8 +322,6 @@ void calc_SB (tr * u)
 			}
 		}
 	}
-
-	dirichlet (u);
 }
 
 void zax_fprintf (char * basename, tr * u)
@@ -364,23 +349,23 @@ void zax_fprintf (char * basename, tr * u)
 // solve for c -- this time we have generalized eigenvalue problem
 void eig_solver (tr * u)
 {
-	gsl_matrix * A = gsl_matrix_alloc (u->N, u->N);
-	gsl_matrix * B = gsl_matrix_alloc (u->N, u->N);
-	gsl_matrix * v = gsl_matrix_alloc (u->N, u->N);
-	gsl_vector * e = gsl_vector_alloc (u->N);
+	gsl_matrix * A = gsl_matrix_alloc (u->n, u->n);
+	gsl_matrix * B = gsl_matrix_alloc (u->n, u->n);
+	gsl_matrix * v = gsl_matrix_alloc (u->n, u->n);
+	gsl_vector * e = gsl_vector_alloc (u->n);
 
 	int i, j;
-	for (i = 0; i <= u->N-1; i++)
+	for (i = 0; i <= u->n-1; i++)
 	{
-		for (j = 0; j <= u->N-1; j++)
+		for (j = 0; j <= u->n-1; j++)
 		{
-			gsl_matrix_set (A, i, j, u->S[i][j]);
-			gsl_matrix_set (B, i, j, u->B[i][j]);
+			gsl_matrix_set (A, i, j, u->S[u->no[i]][u->no[j]]);
+			gsl_matrix_set (B, i, j, u->B[u->no[i]][u->no[j]]);
 		}
 	}
 
 	// here comes the eigenvalue problem ...
-	gsl_eigen_gensymmv_workspace * wrk = gsl_eigen_gensymmv_alloc (u->N);
+	gsl_eigen_gensymmv_workspace * wrk = gsl_eigen_gensymmv_alloc (u->n);
 	gsl_eigen_gensymmv (A, B, e, v, wrk);
 	gsl_eigen_gensymmv_free (wrk);
 	gsl_matrix_free (A);
@@ -398,9 +383,11 @@ void eig_solver (tr * u)
 		{
 			u->p[i][j].x	= u->No[j][1];
 			u->p[i][j].y	= u->No[j][2];
-			u->p[i][j].val	= gsl_matrix_get (v, j, i);
+			u->p[i][j].val  = 0;
 			u->p[i][j].attribute = u->No[j][3];
 		}
+		for (j = 0; j <= u->n-1; j++)
+			u->p[i][u->no[j]].val	= gsl_matrix_get (v, j, i);
 	}
 
 	gsl_matrix_free (v);
@@ -417,6 +404,8 @@ void solve (int seg, tr * u, double q, double a)
 		eig_solver (u);
 		zax_fprintf ("mode", u);
 	}
+
+//	system ("rm -rf file.poly file.1.*");
 }
 
 #endif
