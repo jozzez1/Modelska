@@ -343,6 +343,15 @@ void zax_fprintf (char * basename, tr * u)
 			fprintf (fout, "% .12e\t% .12e\t% .12e\n",
 					u->p[j][i].x, u->p[j][i].y, u->p[j][i].val);
 	}
+
+	// for octave plot we will also do save the triangle matrix
+	sprintf (dat, "triangles.dat");
+	for (i = 0; i <= u->T-1; i++)
+		fprintf (fout, "%d\t%d\t%d\n",
+				u->To[i][1],
+				u->To[i][2],
+				u->To[i][3]);
+
 	if (dat) free (dat);
 	if (fout) fclose (fout);
 }
