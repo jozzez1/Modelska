@@ -5,4 +5,9 @@ function triplotter (a)
 	Y = M (:,2);
 	Z = M (:,3);
 	trisurf (t, X, Y, Z);
+	view(2);
+
+	orient ("landscape");
+	axis ("off");
+	print (['mode-', a, '.png'], '-S1200,600');
 endfunction

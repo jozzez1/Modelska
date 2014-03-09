@@ -1,0 +1,199 @@
+\documentclass[a4 paper, 12pt]{article}
+\usepackage[slovene]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[small, width=0.9\textwidth,labelfont=it]{caption}
+\usepackage[pdftex]{graphicx}
+\usepackage[usenames, dvipsnames]{xcolor}
+\usepackage{amssymb, fullpage, float, pdflscape, subcaption, amsmath, color, hyperref}
+
+\renewcommand{\d}{
+	\ensuremath{\mathrm{d}}
+}
+
+\newcommand{\e}{
+	\ensuremath{\mathrm{e}}
+}
+
+\renewcommand{\r}{
+	\ensuremath{\mathbf{r}}
+}
+
+\hypersetup{
+	colorlinks=true,
+	linkcolor=black!60!red,
+	citecolor=black!60!green,
+	urlcolor=black!60!cyan
+}
+
+\begin{document}
+
+\begin{center}
+\textsc{Modelska analiza II}\\
+\textsc{2011/12}\\[0.5cm]
+\textbf{8. naloga -- Metoda kon\v cnih elementov: lastne re\v sitve}
+\end{center}
+\begin{flushright}
+\textbf{Jože Zobec}\\
+\end{flushright}
+
+\section{Uvod}
+
+Naloga je analogna prej\v snji. Globalna matrika $A$ je popolnoma ista, imamo le \v se dodatno matriko
+$B$. Nato re\v simo posplo\v sen problem lasnih vrednosti:
+\[
+	(A - \lambda B) x = 0,
+\]
+oz.
+\[
+	(B^{-1}A - \lambda I) x = 0.
+\]
+Lastni pari so energije in lastni nihajni na\v cini, zaradi \v cesar so vse lastne vrednosti realne
+(sicer pa je iz definicije $A$ in $B$ o\v citno, da imamo opravka z realnima simetri\v cnima
+matrikama).
+
+Galerkinov nastavek lahko re\v sujemo na popolnoma enak na\v cin, le da tam triangulacija prostora
+ni potrebna, saj morajo bazne funkcije $\psi^m_i$ biti izbrane tako, da \v ze same po sebi zadostijo
+robnim pogojem, tj.
+\[
+	u (r, \varphi) \approx \sum_{m, i} c_{m,i} \psi^m_i (r, \varphi), \qquad \psi^m_i (r, \varphi)
+		\equiv r^{m + i} (r - 1) \sin (m\varphi)
+\]
+V tem primeru veljata isti definiciji matrik $A$ in $B$, kot prej, le da funkcije $\psi^m_i$ niso tako
+lokalizirane, se pravi
+\[
+	A^{(m)}_{ij} \equiv \langle \nabla \psi^m_i, \nabla \psi^m_j \rangle, \quad
+	B^{(m)}_{ij} \equiv \langle \psi^m_i, \psi^m_j \rangle,
+\]
+s skalarnim produktom $\langle \bullet, \bullet \rangle$ nad obmo\v cjem $\mathcal{A}$
+\[
+	\langle f, g \rangle \equiv \int_\mathcal{A} \d S\ f(x,y) g(x,y) =
+		\int_\mathcal{A} f(r,\varphi) g(r, \varphi) r \d r\ \d\varphi,
+\]
+ki je obmo\v cje nad katerim velja diferencialna ena\v cba $\nabla^2 u + k^2 u = 0$, z
+Dirichletovimi robnimi pogoji na robu, tj. $u (r,\varphi) = 0, \forall (r, \varphi) \in
+\partial\mathcal{A}$.
+
+Matriki $A$ in $B$ sta potem po definiciji
+\begin{align}
+	B^{(m)}_{ij} &= \frac{\pi}{2}\bigg[\frac{1}{2m + i + j + 2} - \frac{2}{2m + i + j + 3} +
+		\frac{1}{2m + i + j + 4}\bigg] \\
+	A^{(m)}_{ij} &= \frac{\pi}{2} \bigg[\frac{ij}{2m + i + j} - \frac{2ij + i + j}{2m + i + j + 1} +
+		\frac{(i + 1)(j + 1)}{2m + i + j + 2}\bigg]
+\end{align}
+
+Ta problem je glede na prej\v snjo nalogo ra\v cunsko zahtevnej\v si (zahteva $\mathcal{O}(N^3)$
+operacij), vendar si lahko pomagamo s tem, da ne potrebujemo vseh lastnih vrednosti, pa\v c pa samo
+npr. nekaj najmanj\v sih.
+
+\section{Rezultati}
+
+Triangulacijo sem izra\v cunal s programskim jezikom {\tt C}, Galerkonov nastavek pa kar z {\tt Octave}.
+Nekaj lastnih na\v cinov sem prikazal na graf (triangulacijo sem prikazal z {\tt Octave}). Nekaj
+takih lasnih re\v sitev lahko vidimo na slikah~\ref{gr1}, \ref{gr2}, \ref{gr3} in \ref{gr4}. Energije so tabelirane v
+tabeli~\ref{tab1}.
+
+\begin{figure}[H]\centering
+	\includegraphics[width=0.8\textwidth, keepaspectratio=1]{mode-0}
+	\caption{Osnovno stanje polkro\v zne opne, $n = 1$, $m = 1$.}
+	\label{gr1}
+\end{figure}
+
+\begin{figure}[H]\centering
+	\includegraphics[width=0.8\textwidth, keepaspectratio=1]{mode-1}
+	\caption{Prvo vzbujeno stanje, $n = 1$, $m = 2$.}
+	\label{gr2}
+\end{figure}
+
+\begin{figure}[H]\centering
+	\includegraphics[width=0.8\textwidth, keepaspectratio=1]{mode-2}
+	\caption{Drugo vzbujeno stanje, $n = 1$, $m = 3$.}
+	\label{gr3}
+\end{figure}
+
+\begin{figure}[H]\centering
+	\includegraphics[width=0.8\textwidth, keepaspectratio=1]{mode-3}
+	\caption{Tretje vzbujeno stanje, $n = 2$, $m = 1$.}
+	\label{gr4}
+\end{figure}
+
+\begin{figure}[H]\centering
+	\includegraphics[width=0.8\textwidth, keepaspectratio=1]{mode-4}
+	\caption{\v Cetrto vzbujeno stanje polkro\v zne opne, $n = 1$, $m = 4$.}
+	\label{gr5}
+\end{figure}
+
+\begin{figure}[H]\centering
+	\includegraphics[width=0.8\textwidth, keepaspectratio=1]{mode-5}
+	\caption{Peto vzbujeno stanje, $n = 2$, $m = 2$.}
+	\label{gr6}
+\end{figure}
+
+\begin{figure}[H]\centering
+	\includegraphics[width=0.8\textwidth, keepaspectratio=1]{mode-6}
+	\caption{\v Sesto vzbujeno stanje, $n = 1$, $m = 5$.}
+	\label{gr7}
+\end{figure}
+
+\begin{figure}[H]\centering
+	\includegraphics[width=0.8\textwidth, keepaspectratio=1]{mode-7}
+	\caption{Sedmo vzbujeno stanje, $n = 2$, $m = 3$.}
+	\label{gr8}
+\end{figure}
+
+\begin{figure}[H]\centering
+	\includegraphics[width=0.8\textwidth, keepaspectratio=1]{mode-8}
+	\caption{Osmo vzbujeno stanje polkro\v zne opne, $n = 1$, $m = 6$.}
+	\label{gr9}
+\end{figure}
+
+\begin{figure}[H]\centering
+	\includegraphics[width=0.8\textwidth, keepaspectratio=1]{mode-9}
+	\caption{Deveto vzbujeno stanje, $n = 3$, $m = 1$.}
+	\label{gr10}
+\end{figure}
+
+\begin{figure}[H]\centering
+	\includegraphics[width=0.8\textwidth, keepaspectratio=1]{mode-10}
+	\caption{Deseto vzbujeno stanje, $n = 2$, $m = 4$.}
+	\label{gr11}
+\end{figure}
+
+\begin{figure}[H]\centering
+	\includegraphics[width=0.8\textwidth, keepaspectratio=1]{mode-11}
+	\caption{Enajsto vzbujeno stanje, $n = 1$, $m = 7$.}
+	\label{gr12}
+\end{figure}
+
+
+\begin{table}[H]\centering
+	\caption{Triangulacije so bila izra\v cunane z $\sim 12 \cdot 10^3$ to\v ckami in dajejo rezultate
+		na slabi dve decimalni mesti. Vendar pa nam dajo rezultate na bistveno \v sir\v sem spektru.
+		Te lastne vrednosti, kar nam jih je dal Galerkin so vse, kar se jih je dalo nara\v cunati,
+		sicer matrika ni bila ve\v c pozitivno definitna, vendar pa da ob\v casno napove vse \v stiri
+		decimalke pravilno. Moj sklep je, \v ce \v zelimo veliko lastnih vrednosti na majhno natan\v cnost
+		potrebujemo kon\v cne elemente, sicer pa kar Galerkina, ki je hitrej\v si.}
+	\begin{tabular}{r|c|c|l}
+		$n$ & $E_n^\text{TRI}$ & $E_n^\text{G}$ & $E_n$ \\
+		\hline
+		0 &	3.8327  & 3.8337 & 3.8317 \\
+		1 &	5.1379  & 5.1356 & 5.1356 \\
+		2 &	6.3846  & 6.3802 & 6.3802 \\
+		3 &	7.0216  & 7.0219 & 7.0156 \\
+		4 &	7.5959  & 7.5884 & 7.5883 \\
+		5 &	8.4275  & 8.4186 & 8.4127 \\
+		6 &	8.7832  & 8.7715 & 8.7715 \\
+		7 &	9.7770  & 9.7611 & 9.7610 \\
+	\end{tabular}
+	\label{tab1}
+\end{table}
+
+\begin{thebibliography}{9}
+	\bibitem{sirca}
+		S. \v Sirca in M. Horvat,
+		{\em Ra\v cunske metode za fizike},
+		DMFA Zalo\v zni\v stvo,
+		(2010)
+\end{thebibliography}
+
+\end{document}

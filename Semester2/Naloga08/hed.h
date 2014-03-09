@@ -346,11 +346,12 @@ void zax_fprintf (char * basename, tr * u)
 
 	// for octave plot we will also do save the triangle matrix
 	sprintf (dat, "triangles.dat");
+	fout = fopen (dat, "w");
 	for (i = 0; i <= u->T-1; i++)
 		fprintf (fout, "%d\t%d\t%d\n",
-				u->To[i][1],
-				u->To[i][2],
-				u->To[i][3]);
+				u->To[i][1] + 1,
+				u->To[i][2] + 1,
+				u->To[i][3] + 1);
 
 	if (dat) free (dat);
 	if (fout) fclose (fout);
