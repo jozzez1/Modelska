@@ -29,7 +29,7 @@ Walker::rotMat (int j)
 double
 Walker::potential (int j, Vector2d r)
 {
-	R = rotMat (j);
+	Matrix2d R = rotMat (j);
 
 	Vector2d v1	= R * point[j],
 		 v2	= R * point[j+1],
@@ -48,7 +48,7 @@ Walker::potential (int j, Vector2d r)
 Vector2d
 Walker::velocity (int j, Vector2d r)
 {
-	R = rotMat (j);
+	Matrix2d R = rotMat (j);
 
 	Vector2d v1	= R * point[j],
 		 v2	= R * point[j+1],
@@ -67,7 +67,7 @@ Walker::velocity (int j, Vector2d r)
 }
 
 void
-Walker::fill2solve (void)
+Walker::fillA (void)
 {
 	for (int i = 0; i <= N-2; i++)
 	{

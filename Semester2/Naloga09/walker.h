@@ -6,6 +6,11 @@
 #include <vector>
 #include <cmath>
 
+typedef Eigen::Matrix2d	Matrix2d;
+typedef Eigen::Vector2d	Vector2d;
+typedef Eigen::MatrixXd	MatrixXd;
+typedef Eigen::VectorXd	VectorXd;
+
 class Walker
 {
 	public:
