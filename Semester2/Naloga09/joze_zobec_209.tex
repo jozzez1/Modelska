@@ -1,0 +1,116 @@
+\documentclass[a4 paper, 12pt]{article}
+\usepackage[slovene]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[small, width=0.9\textwidth,labelfont=it]{caption}
+\usepackage[pdftex]{graphicx}
+\usepackage[usenames, dvipsnames]{xcolor}
+\usepackage{amssymb, fullpage, float, pdflscape, subcaption, amsmath, color, hyperref}
+
+\renewcommand{\d}{
+	\ensuremath{\mathrm{d}}
+}
+
+\newcommand{\e}{
+	\ensuremath{\mathrm{e}}
+}
+
+\renewcommand{\r}{
+	\ensuremath{\mathbf{r}}
+}
+
+\hypersetup{
+	colorlinks=true,
+	linkcolor=black!60!red,
+	citecolor=black!60!green,
+	urlcolor=black!60!cyan
+}
+
+\begin{document}
+
+\begin{center}
+\textsc{Modelska analiza II}\\
+\textsc{2011/12}\\[0.5cm]
+\textbf{9. naloga -- Metoda robnih elementov}
+\end{center}
+\begin{flushright}
+\textbf{Jože Zobec}\\
+\end{flushright}
+
+\section{Uvod}
+
+Metoda robnih elementov je intimno povezana z metodo kon\v cnih elementov. V problemih dimenzije tri se
+obe metodi zana\v sata na triangulacijo, vendar metodo kon\v cnih elementov zanima obna\v sanje znotraj telesa,
+z metodo robnih elementov pa obna\v sanje zunaj telesa, ki ima rob obmo\v cja $\mathcal{A}$, nad katerim
+je definirana na\v sa ena\v cba. V dveh dimenzijah so robni elementi zgolj intervali, tako kot kon\v cni
+elementi v eni dimenziji. To je zato, ker v ketodi kon\v cnih elementov zado\v s\v ca zgolj opis
+$\partial \mathcal{A}$, ki pa ima eno dimenzijo manj, kot $\mathcal{A}$.
+
+Rob torej razre\v zemo na robne elemente, kjer lahko izra\v cunamo prispevek kateregakoli elementa na
+katerokoli to\v cko v prostoru. Tj. $u^{(j)}(\r)$ je prispevek $j$-tega elementa na to\v cko $\r$ (definicija
+je v navodilu). Medsebojne prispevke robnih elementov zlo\v zimo v matriko $\mathbf{A}$, ki ima komponente
+\[
+	A_{ij} = u^{(j)}(\r_i),
+\]
+kjer vektor $\r_i$ ka\v ze v te\v zi\v s\v ce $i$-tega robnega elementa.
+Ta matrika je polna in simetri\v cna. Sicer v splo\v snem potrebujemo \v se eno matriko, vendar ne v
+tem konkretnem primeru. Na koncu moramo re\v siti sistem $N$ linearnih ena\v cb,
+\[
+	A_{ij} \sigma_j = \phi_i = 1, \quad \forall i.
+\] 
+Tako dobimo $\sigma_j$, ki je porazdelitev naboja na robu. Potencial v to\v cki $\r$ dobimo kot
+\[
+	\phi(\r) = \sum_{i = 1}^N u^{(i)} (\r).
+\] 
+
+Ko re\v sujemo obtok teko\v cine ob krilu nam ni treba re\v sevati sistema ena\v cb, vendar, \v ce ho\v cemo
+dobiti tokovnice moramo re\v siti ena\v cbo diferencialno ena\v cbo
+\[
+	\begin{bmatrix} \dot{x} \\ \dot{y}\end{bmatrix} = \begin{bmatrix} v_x \\ v_y \end{bmatrix},
+\]
+ki jo lahko re\v simo npr. s konstrukcijo simplekti\v cnega integratorja s Trotter-Suzukijevim razcepom
+(komutirajo\v ca opratorja sta v tem primeru $T_x$ in $T_y$, torej kineti\v cni energiji posameznih
+komponent $\r$), tj.
+\begin{align*}
+	\exp\big(c\tau\{\bullet, T_x\}\big) \begin{bmatrix} x \\ y \end{bmatrix} &= \begin{bmatrix} x
+		+ c\tau v_x (x,y) \\ y \end{bmatrix} \\
+	\exp\big(c\tau\{\bullet, T_y\}\big) \begin{bmatrix} x \\ y \end{bmatrix} &= \begin{bmatrix} x \\ y
+		+ c\tau v_y (x, y) \end{bmatrix}
+\end{align*}
+od koder lahko uporabimo katerokoli shemo ho\v cemo, npr. $S_2$, ki je najbolj preprosta in je reda
+$\mathcal{O}(\tau^2)$, zapi\v se pa se kot
+\[
+	\begin{bmatrix}
+		x \\ y
+	\end{bmatrix}_{t + \tau} = \begin{bmatrix}
+		x + \frac{\tau}{2} v_x (x,y) + \frac{\tau}{2}v_x\big(x + \frac{\tau}{2} v_x(x,y), y +
+			\tau v_y (x,y)\big) \\
+		y + \tau v_y (x,y)
+	\end{bmatrix}_t,
+\]
+hitrosti pa sta
+\begin{align*}
+	v_x (x,y) &= \sum_{i = 1}^N \big(t_x^{(i)} v_\parallel^{(i)}(x,y) + t_y^{(i)}v_\perp^{(i)}(x,y)\big), \\
+	v_y (x,y) &= \sum_{i = 1}^N \big(-t_x^{(i)} v_\parallel^{(i)}(x,y) + t_y^{(i)}v_\perp^{(i)}(x,y)\big),
+\end{align*}
+kjer je $\mathbf{t}^{(i)}$ enotski smerni vektor ustreznega robnega elementa,
+$\mathbf{t}^{(i)} \propto \r_{i+1} - \r_i$. Analogno lahko preklapljamo med lokalnimi in globalnimi
+koordinatami z rotacijsko matriko
+\[
+	\r^{(i)} = \begin{bmatrix} x' \\ y' \end{bmatrix}^{(i)} = \begin{bmatrix} t_x^{(i)} x - t_y^{(i)}y \\
+		t_y^{(i)} x + t_x^{(i)} y \end{bmatrix}
+\]
+
+Literatura~\cite[str.~659]{sirca} sicer navaja, da je v splo\v snem potrebna \v se ena matrika, ki problem malo
+ote\v zi, vendar zaupam poenostavitvi iz navodila naloge.
+\section{Rezultati}
+
+\begin{thebibliography}{9}
+	\bibitem{sirca}
+		S. \v Sirca in M. Horvat,
+		{\em Ra\v cunske metode za fizike},
+		DMFA Zalo\v zni\v stvo,
+		(2010)
+\end{thebibliography}
+
+\end{document}
