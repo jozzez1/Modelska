@@ -25,7 +25,7 @@ class Walker
 		void fillu () { u = VectorXd::Ones (N-1); };
 		void fillA ();
 
-		void solve4c () { c = A.lu().solve(u) };
+		void solve4c () { c = A.lu().solve(u); };
 
 	private:
 		int N;		// number of boundary indices
