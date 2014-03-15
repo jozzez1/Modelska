@@ -12,7 +12,7 @@ int main (int argc, char ** argv)
 
 	struct option longopts[] =
 	{
-		{ "Number", required_argument,        NULL,         'N' },
+		{ "Number", required_argument,       NULL,         'N' },
 		{ "mode",  required_argument,        NULL,         'm' },
 		{ "p1",    required_argument,        NULL,         'a' },
 		{ "p2",    required_argument,        NULL,         'b' },

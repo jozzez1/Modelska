@@ -4,11 +4,11 @@ CPUOPT=		-march=corei7
 OFLAG=		-O3
 OPTFLAGS=	${OFLAG} ${CPUOPT} -ffast-math -funroll-loops
 WARN=		-Wall
-LIBFLAGS=	-L/usr/local -lm
+LIBFLAGS=	-L/usr/local -lm -fopenmp
 CXXFLAGS=	-I/usr/local/include/eigen3 \
 		${WARN} ${OPTFLAGS}
 
-all: main.o walker.o
+all: main.o
 	${CXX} ${CXXFLAGS} ${LIBFLAGS} main.o walker.o profiles.o -o ${PRGNAM}
 
 main.o: walker.o
@@ -21,7 +21,13 @@ profiles.o:
 	${CXX} ${CXXFLAGS} -c profiles.cxx
 
 clean:
-	@rm -f main.o walker.o profiles.o
+.for file in \
+	main.o \
+	walker.o \
+	profiles.o \
+	prg.core
+	rm -f ${file}
+.endfor
 
 remove:
 	rm -f ${PRGNAM}

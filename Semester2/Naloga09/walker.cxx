@@ -42,6 +42,8 @@ Walker::init_points (int number, int mode, double p1, double p2)
 		params[1] = p2;
 
 		point = point_create (number, params);
+
+		delete [] params;
 	}
 	else
 		point = point_create (number, &p1);
