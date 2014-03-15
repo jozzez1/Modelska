@@ -1,16 +1,50 @@
 #include "walker.h"
+#include "profiles.h"
 
-Walker::Walker (int number_of_vertices)
+// constructor
+Walker::Walker (int number, int mode,
+		double p1, double p2)
 {
 	// first we allocate them
-	N = number_of_vertices;
-	c (N-1);
-	u (N-1);
-	A (N-1, N-1);
+	N = number;
+	c.resize (N-1);
+	u.resize (N-1);
+	A.resize (N-1, N-1);
+
+	switch (mode)
+	{
+		case 0: point_create = &simple;   break;
+		case 1: point_create = &elipsoid; break;
+		case 2: point_create = &fishpr;   break;
+		case 3: point_create = &zukovski; break;
+	}
+
+	init_points (N, mode, p1, p2);
 	
 	// and now we set the values
 	fillu ();
 	fillA ();
+}
+
+// destructor
+Walker::~Walker(void)
+{
+
+}
+
+void
+Walker::init_points (int number, int mode, double p1, double p2)
+{
+	if (mode == 3)
+	{
+		double * params = new double [2];
+		params[0] = p1;
+		params[1] = p2;
+
+		point = point_create (number, params);
+	}
+	else
+		point = point_create (number, &p1);
 }
 
 Matrix2d
