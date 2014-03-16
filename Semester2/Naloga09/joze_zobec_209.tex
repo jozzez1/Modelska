@@ -105,6 +105,28 @@ Literatura~\cite[str.~659]{sirca} sicer navaja, da je v splo\v snem potrebna \v 
 ote\v zi, vendar zaupam poenostavitvi iz navodila naloge.
 \section{Rezultati}
 
+Za ra\v cunanje in prikaz rezultatov sem uporabil {\tt C++} s knji\v znicama {\tt MathGL} in {\tt Eigen} in
+prevajalnik {\tt clang++}. Porazdelitev naboja na traku, $\sigma(x)$, je na sliki~\ref{gr1}, potencial $\phi(\r)$ pa je
+na sliki~\ref{gr2}.
+
+\begin{figure}[H]\centering
+	\includegraphics[width=0.8\textwidth]{naboj}
+	\caption{Na skrajnih robovih je gostota naboja vi\v sja, kot v sredini, kar lahko
+		pri\v cakujemo zato, ker se elektri\v cni naboj z ostim znakom odbija.}
+	\label{gr1}
+\end{figure}
+
+\begin{figure}[H]\centering
+	\includegraphics[width=0.8\textwidth]{potencial}
+	\caption{Na tej sliki imamo graf z elektri\v cnim potencialom v okolici traku. Pri\v cakujemo
+		divergenco, kjer je naboj, kar res dobimo.}
+	\label{gr2}
+\end{figure}
+
+\subsection{Obtekanje krila}
+
+Za obtekanje krila imamo v bistvu la\v zji problem
+
 \begin{thebibliography}{9}
 	\bibitem{sirca}
 		S. \v Sirca in M. Horvat,

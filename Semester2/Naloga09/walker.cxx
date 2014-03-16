@@ -134,16 +134,15 @@ Walker::plot_chr (void)
 
 	// plot it with MathGL
 	mglGraph gr;
-	gr.Title ("Porazdelitev naboja, \\sigma(x)");
 	gr.SetRange ('x', 0, 1);
 	gr.SetRange ('y', 0, 120);
 	gr.Label ('y', "\\sigma(x)");
 	gr.Label ('x', "x");
 	gr.Axis ();
 	gr.Grid ("xy", "B;");
-//	gr.Box ();
 	gr.Plot (x, (-1)*y, "r");
-	gr.WriteEPS ("potential.eps", "My test plot");
+	gr.Title ("Porazdelitev naboja, \\sigma(x)");
+	gr.WriteEPS ("naboj.eps", "My test plot");
 }
 
 void
@@ -154,6 +153,7 @@ Walker::plot_pot (void)
 	double hx = (xmax - xmin)/nx,
 	       hy = (ymax - ymin)/ny;
 
+	// calculate the potential
 	for (int i = 0; i <= nx-1; i++)
 	{
 		for (int j = 0; j <= ny-1; j++)
@@ -168,6 +168,7 @@ Walker::plot_pot (void)
 
 	mglGraph gr;
 
+	// create data for mgl
 	mglData x (nx, ny),
 		y (nx, ny),
 		z (nx, ny);
@@ -176,21 +177,24 @@ Walker::plot_pot (void)
 	y.Set (P.block(0, 1, nx*ny, 1).data(), nx, ny);
 	z.Set (P.block(0, 2, nx*ny, 1).data(), nx, ny);
 
-	gr.SetSize (800, 800);
-	gr.Title ("Potencial - U(x,y)");
+	// and now plot it
+	gr.SetSize (800, 640);
 	gr.SetDefScheme ("wyqrRk");
-	gr.SetRanges (x, y);
+	gr.SetRanges (xmin, xmax, ymin, ymax);
 	gr.SetRange ('c', z);
-	gr.Colorbar ("wyqrRk^");
-	gr.Axis ();
-	gr.Label ('x', "x");
-	gr.Label ('y', "y");
-	gr.Label ('c', "U(x,y)");
-	gr.Box ();
+	gr.SetTicks ('y', 1, 5);
+	gr.Colorbar ("wyqrRk>");
+	gr.Axis ("x", "q");
+	gr.Axis ("y", "q");
+	gr.Label ('x', "x", 0);
+	gr.Label ('y', "y", 0);
+	gr.Label ('c', "U(x,y)", 0);
+	gr.Box ("q");
 
+	gr.Cont (x, y, z, "t");
 	gr.Dens (x, y, z);
-	gr.Aspect (1,1);
-	gr.WritePNG ("Potencial.png");
+	gr.Title ("Potencial, \\phi(x,y)", "", 6);
+	gr.WritePNG ("potencial.png", "Picture of the potential", true);
 }
 
 void
