@@ -2,14 +2,21 @@
 #include "profiles.h"
 
 // constructor
-Walker::Walker (int number, int mode,
-		double p1, double p2)
+Walker::Walker (int number, int mode, double p1, double p2,
+		int Nx, int Ny, double Xmin, double Xmax, double Ymin, double Ymax)
 {
 	// first we allocate them
 	N = number;
 	c.resize (N-1);
 	u.resize (N-1);
 	A.resize (N-1, N-1);
+
+	nx	= Nx;
+	ny	= Ny;
+	xmin	= Xmin;
+	xmax	= Xmax;
+	ymin	= Ymin;
+	ymax	= Ymax;
 
 	switch (mode)
 	{
@@ -78,8 +85,8 @@ Walker::potential (int j, Vector2d r)
 	       x2	= rr[0] - v2[0],
 	       y	= rr[1];
 
-	double U = (2*x2 - 2*x1 + 2*y * (atan(x1/y) - atan(x2/y)) +
-		x1*log(x1*x1 + y*y) - x2*log(x2*x2 - y*y)) / (4 * M_PI);
+	double U = (2*x2 - 2*x1 + 2*y * (atan(x1/y) - atan(x2/y))
+			+ x1*log(x1*x1 + y*y) - x2*log(x2*x2 + y*y))/(4 * M_PI);
 
 	return U;
 }
@@ -120,19 +127,70 @@ Walker::plot_chr (void)
 {
 	mglData x (N-1),
 		y (N-1);
+
+	y.Set (c.data(), N-1);
 	for (int i = 0; i <= N-2; i++)
-	{
-		y.a [i] = -c[i];
 		x.a [i] = ((point[i+1] + point[i])/2)[0];
+
+	// plot it with MathGL
+	mglGraph gr;
+	gr.Title ("Porazdelitev naboja, \\sigma(x)");
+	gr.SetRange ('x', 0, 1);
+	gr.SetRange ('y', 0, 120);
+	gr.Label ('y', "\\sigma(x)");
+	gr.Label ('x', "x");
+	gr.Axis ();
+	gr.Grid ("xy", "B;");
+//	gr.Box ();
+	gr.Plot (x, (-1)*y, "r");
+	gr.WriteEPS ("potential.eps", "My test plot");
+}
+
+void
+Walker::plot_pot (void)
+{
+	MatrixXd P (nx * ny, 3);
+
+	double hx = (xmax - xmin)/nx,
+	       hy = (ymax - ymin)/ny;
+
+	for (int i = 0; i <= nx-1; i++)
+	{
+		for (int j = 0; j <= ny-1; j++)
+		{
+			P (j + ny*i, 0) = hx*i + xmin;
+			P (j + ny*i, 1) = hy*j + ymin;
+			P (j + ny*i, 2) = 0;
+			for (int k = 0; k <= N-2; k++)
+				P (j + ny*i, 2) += potential (k, P.block(j + ny*i, 0, 1, 2).transpose());
+		}
 	}
 
 	mglGraph gr;
-	gr.Title ("Porazdelitev naboja, \\sigma(x)");
+
+	mglData x (nx, ny),
+		y (nx, ny),
+		z (nx, ny);
+
+	x.Set (P.block(0, 0, nx*ny, 1).data(), nx, ny);
+	y.Set (P.block(0, 1, nx*ny, 1).data(), nx, ny);
+	z.Set (P.block(0, 2, nx*ny, 1).data(), nx, ny);
+
+	gr.SetSize (800, 800);
+	gr.Title ("Potencial - U(x,y)");
+	gr.SetDefScheme ("wyqrRk");
 	gr.SetRanges (x, y);
+	gr.SetRange ('c', z);
+	gr.Colorbar ("wyqrRk^");
 	gr.Axis ();
+	gr.Label ('x', "x");
+	gr.Label ('y', "y");
+	gr.Label ('c', "U(x,y)");
 	gr.Box ();
-	gr.Plot (x, y, "r");
-	gr.WriteEPS ("Test.eps", "My test plot");
+
+	gr.Dens (x, y, z);
+	gr.Aspect (1,1);
+	gr.WritePNG ("Potencial.png");
 }
 
 void
@@ -141,8 +199,8 @@ Walker::solve (int mode)
 	if (mode == 0)
 	{
 		solve4c ();
-		print_solution ();
 		plot_chr ();
+		plot_pot ();
 	}
 }
 

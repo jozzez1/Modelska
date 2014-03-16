@@ -19,8 +19,12 @@ typedef Eigen::VectorXd	VectorXd;
 class Walker
 {
 	public:
-		Walker (int, int, double, double);		// contructor
-		~Walker ();					// destructor
+		// constructor
+		Walker (int, int, double, double,
+			int, int, double, double, double, double);
+
+		//destructor
+		~Walker ();
 
 		// global-local transform matrix
 		Matrix2d rotMat (int);
@@ -53,6 +57,14 @@ class Walker
 
 	private:
 		int N;						// number of boundary indices
+		int nx;
+		int ny;
+
+		double xmax;
+		double xmin;
+		double ymax;
+		double ymin;
+
 		std::vector<Vector2d> point;			// vector with all the points
 		std::vector<Vector2d> (* point_create) (int, void *);
 
