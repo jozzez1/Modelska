@@ -13,10 +13,10 @@ int main (int argc, char ** argv)
 	struct option longopts[] =
 	{
 		{ "Number", required_argument,       NULL,         'N' },
-		{ "mode",  required_argument,        NULL,         'm' },
-		{ "p1",    required_argument,        NULL,         'a' },
-		{ "p2",    required_argument,        NULL,         'b' },
-		{ "help",  no_argument,              NULL,         'h' },
+		{ "mode",   required_argument,       NULL,         'm' },
+		{ "p1",     required_argument,       NULL,         'a' },
+		{ "p2",     required_argument,       NULL,         'b' },
+		{ "help",   no_argument,             NULL,         'h' },
 		{0, 0, 0, 0}
 	};
 
@@ -29,24 +29,23 @@ int main (int argc, char ** argv)
 			case 'a': a	= atof (optarg); break;
 			case 'b': b	= atof (optarg); break;
 			case 'h':
-				  std::cout << "-N, --Number:  set number of vertices" << std::endl;
-				  std::cout << "-m, --mode:    set mode [0-3]" << std::endl;
-				  std::cout << "-a, --p1:      set the 1st mode parameter" << std::endl;
-				  std::cout << "-b, --p2:      set the 2nd mode parameter" << std::endl;
-				  std::cout << "-h, --help:    print this list" << std::endl;
+				  std::cout << "-N, --Number:  set number of vertices" 		<< std::endl;
+				  std::cout << "-m, --mode:    set mode [0-3]" 			<< std::endl;
+				  std::cout << "-a, --p1:      set the 1st mode parameter" 	<< std::endl;
+				  std::cout << "-b, --p2:      set the 2nd mode parameter" 	<< std::endl;
+				  std::cout << "-h, --help:    print this list" 		<< std::endl;
 				  exit (EXIT_SUCCESS);
 			default:
-				  std::cout << "Wrong usage!" << std::endl;
-				  std::cout << "Try" << std::endl;
-				  std::cout << argv[0] << " -h" << std::endl;
-				  std::cout << "to see options." << std::endl;
+				  std::cout << "Wrong usage!" 		<< std::endl;
+				  std::cout << "Try" 			<< std::endl;
+				  std::cout << argv[0] << " -h" 	<< std::endl;
+				  std::cout << "to see options." 	<< std::endl;
 				  exit (EXIT_FAILURE);
 		}
 	}
 
 	Walker * u = new Walker (N, mode, a, b);
-	u->solve4c ();
-	u->print_solution ();
+	u->solve (mode);
 
 	u->~Walker();
 

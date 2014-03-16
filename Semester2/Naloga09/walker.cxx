@@ -17,6 +17,9 @@ Walker::Walker (int number, int mode,
 		case 1: point_create = &elipsoid; break;
 		case 2: point_create = &fishpr;   break;
 		case 3: point_create = &zukovski; break;
+		default:
+			std::cout << "Wrong mode." << std::endl;
+			exit (EXIT_FAILURE);
 	}
 
 	init_points (N, mode, p1, p2);
@@ -109,6 +112,37 @@ Walker::fillA (void)
 	{
 		for (int j = 0; j <= N-2; j++)
 			A(i,j) = potential (i, (point[j] + point[j+1])/2);
+	}
+}
+
+void
+Walker::plot_chr (void)
+{
+	mglData x (N-1),
+		y (N-1);
+	for (int i = 0; i <= N-2; i++)
+	{
+		y.a [i] = -c[i];
+		x.a [i] = ((point[i+1] + point[i])/2)[0];
+	}
+
+	mglGraph gr;
+	gr.Title ("Porazdelitev naboja, \\sigma(x)");
+	gr.SetRanges (x, y);
+	gr.Axis ();
+	gr.Box ();
+	gr.Plot (x, y, "r");
+	gr.WriteEPS ("Test.eps", "My test plot");
+}
+
+void
+Walker::solve (int mode)
+{
+	if (mode == 0)
+	{
+		solve4c ();
+		print_solution ();
+		plot_chr ();
 	}
 }
 

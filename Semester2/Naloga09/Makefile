@@ -1,11 +1,13 @@
 CXX=		clang++
 PRGNAM=		prg
-CPUOPT=		-march=corei7
+CPUOPT=		-march=corei7 -mssse3 -msse4.1
 OFLAG=		-O3
 OPTFLAGS=	${OFLAG} ${CPUOPT} -ffast-math -funroll-loops
-WARN=		-Wall
-LIBFLAGS=	-L/usr/local -lm -fopenmp
+WARN=		-Wall -Wno-return-type-c-linkage
+LIBFLAGS=	-L/usr/local/lib \
+	       	-lm -lmgl -lmgl-wnd
 CXXFLAGS=	-I/usr/local/include/eigen3 \
+		-I/usr/local/include \
 		${WARN} ${OPTFLAGS}
 
 all: main.o
