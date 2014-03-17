@@ -3,7 +3,8 @@
 
 // constructor
 Walker::Walker (int number, int mode, double p1, double p2,
-		int Nx, int Ny, double Xmin, double Xmax, double Ymin, double Ymax)
+		int Nx, int Ny, double Xmin, double Xmax, double Ymin, double Ymax,
+		double uInf)
 {
 	// first we allocate them
 	N = number;
@@ -17,6 +18,7 @@ Walker::Walker (int number, int mode, double p1, double p2,
 	xmax	= Xmax;
 	ymin	= Ymin;
 	ymax	= Ymax;
+	u_inf	= uInf;
 
 	switch (mode)
 	{
@@ -32,8 +34,8 @@ Walker::Walker (int number, int mode, double p1, double p2,
 	init_points (N, mode, p1, p2);
 	
 	// and now we set the values
-	fillu ();
-	fillA ();
+	fillu (mode);
+	fillA (mode);
 }
 
 // destructor
@@ -106,21 +108,56 @@ Walker::velocity (int j, Vector2d r)
 	       y	= rr[1];
 
 	v[0] = log((x1*x1 + y*y)/(x2*x2 + y*y)) / (4 * M_PI);
-	v[1] = 0;
-	if (y != 0)
-		v[1] = (atan(x1/y) - atan(x2/y)) / (2 * M_PI);
+	v[1] = (atan(x1/y) - atan(x2/y)) / (2 * M_PI);
 
 	v = R.transpose()*v;
 	return v;
 }
 
 void
-Walker::fillA (void)
+Walker::fillu (int mode)
 {
-	for (int i = 0; i <= N-2; i++)
+	if (mode == 0)
+		u = VectorXd::Ones (N-1);
+	else
 	{
-		for (int j = 0; j <= N-2; j++)
-			A(i,j) = potential (i, (point[j] + point[j+1])/2);
+		Vector2d uInf; uInf << u_inf, 0;
+		for (int i = 0; i <= N-2; i++)
+		{
+			Matrix2d R = rotMat (i);
+			u[i] = (R * uInf)[1];
+		}
+	}
+}
+
+void
+Walker::fillA (int mode)
+{
+	if (mode == 0)
+	{
+		for (int i = 0; i <= N-2; i++)
+		{
+			for (int j = 0; j <= N-2; j++)
+				A(i,j) = potential (i, (point[j] + point[j+1])/2);
+		}
+	}
+
+	else
+	{
+		for (int i = 0; i <= N-2; i++)
+		{
+			for (int j = 0; j <= N-2; j++)
+			{
+				if (i == j)
+					A (i,j) = 0.5;
+				else
+				{
+					Matrix2d R = rotMat (j);
+					Vector2d v_ij = velocity (i, (point[j] + point[j+1])/2);
+					A(i,j) = (R * v_ij)[1];
+				}
+			}
+		}
 	}
 }
 
@@ -164,7 +201,7 @@ Walker::plot_pot (void)
 			P (j + ny*i, 1) = hy*j + ymin;
 			P (j + ny*i, 2) = 0;
 			for (int k = 0; k <= N-2; k++)
-				P (j + ny*i, 2) += potential (k, P.block(j + ny*i, 0, 1, 2).transpose());
+				P (j + ny*i, 2) += (-1)*c(k)*potential (k, P.block(j + ny*i, 0, 1, 2).transpose());
 		}
 	}
 
@@ -207,7 +244,6 @@ Walker::plot_vec ()
 	double hx = (xmax - xmin)/(nx-1),
 	       hy = (ymax - ymin)/(ny-1);
 
-
 	// so ... the velocities ...
 	for (int i = 0; i <= nx-1; i++)
 	{
@@ -215,11 +251,11 @@ Walker::plot_vec ()
 		{
 			P (j + ny*i, 0) = hx*i + xmin;
 			P (j + ny*i, 1) = hy*j + ymin;
-			P.block (j + ny*i, 2, 1, 2).Zero (1,2);
+			P.block (j + ny*i, 2, 1, 2) << u_inf, 0;
 
 			for (int k = 0; k <= N-2; k++)
 				P.block (j + ny*i, 2, 1, 2).transpose() +=
-					velocity (k, P.block (j + ny*i, 0, 1, 2).transpose());
+					(-1*c(k))*velocity (k, P.block (j + ny*i, 0, 1, 2).transpose());
 		}
 	}
 
@@ -245,15 +281,19 @@ Walker::plot_vec ()
 
 	gr.SetSize (800, 640);
 	gr.SetRanges (xmin, xmax, ymin, ymax);
-	gr.SetMeshNum (30);
+	gr.SetMeshNum (35);
 	gr.SetRange ('c', -1, 1);
 	gr.Axis ();
 	gr.Label ('x', "x");
 	gr.Label ('y', "y");
 	gr.Box ();
 
-	gr.Vect (x, y, vx, vy, "f");
-	gr.Plot (px, py, "B");
+	gr.Vect (x, y, vx, vy, "fkUBbrR", "f");	// this is row-major, despite the example
+//	gr.Traj (x, y, vx, vy);
+//	gr.Flow (x, y, vy, vx, "vkUBbrR", "20");	// for some reason this is suddenly column-major
+	for (int i = 0; i <= 19; i++)
+		gr.FlowP (mglPoint (xmin, (ymax - ymin)*i/(19) + ymin), x, y, vy, vx, "ycg");
+	gr.Plot (px, py, "r");
 	gr.WritePNG ("vektor.png", "Velocity field");
 }
 
@@ -267,6 +307,11 @@ Walker::solve (int mode)
 		plot_pot ();
 	}
 	else
+	{
+//		std::cout << A << std::endl;
+		solve4c ();
+		print_solution ();
 		plot_vec ();
+	}
 }
 

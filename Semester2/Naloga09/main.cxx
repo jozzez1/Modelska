@@ -6,15 +6,16 @@ int main (int argc, char ** argv)
 {
 	int N     = 200,
 	    mode  = 0,
-	    nx    = 150,
-	    ny    = 150,
+	    nx    = 200,
+	    ny    = 200,
 	    arg;
 	double a  = 0,
 	       b  = 0,
 	       xm = -5,
 	       xM = +5,
 	       ym = -5,
-	       yM = +5;
+	       yM = +5,
+	       ui = 1;
 
 	struct option longopts[] =
 	{
@@ -28,11 +29,12 @@ int main (int argc, char ** argv)
 		{ "xmax",   required_argument,       NULL,         'X' },
 		{ "ymin",   required_argument,       NULL,         'y' },
 		{ "ymax",   required_argument,       NULL,         'Y' },
+		{ "uinf",   required_argument,       NULL,         'u' },
 		{ "help",   no_argument,             NULL,         'h' },
 		{0, 0, 0, 0}
 	};
 
-	while ((arg = getopt_long (argc, argv, "N:m:a:b:h", longopts, NULL)) != -1)
+	while ((arg = getopt_long (argc, argv, "N:m:a:b:I:J:x:X:y:Y:u:h", longopts, NULL)) != -1)
 	{
 		switch (arg)
 		{
@@ -46,6 +48,7 @@ int main (int argc, char ** argv)
 			case 'X': xM	= atof (optarg); break;
 			case 'y': ym	= atof (optarg); break;
 			case 'Y': yM	= atof (optarg); break;
+			case 'u': ui	= atof (optarg); break;
 			case 'h':
 				  std::cout << "-N, --Number:  set number of vertices" 		<< std::endl;
 				  std::cout << "-m, --mode:    set mode [0-3]" 			<< std::endl;
@@ -69,7 +72,8 @@ int main (int argc, char ** argv)
 	}
 
 	Walker * u = new Walker (N, mode, a, b,
-			nx, ny, xm, xM, ym, yM);
+			nx, ny, xm, xM, ym, yM,
+			ui);
 	u->solve (mode);
 
 	u->~Walker();

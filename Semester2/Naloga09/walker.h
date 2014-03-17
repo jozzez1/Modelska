@@ -21,7 +21,8 @@ class Walker
 	public:
 		// constructor
 		Walker (int, int, double, double,
-			int, int, double, double, double, double);
+			int, int, double, double, double, double,
+			double);
 
 		//destructor
 		~Walker ();
@@ -37,8 +38,8 @@ class Walker
 
 		// functions to fill the matrix/vectors
 		void init_points (int, int, double, double);
-		void fillu () { u = VectorXd::Ones (N-1); };
-		void fillA ();
+		void fillu (int);
+		void fillA (int);
 
 		// return the solution
 		VectorXd solution () { return c; };
@@ -64,6 +65,7 @@ class Walker
 		double xmin;
 		double ymax;
 		double ymin;
+		double u_inf;
 
 		std::vector<Vector2d> point;			// vector with all the points
 		std::vector<Vector2d> (* point_create) (int, void *);
