@@ -6,7 +6,7 @@
 #include <iostream>
 
 #include <Eigen/Dense>
-#include <Eigen/LU>
+#include <Eigen/QR>
 
 #include <mgl2/mgl.h>
 #include <mgl2/data.h>
@@ -71,7 +71,10 @@ class Walker
 		std::vector<Vector2d> (* point_create) (int, void *);
 
 		// finally, the solver itself for the 1st assignment
-		void solve4c () { c = A.lu().solve(u); };
+		void solve4c () { c = A.householderQr().solve(u); };
+
+		// check the parallel points
+		void control (int, double);
 
 		VectorXd c;					// vector for solving the system
 		VectorXd u;					// potentials -- all of these are 1

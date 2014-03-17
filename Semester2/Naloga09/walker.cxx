@@ -68,8 +68,8 @@ Walker::rotMat (int j)
 	t.normalize ();
 
 	Matrix2d R;
-	R << t[0], -t[1],
-	     t[1], t[0];
+	R << t[0], t[1],
+	     -t[1], t[0];
 
 	return R;
 }
@@ -149,7 +149,7 @@ Walker::fillA (int mode)
 			for (int j = 0; j <= N-2; j++)
 			{
 				if (i == j)
-					A (i,j) = 0.5;
+					A (i,j) = -0.5;
 				else
 				{
 					Matrix2d R = rotMat (j);
@@ -158,6 +158,58 @@ Walker::fillA (int mode)
 				}
 			}
 		}
+	}
+}
+
+void
+Walker::control (int mode, double b)
+{
+	if (mode == 1)
+	{
+		MatrixXd M (N-1, 4);
+
+		for (int i = 0; i <= N-2; i++)
+		{
+			M (i, 0) = i;
+			M.block(i, 1, 1, 2) << u_inf, 0;
+
+			for (int j = 0; j <= N-2; j++)
+				M.block (i, 1, 1, 2).transpose() += (-1*c(j))*velocity (j, ((point[i] + point[i+1])/2));
+
+			Matrix2d R = rotMat (i);
+			Vector2d v;
+
+			double x = ((point[i] + point[i+1])/2)[0],
+			       y = ((point[i] + point[i+1])/2)[1];
+
+			v << 1, 0;
+			v *= u_inf * ((y * (1 + b))/sqrt(y*y + pow(b, 4)*x*x));
+
+			M(i, 3) = (R.transpose() * v)[0];
+
+		}
+
+		mglData pl1 (N-1),
+			pl2 (N-1),
+			pl3 (N-1),
+			x   (N-1);
+
+		x.Set (M.block (0, 0, N-1, 1).data (), N-1);
+		pl1.Set (M.block (0, 2, N-1, 1).data (), N-1);
+		pl2.Set (M.block (0, 1, N-1, 1).data (), N-1);
+		pl3.Set (M.block (0, 3, N-1, 1).data (), N-1);
+
+		mglGraph gr;
+		
+		gr.SetRange ('y', -2, 2);
+		gr.SetRange ('x', x);
+		gr.Axis ();
+		gr.Box ();
+		gr.Plot (x, pl1);
+		gr.Plot (x, pl2);
+		gr.Plot (x, pl3);
+
+		gr.WritePNG ("control.png", "control plot");
 	}
 }
 
@@ -310,8 +362,9 @@ Walker::solve (int mode)
 	{
 //		std::cout << A << std::endl;
 		solve4c ();
-		print_solution ();
-		plot_vec ();
+		control (mode, 0.5);
+//		print_solution ();
+//		plot_vec ();
 	}
 }
 
