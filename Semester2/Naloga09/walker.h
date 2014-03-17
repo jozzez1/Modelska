@@ -51,7 +51,7 @@ class Walker
 
 		// plotting via MathGL
 		void plot_flow ();				// flow plot for 2nd assignment
-		void plot_grad ();				// gradient plot
+		void plot_vec ();				// gradient plot
 		void plot_pot  ();				// plot potential
 		void plot_chr  ();				// plot charge density
 

@@ -106,7 +106,9 @@ Walker::velocity (int j, Vector2d r)
 	       y	= rr[1];
 
 	v[0] = log((x1*x1 + y*y)/(x2*x2 + y*y)) / (4 * M_PI);
-	v[1] = (atan(x1/y) - atan(x2/y)) / (2 * M_PI);
+	v[1] = 0;
+	if (y != 0)
+		v[1] = (atan(x1/y) - atan(x2/y)) / (2 * M_PI);
 
 	v = R.transpose()*v;
 	return v;
@@ -150,8 +152,8 @@ Walker::plot_pot (void)
 {
 	MatrixXd P (nx * ny, 3);
 
-	double hx = (xmax - xmin)/nx,
-	       hy = (ymax - ymin)/ny;
+	double hx = (xmax - xmin)/(nx-1),
+	       hy = (ymax - ymin)/(ny-1);
 
 	// calculate the potential
 	for (int i = 0; i <= nx-1; i++)
@@ -179,7 +181,6 @@ Walker::plot_pot (void)
 
 	// and now plot it
 	gr.SetSize (800, 640);
-	gr.SetDefScheme ("wyqrRk");
 	gr.SetRanges (xmin, xmax, ymin, ymax);
 	gr.SetRange ('c', z);
 	gr.SetTicks ('y', 1, 5);
@@ -192,9 +193,68 @@ Walker::plot_pot (void)
 	gr.Box ("q");
 
 	gr.Cont (x, y, z, "t");
-	gr.Dens (x, y, z);
+	gr.Dens (x, y, z, "wyqrRk");
 	gr.Title ("Potencial, \\phi(x,y)", "", 6);
 	gr.WritePNG ("potencial.png", "Picture of the potential", true);
+}
+
+void
+Walker::plot_vec ()
+{
+	// first we compute the velocities
+	MatrixXd P (nx*nx, 4);
+
+	double hx = (xmax - xmin)/(nx-1),
+	       hy = (ymax - ymin)/(ny-1);
+
+
+	// so ... the velocities ...
+	for (int i = 0; i <= nx-1; i++)
+	{
+		for (int j = 0; j <= ny-1; j++)
+		{
+			P (j + ny*i, 0) = hx*i + xmin;
+			P (j + ny*i, 1) = hy*j + ymin;
+			P.block (j + ny*i, 2, 1, 2).Zero (1,2);
+
+			for (int k = 0; k <= N-2; k++)
+				P.block (j + ny*i, 2, 1, 2).transpose() +=
+					velocity (k, P.block (j + ny*i, 0, 1, 2).transpose());
+		}
+	}
+
+	mglData x (nx, ny),
+		y (nx, ny),
+		vx(nx, ny),
+		vy(nx, ny),
+		px(N),		// wing profile x component
+		py(N);		// wing profile y component
+
+	for (int i = 0; i <= N-1; i++)
+	{
+		px.a [i] = point[i][0];
+		py.a [i] = point[i][1];
+	}
+
+	x.Set (P.block(0, 0, nx*ny, 1).data(), nx, ny);
+	y.Set (P.block(0, 1, nx*ny, 1).data(), nx, ny);
+	vx.Set(P.block(0, 2, nx*ny, 1).data(), nx, ny);
+	vy.Set(P.block(0, 3, nx*ny, 1).data(), nx, ny);
+
+	mglGraph gr;
+
+	gr.SetSize (800, 640);
+	gr.SetRanges (xmin, xmax, ymin, ymax);
+	gr.SetMeshNum (30);
+	gr.SetRange ('c', -1, 1);
+	gr.Axis ();
+	gr.Label ('x', "x");
+	gr.Label ('y', "y");
+	gr.Box ();
+
+	gr.Vect (x, y, vx, vy, "f");
+	gr.Plot (px, py, "B");
+	gr.WritePNG ("vektor.png", "Velocity field");
 }
 
 void
@@ -206,5 +266,7 @@ Walker::solve (int mode)
 		plot_chr ();
 		plot_pot ();
 	}
+	else
+		plot_vec ();
 }
 

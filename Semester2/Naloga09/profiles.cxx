@@ -22,9 +22,8 @@ elipsoid (int N, void * params)
 	std::vector<Eigen::Vector2d> points;
 	for (int i = 0; i <= N-1; i++)
 	{
-		// we have N-2 for the periodic boundary conditions
-		double x = cos (2*M_PI*i/(N-2)),
-		       y = b * sin (2*M_PI*i/(N-2));
+		double x = cos (2*M_PI*i/(N-1)),
+		       y = b * sin (2*M_PI*i/(N-1));
 
 		points.push_back (Eigen::Vector2d (x, y));
 	}
@@ -36,13 +35,13 @@ elipsoid (int N, void * params)
 std::vector<Eigen::Vector2d>
 fishpr (int N, void * params)
 {
-//	assert (N & 0); // test if N is even
+	assert (N & 1); // test if N is even
 
 	double t = *((double *) params);
 	std::vector<Eigen::Vector2d> points;
-	for (int i = 0; i <= (N-1)/2 - 1; i++)
+	for (int i = 0; i <= (N+1)/2 - 1; i++)
 	{
-		double x = 1 - i/((N-1)/2 - 1),
+		double x = 1 - (1.0*i)/((N+1)/2 - 1),
 		       y = 1.457122 * sqrt(x) 
 			       - 0.624424*x
 			       - 1.727016*x*x
@@ -53,14 +52,14 @@ fishpr (int N, void * params)
 		points.push_back (Eigen::Vector2d (x, y));
 	}
 
-	for (int i = 1; i <= (N-1)/2 - 1; i++)
+	for (int i = 1; i <= (N+1)/2 - 1; i++)
 	{
-		double x = i/((N-1)/2 - 1),
+		double x = (1.0*i)/((N+1)/2 - 1),
 		       y = -1.457122 * sqrt(x) 
-			       - 0.624424*x
-			       - 1.727016*x*x
-			       + 1.384087*pow(x, 3)
-			       - 0.489769*pow(x, 4);
+			       + 0.624424*x
+			       + 1.727016*x*x
+			       - 1.384087*pow(x, 3)
+			       + 0.489769*pow(x, 4);
 
 		y *= t/50;
 		points.push_back (Eigen::Vector2d (x, y));
@@ -82,8 +81,8 @@ zukovski (int N, void * params)
 	std::vector<Eigen::Vector2d> points;
 	for (int i = 0; i <= N-1; i++)
 	{
-		double x  = A + cos (2 * M_PI * i/(N-2)),
-		       y  = B + sin (2 * M_PI * i/(N-2)),
+		double x  = A + 0.9*cos (2 * M_PI * i/(N-1)),
+		       y  = B + 0.9*sin (2 * M_PI * i/(N-1)),
 		       n  = x*x + y*y,
 		       rx = 0.5*(x + x/n),
 		       ry = 0.5*(y - y/n);
