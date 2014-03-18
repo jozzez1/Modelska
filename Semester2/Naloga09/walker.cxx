@@ -98,17 +98,23 @@ Walker::velocity (int j, Vector2d r)
 {
 	Matrix2d R = rotMat (j);
 
-	Vector2d v1	= R * point[j],
-		 v2	= R * point[j+1],
-		 rr	= R * r,
+	Vector2d ar	= (point[j] + point[j+1])/2,	// center of the new coordinate system
+		 v1	= R * (point[j] - ar),
+		 v2	= R * (point[j+1] - ar),
+		 rr	= R * (r - ar),
 		 v;
 
-	double x1	= rr[0] - v1[0],
-	       x2	= rr[0] - v2[0],
-	       y	= rr[1];
+	if (r == ar)
+		v << 0, -0.5;
+	else
+	{
+		double x1	= rr[0] - v1[0],
+		       x2	= rr[0] - v2[0],
+		       y	= rr[1];
 
-	v[0] = log((x1*x1 + y*y)/(x2*x2 + y*y)) / (4 * M_PI);
-	v[1] = (atan(x1/y) - atan(x2/y)) / (2 * M_PI);
+		v[0] = log((x1*x1 + y*y)/(x2*x2 + y*y)) / (4 * M_PI);
+		v[1] = (arctan(x1,y) - arctan(x2,y)) / (2 * M_PI);
+	}
 
 	v = R.transpose()*v;
 	return v;
@@ -125,7 +131,7 @@ Walker::fillu (int mode)
 		for (int i = 0; i <= N-2; i++)
 		{
 			Matrix2d R = rotMat (i);
-			u[i] = (R * uInf)[1];
+			u[i] = (-1)*(R * uInf)[1];
 		}
 	}
 }
@@ -148,14 +154,9 @@ Walker::fillA (int mode)
 		{
 			for (int j = 0; j <= N-2; j++)
 			{
-				if (i == j)
-					A (i,j) = -0.5;
-				else
-				{
-					Matrix2d R = rotMat (j);
-					Vector2d v_ij = velocity (i, (point[j] + point[j+1])/2);
-					A(i,j) = (R * v_ij)[1];
-				}
+				Matrix2d R = rotMat (j);
+				Vector2d v_ij = velocity (i, (point[j] + point[j+1])/2);
+				A(i,j) = (R * v_ij)[1];
 			}
 		}
 	}
@@ -173,19 +174,20 @@ Walker::control (int mode, double b)
 			M (i, 0) = i;
 			M.block(i, 1, 1, 2) << u_inf, 0;
 
-			for (int j = 0; j <= N-2; j++)
-				M.block (i, 1, 1, 2).transpose() += (-1*c(j))*velocity (j, ((point[i] + point[i+1])/2));
-
 			Matrix2d R = rotMat (i);
+
+			for (int j = 0; j <= N-2; j++)
+				M.block (i, 1, 1, 2).transpose() += c(j)* velocity (j, ((point[i] + point[i+1])/2));
+
 			Vector2d v;
 
 			double x = ((point[i] + point[i+1])/2)[0],
 			       y = ((point[i] + point[i+1])/2)[1];
 
 			v << 1, 0;
-			v *= u_inf * ((y * (1 + b))/sqrt(y*y + pow(b, 4)*x*x));
+			v *= (-1)*u_inf * ((y * (1 + b))/sqrt(y*y + pow(b, 4)*x*x));
 
-			M(i, 3) = (R.transpose() * v)[0];
+			M(i, 3) = (R * v)[0];
 
 		}
 
@@ -307,7 +309,7 @@ Walker::plot_vec ()
 
 			for (int k = 0; k <= N-2; k++)
 				P.block (j + ny*i, 2, 1, 2).transpose() +=
-					(-1*c(k))*velocity (k, P.block (j + ny*i, 0, 1, 2).transpose());
+					c(k)*velocity (k, P.block (j + ny*i, 0, 1, 2).transpose());
 		}
 	}
 
@@ -341,10 +343,8 @@ Walker::plot_vec ()
 	gr.Box ();
 
 	gr.Vect (x, y, vx, vy, "fkUBbrR", "f");	// this is row-major, despite the example
-//	gr.Traj (x, y, vx, vy);
-//	gr.Flow (x, y, vy, vx, "vkUBbrR", "20");	// for some reason this is suddenly column-major
 	for (int i = 0; i <= 19; i++)
-		gr.FlowP (mglPoint (xmin, (ymax - ymin)*i/(19) + ymin), x, y, vy, vx, "ycg");
+		gr.FlowP (mglPoint (xmin, (ymax - ymin)*i/(19) + ymin), x, y, vy, vx, "vkUBbrR");
 	gr.Plot (px, py, "r");
 	gr.WritePNG ("vektor.png", "Velocity field");
 }
@@ -360,11 +360,10 @@ Walker::solve (int mode)
 	}
 	else
 	{
-//		std::cout << A << std::endl;
 		solve4c ();
 		control (mode, 0.5);
 //		print_solution ();
-//		plot_vec ();
+		plot_vec ();
 	}
 }
 

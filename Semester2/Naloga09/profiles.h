@@ -18,4 +18,7 @@ std::vector<Eigen::Vector2d> fishpr (int N, void * params);
 // the Zukovski wing profile
 std::vector<Eigen::Vector2d> zukovski (int N, void * params);
 
+// a more fansy arctan
+double arctan (double y, double x);
+
 #endif

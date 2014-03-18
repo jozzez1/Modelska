@@ -96,10 +96,9 @@ zukovski (int N, void * params)
 // arcus tangens, that returns in [0, 2pi) interval
 double arctan (double y, double x)
 {
-	double r = atan (fabs(y/x));
-	if (x < 0 && y > 0) r = M_PI - r;
-	else if (x < 0 && y < 0) r = M_PI + r;
-	else if (x > 0 && y < 0) r *= (-1);
+	double r = atan2 (y,x);
+	if (x < 0 && y < 0) r+= M_PI;
+	if (x < 0 && y > 0) r-= M_PI;
 
 	return r;
 }
