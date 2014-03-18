@@ -2,7 +2,8 @@ CXX=		clang++
 PRGNAM=		prg
 CPUOPT=		-march=corei7 -mssse3 -msse4.1
 OFLAG=		-O3
-OPTFLAGS=	${OFLAG} ${CPUOPT} -funroll-loops
+OPTFLAGS=	${OFLAG} ${CPUOPT} \
+		-funroll-loops -ffast-math -fno-stack-protector
 WARN=		-Wall -Wno-return-type-c-linkage
 LIBFLAGS=	-L/usr/local/lib \
 	       	-lm -lmgl -lmgl-wnd

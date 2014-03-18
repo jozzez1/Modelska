@@ -171,7 +171,7 @@ Walker::control (int mode, double b)
 
 		for (int i = 0; i <= N-2; i++)
 		{
-			M (i, 0) = i;
+			M (i, 0) = i*2*M_PI/(N-2);
 			M.block(i, 1, 1, 2) << u_inf, 0;
 
 			Matrix2d R = rotMat (i);
@@ -193,23 +193,26 @@ Walker::control (int mode, double b)
 
 		mglData pl1 (N-1),
 			pl2 (N-1),
-			pl3 (N-1),
 			x   (N-1);
 
 		x.Set (M.block (0, 0, N-1, 1).data (), N-1);
-		pl1.Set (M.block (0, 2, N-1, 1).data (), N-1);
-		pl2.Set (M.block (0, 1, N-1, 1).data (), N-1);
-		pl3.Set (M.block (0, 3, N-1, 1).data (), N-1);
+		pl1.Set (M.block (0, 1, N-1, 1).data (), N-1);
+		pl2.Set (M.block (0, 3, N-1, 1).data (), N-1);
 
 		mglGraph gr;
 		
 		gr.SetRange ('y', -2, 2);
 		gr.SetRange ('x', x);
+		gr.AddLegend ("numericno", "b");
+		gr.AddLegend ("analiticno", "g");
 		gr.Axis ();
+		gr.Legend (1, "#-");
 		gr.Box ();
-		gr.Plot (x, pl1);
-		gr.Plot (x, pl2);
-		gr.Plot (x, pl3);
+		gr.Plot (x, pl1, "b");
+		gr.Plot (x, pl2, "g");
+		gr.Title ("Kontrola za elipso");
+		gr.Label ('x', "locni kot, \\omega");
+		gr.Label ('y', "v_{\\parallel}");
 
 		gr.WritePNG ("control.png", "control plot");
 	}
@@ -290,7 +293,7 @@ Walker::plot_pot (void)
 }
 
 void
-Walker::plot_vec ()
+Walker::plot_vec (int mode)
 {
 	// first we compute the velocities
 	MatrixXd P (nx*nx, 4);
@@ -326,6 +329,27 @@ Walker::plot_vec ()
 		py.a [i] = point[i][1];
 	}
 
+	std::string out, naslov;
+	switch (mode)
+	{
+		case 1:
+			naslov.append("Elipsoid");
+			out.append ("elipsoid.png");
+			break;
+		case 2:
+			naslov.append("NACA-**");
+			out.append ("naca.png");
+			break;
+		case 3:
+			naslov.append("Zukovski");
+			out.append ("zukovski.png");
+			break;
+		default:
+			std::cout << "Wrong mode, asshole!" << std::endl;
+			exit (EXIT_FAILURE);
+
+	}
+
 	x.Set (P.block(0, 0, nx*ny, 1).data(), nx, ny);
 	y.Set (P.block(0, 1, nx*ny, 1).data(), nx, ny);
 	vx.Set(P.block(0, 2, nx*ny, 1).data(), nx, ny);
@@ -334,6 +358,7 @@ Walker::plot_vec ()
 	mglGraph gr;
 
 	gr.SetSize (800, 640);
+	gr.SetQuality (6);
 	gr.SetRanges (xmin, xmax, ymin, ymax);
 	gr.SetMeshNum (35);
 	gr.SetRange ('c', -1, 1);
@@ -343,10 +368,14 @@ Walker::plot_vec ()
 	gr.Box ();
 
 	gr.Vect (x, y, vx, vy, "fkUBbrR", "f");	// this is row-major, despite the example
+
+	// wave front-lines -- we'll insert them manually
 	for (int i = 0; i <= 19; i++)
-		gr.FlowP (mglPoint (xmin, (ymax - ymin)*i/(19) + ymin), x, y, vy, vx, "vkUBbrR");
+		gr.FlowP (mglPoint ((xmax - xmin)*i/(19) + xmin, ymin), x, y, vx, vy, "Ubq");
 	gr.Plot (px, py, "r");
-	gr.WritePNG ("vektor.png", "Velocity field");
+	
+	gr.Title (naslov.data());
+	gr.WritePNG (out.data(), "Velocity field");
 }
 
 void
@@ -362,8 +391,7 @@ Walker::solve (int mode)
 	{
 		solve4c ();
 		control (mode, 0.5);
-//		print_solution ();
-		plot_vec ();
+		plot_vec (mode);
 	}
 }
 

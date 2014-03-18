@@ -126,12 +126,51 @@ na sliki~\ref{gr2}.
 \subsection{Obtekanje krila}
 
 Za obtekanje krila imamo v bistvu la\v zji problem, saj moramo zgolj izra\v cunati hitrostno polje, ki je
-gradient potenciala.
+gradient potenciala. Tudi definicija matrike $A$ je nekoliko druga\v cna, saj hitrost v dani to\v cki
+dobimo kot
+\[
+	\mathbf{v}(\r) = \sum_{i = 0}^N \mathbf(v^{(i)})(\r) \sigma_i,
+\]
+kjer $\sigma_i$ predstavlja jakost izvora $i$-tega robnega elementa. $N$-terico $\sigma_i$ dobimo z
+re\v sevanjem ena\v cbe
+\[
+	A_{ij}\sigma_j = -\mathbf{n}_j \cdot \mathbf{u}_{\infty}, \quad A_{ij} = \mathbf{v}^{(i)}(\r_j)
+		\cdot \mathbf{n}_j.
+\]
+Knji\v znica {\tt MathGL} podpira izris tokovnic, ali pa valovnih front, zgolj na podlagi vektorskega polja, torej
+ni bilo potrebnega dodatnega programiranja. Najprej sem preveril, \v ce so rezultati v skladu z analiti\v cnimi
+(slika~\ref{gr2.1}):
 
 \begin{figure}[H]\centering
-	\includegraphics[width=0.8\textwidth]{vektor}
+	\includegraphics[width=0.8\textwidth]{control}
+	\caption{Kontrola obtekanja elipsoida za $b = 0.5$. Ni popolnega ujemanja, po mojem je to posledica tega,
+		da so robni elementi razli\v cnih dol\v zin, zaradi \v cesar jih je na "`nezanimivi"' strani preve\v c,
+		na delu, ki pa ga teko\v cina direktno zaliva, pa jih je premalo. Mogo\v ce bi bilo bolje, \v ce bi bili
+		robni elementi enakih dol\v zin.}
+	\label{gr2.1}
+\end{figure}
+
+Paralelna komponenta hitrosti glede na povr\v sino je zadosti natan\v cna, da lahko prika\v zemo tokovnice, ki obtekajo
+vitka telesa, za\v cen\v si z elipsoidom. 
+
+\begin{figure}[H]\centering
+	\includegraphics[width=0.8\textwidth]{elipsoid}
 	\caption{Vektorsko polje za elipsoid.}
 	\label{gr3}
+\end{figure}
+
+\begin{figure}[H]\centering
+	\includegraphics[width=0.8\textwidth]{naca}
+	\caption{Re\v sitev za ribji profil. To je {\tt NACA-0015}. Tokovnice so rahko popa\v cene
+		(dve sta prodrli notri), zaradi postopka, s katerim jih ra\v cunalnik ra\v cuna (v bistvu
+		prilagaja tirnico \v cez vektorsko polje). Vektorsko polje je pravilno.}
+	\label{gr4}
+\end{figure}
+
+\begin{figure}[H]\centering
+	\includegraphics[width=0.8\textwidth]{zukovski}
+	\caption{Resitev za profil, ki ga je predlagal \v Zukovski, $r = 0.9$.}
+	\label{gr5}
 \end{figure}
 
 \begin{thebibliography}{9}

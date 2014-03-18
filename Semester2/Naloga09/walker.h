@@ -4,6 +4,7 @@
 #include <vector>
 #include <cmath>
 #include <iostream>
+#include <string>
 
 #include <Eigen/Dense>
 #include <Eigen/QR>
@@ -52,7 +53,7 @@ class Walker
 
 		// plotting via MathGL
 		void plot_flow ();				// flow plot for 2nd assignment
-		void plot_vec ();				// gradient plot
+		void plot_vec (int);				// gradient plot
 		void plot_pot  ();				// plot potential
 		void plot_chr  ();				// plot charge density
 
