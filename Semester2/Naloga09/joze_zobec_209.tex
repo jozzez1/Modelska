@@ -63,44 +63,6 @@ Tako dobimo $\sigma_j$, ki je porazdelitev naboja na robu. Potencial v to\v cki 
 	\phi(\r) = \sum_{i = 1}^N \sigma_i u^{(i)} (\r).
 \] 
 
-Ko re\v sujemo obtok teko\v cine ob krilu nam ni treba re\v sevati sistema ena\v cb, vendar, \v ce ho\v cemo
-dobiti tokovnice moramo re\v siti ena\v cbo diferencialno ena\v cbo
-\[
-	\begin{bmatrix} \dot{x} \\ \dot{y}\end{bmatrix} = \begin{bmatrix} v_x \\ v_y \end{bmatrix},
-\]
-ki jo lahko re\v simo npr. s konstrukcijo simplekti\v cnega integratorja s Trotter-Suzukijevim razcepom
-(komutirajo\v ca opratorja sta v tem primeru $T_x$ in $T_y$, torej kineti\v cni energiji posameznih
-komponent $\r$), tj.
-\begin{align*}
-	\exp\big(c\tau\{\bullet, T_x\}\big) \begin{bmatrix} x \\ y \end{bmatrix} &= \begin{bmatrix} x
-		+ c\tau v_x (x,y) \\ y \end{bmatrix} \\
-	\exp\big(c\tau\{\bullet, T_y\}\big) \begin{bmatrix} x \\ y \end{bmatrix} &= \begin{bmatrix} x \\ y
-		+ c\tau v_y (x, y) \end{bmatrix}
-\end{align*}
-od koder lahko uporabimo katerokoli shemo ho\v cemo, npr. $S_2$, ki je najbolj preprosta in je reda
-$\mathcal{O}(\tau^2)$, zapi\v se pa se kot
-\[
-	\begin{bmatrix}
-		x \\ y
-	\end{bmatrix}_{t + \tau} = \begin{bmatrix}
-		x + \frac{\tau}{2} v_x (x,y) + \frac{\tau}{2}v_x\big(x + \frac{\tau}{2} v_x(x,y), y +
-			\tau v_y (x,y)\big) \\
-		y + \tau v_y (x,y)
-	\end{bmatrix}_t,
-\]
-hitrosti pa sta
-\begin{align*}
-	v_x (x,y) &= \sum_{i = 1}^N \big(t_x^{(i)} v_\parallel^{(i)}(x,y) + t_y^{(i)}v_\perp^{(i)}(x,y)\big), \\
-	v_y (x,y) &= \sum_{i = 1}^N \big(-t_x^{(i)} v_\parallel^{(i)}(x,y) + t_y^{(i)}v_\perp^{(i)}(x,y)\big),
-\end{align*}
-kjer je $\mathbf{t}^{(i)}$ enotski smerni vektor ustreznega robnega elementa,
-$\mathbf{t}^{(i)} \propto \r_{i+1} - \r_i$. Analogno lahko preklapljamo med lokalnimi in globalnimi
-koordinatami z rotacijsko matriko
-\[
-	\r^{(i)} = \begin{bmatrix} x' \\ y' \end{bmatrix}^{(i)} = \begin{bmatrix} t_x^{(i)} x - t_y^{(i)}y \\
-		t_y^{(i)} x + t_x^{(i)} y \end{bmatrix}
-\]
-
 Literatura~\cite[str.~659]{sirca} sicer navaja, da je v splo\v snem potrebna \v se ena matrika, ki problem malo
 ote\v zi, vendar zaupam poenostavitvi iz navodila naloge.
 \section{Rezultati}
@@ -161,16 +123,9 @@ vitka telesa, za\v cen\v si z elipsoidom.
 
 \begin{figure}[H]\centering
 	\includegraphics[width=0.8\textwidth]{naca}
-	\caption{Re\v sitev za ribji profil. To je {\tt NACA-0015}. Tokovnice so rahko popa\v cene
-		(dve sta prodrli notri), zaradi postopka, s katerim jih ra\v cunalnik ra\v cuna (v bistvu
-		prilagaja tirnico \v cez vektorsko polje). Vektorsko polje je pravilno.}
+	\caption{Re\v sitev za ribji profil. To je {\tt NACA-0015}. Na sliki vidimo valovno fronto,
+		je preglednej\v sa od tokovnic.}
 	\label{gr4}
-\end{figure}
-
-\begin{figure}[H]\centering
-	\includegraphics[width=0.8\textwidth]{zukovski}
-	\caption{Resitev za profil, ki ga je predlagal \v Zukovski, $r = 0.9$.}
-	\label{gr5}
 \end{figure}
 
 \begin{thebibliography}{9}
