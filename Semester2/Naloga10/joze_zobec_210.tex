@@ -39,40 +39,55 @@
 
 \section{Uvod}
 
-V tej nalogi bomo Poissonovo ena\v cbo re\v sevali po zgledu iz Matemati\v cne fizike II, z razvojem v Fourierovo
-vrsto. Problemi so tipa
+V tej nalogi bomo Poissonovo ena\v cbo re\v sevali po zgledu iz Matemati\v cne fizike II, z razvojem v
+Fourierovo vrsto. Problemi so tipa
 \[
 	\nabla^2 u (x,y) = g (x,y).
 \]
-Prva naloga zahteva, da izra\v cunamo poves, zaradi lastne te\v ze. To je isto, kot \v ce na idealno brezmasno
-plo\v s\v co pritiskamo z neko silo $-F_z(x,y)$ v smeri `$z$'. Iz kurza mehanike kontinuov~\cite[str.~84]{podgornik}
-se spomnimo, da poves opi\v se ena\v cba
+Prva naloga zahteva, da izra\v cunamo poves, zaradi lastne te\v ze. To je isto, kot \v ce na idealno
+brezmasno plo\v s\v co pritiskamo z neko silo $-F_z(x,y)$ v smeri `$z$'. Iz kurza mehanike
+kontinuov~\cite[str.~84]{podgornik} se spomnimo, da poves opi\v se ena\v cba
 \[
-	\Delta^2 \zeta (x,y) = +F(x,y), \quad \Delta = \nabla^2 = \partial_x^2 + \partial_y^2,
+	K_c\Delta^2 \zeta (x,y) = +F_z(x,y), \quad \Delta = \nabla^2 = \partial_x^2 + \partial_y^2,
 \]
 kar lahko razcepimo v dve ena\v cbi:
 \begin{align}
 	\nabla^2 f (x, y) &= F_z (x,y), \notag \\
-	\nabla^2 \zeta (x,y) &= f (x,y),
+	K_c\nabla^2 \zeta (x,y) &= f (x,y),
 \end{align}
-kjer je $F (x,y) \propto \rho (x,y)$, tj. bomo v brezdimenzijski obliki ena\v cili silo, in povr\v sinsko gostoto
-mase opne. Za $f(x,y)$ in $\zeta(x,y)$ veljajo (homogeni) Dirichletovi robni pogoji, tj.
+kjer je $K_c$ elasti\v cni modul opne/tanke plo\v s\v ce. Ker tega ne vemo se bomo zadovoljili z
+re\v sitvijo $f(x,y) \approx -K_c \zeta(x,y)$, saj $f(x,y)$ prav tako re\v si poves, vendar ne kot
+posledico elasti\v cnosti, ampak kot posledica kjer je $-F_z (x,y) \propto \rho (x,y)$, tj. bomo v
+brezdimenzijski obliki rekli kar $F(x,y) = -\rho(x,y)$. mase opne. Za $f(x,y)$ in $\zeta(x,y)$ veljajo
+(homogeni) Dirichletovi robni pogoji, tj.
 \[
 	f(x,y)\Big|_{\partial \mathcal{A}} = \zeta(x,y)\Big|_{\partial \mathcal{A}} = 0,
 \]
 kjer je $\mathcal{A}$ definicijsko obmo\v cje na\v se diferencialne ena\v cbe.
 
-Prednost uporabe Fourierove transformacije je ta, da diferencialne ena\v cbe v dualnem prostoru (Four. prostor)
-postanejo algebrajske, ki pa jih la\v zje re\v simo. \v Zal pa take metode lahko uporabimo zgolj na lepih
-geometrijah.
+Prednost uporabe Fourierove transformacije je ta, da diferencialne ena\v cbe v dualnem prostoru (Four.
+prostor) postanejo algebrajske, ki pa jih la\v zje re\v simo. \v Zal pa take metode lahko uporabimo zgolj
+na lepih geometrijah.
 
-K sre\v ci je druga naloga analogna. Poiskati moramo temperaturni profil valja v stacionarnem stanju, kjer sta
-osnovni ploskvi na stalni temperaturi $T_1$, pla\v s\v c pa na stalni temperaturi $T_2$. Problem ima cilindri\v cno
-rotacijsko simetrijo. Re\v sevati moramo
+K sre\v ci je druga naloga analogna. Poiskati moramo temperaturni profil valja v stacionarnem stanju,
+kjer sta osnovni ploskvi na stalni temperaturi $T_1$, pla\v s\v c pa na stalni temperaturi $T_2$. Problem
+ima cilindri\v cno rotacijsko simetrijo. Re\v sevati moramo
 \[
-	\nabla^2 T (x,y) = \alpha \partial_t T(x,y) = 0,
+	\nabla^2 T (x,y) = g(x,y), \qquad g(x,y) = 0.
 \]
-tj. Laplaceovo ena\v cbo, z (nehomogenimi) Dirichletovimi robnimi pogoji.
+Formalno je to Laplaceovo ena\v cba, vendar nehomogeni Dirichletovi robnimi pogoji poskrbijo, da
+$g(x,y) \neq 0$ za $(x,y) \in \partial \mathcal{A}$. Tako imamo spet Poissonovo ena\v cbo s homogenimi
+Dirichletovimi robnimi pogoji z $g (x,y)$
+\[
+	g(x,y) = \left\{\begin{array}{c c}
+			-1/N, & \text{\v ce\ } y = 0, \\
+			-1/N, & \text{ko\ } y = 1, \\
+			0, & \text{sicer.}
+		\end{array}
+		\right.
+\]
+Tu smo predpostavili, da je $\mathcal{A} = [0,1] \times [0,1]$ in da ga razre\v zemo na $N$ kosov
+v obeh smereh. V obeh primerih se poslu\v zimo (hitre) sinusne transformacije.
 
 \section{Rezultati}
 
