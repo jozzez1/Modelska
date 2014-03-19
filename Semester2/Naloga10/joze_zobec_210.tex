@@ -1,0 +1,87 @@
+\documentclass[a4 paper, 12pt]{article}
+\usepackage[slovene]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[small, width=0.9\textwidth,labelfont=it]{caption}
+\usepackage[pdftex]{graphicx}
+\usepackage[usenames, dvipsnames]{xcolor}
+\usepackage{amssymb, fullpage, float, pdflscape, subcaption, amsmath, color, hyperref}
+
+\renewcommand{\d}{
+	\ensuremath{\mathrm{d}}
+}
+
+\newcommand{\e}{
+	\ensuremath{\mathrm{e}}
+}
+
+\renewcommand{\r}{
+	\ensuremath{\mathbf{r}}
+}
+
+\hypersetup{
+	colorlinks=true,
+	linkcolor=black!60!red,
+	citecolor=black!60!green,
+	urlcolor=black!60!cyan
+}
+
+\begin{document}
+
+\begin{center}
+\textsc{Modelska analiza II}\\
+\textsc{2011/12}\\[0.5cm]
+\textbf{10. naloga -- Direktno re\v sevanje Poissonove ena\v cbe}
+\end{center}
+\begin{flushright}
+\textbf{Jože Zobec}\\
+\end{flushright}
+
+\section{Uvod}
+
+V tej nalogi bomo Poissonovo ena\v cbo re\v sevali po zgledu iz Matemati\v cne fizike II, z razvojem v Fourierovo
+vrsto. Problemi so tipa
+\[
+	\nabla^2 u (x,y) = g (x,y).
+\]
+Prva naloga zahteva, da izra\v cunamo poves, zaradi lastne te\v ze. To je isto, kot \v ce na idealno brezmasno
+plo\v s\v co pritiskamo z neko silo $-F_z(x,y)$ v smeri `$z$'. Iz kurza mehanike kontinuov~\cite[str.~84]{podgornik}
+se spomnimo, da poves opi\v se ena\v cba
+\[
+	\Delta^2 \zeta (x,y) = +F(x,y), \quad \Delta = \nabla^2 = \partial_x^2 + \partial_y^2,
+\]
+kar lahko razcepimo v dve ena\v cbi:
+\begin{align}
+	\nabla^2 f (x, y) &= F_z (x,y), \notag \\
+	\nabla^2 \zeta (x,y) &= f (x,y),
+\end{align}
+kjer je $F (x,y) \propto \rho (x,y)$, tj. bomo v brezdimenzijski obliki ena\v cili silo, in povr\v sinsko gostoto
+mase opne. Za $f(x,y)$ in $\zeta(x,y)$ veljajo (homogeni) Dirichletovi robni pogoji, tj.
+\[
+	f(x,y)\Big|_{\partial \mathcal{A}} = \zeta(x,y)\Big|_{\partial \mathcal{A}} = 0,
+\]
+kjer je $\mathcal{A}$ definicijsko obmo\v cje na\v se diferencialne ena\v cbe.
+
+Prednost uporabe Fourierove transformacije je ta, da diferencialne ena\v cbe v dualnem prostoru (Four. prostor)
+postanejo algebrajske, ki pa jih la\v zje re\v simo. \v Zal pa take metode lahko uporabimo zgolj na lepih
+geometrijah.
+
+K sre\v ci je druga naloga analogna. Poiskati moramo temperaturni profil valja v stacionarnem stanju, kjer sta
+osnovni ploskvi na stalni temperaturi $T_1$, pla\v s\v c pa na stalni temperaturi $T_2$. Problem ima cilindri\v cno
+rotacijsko simetrijo. Re\v sevati moramo
+\[
+	\nabla^2 T (x,y) = \alpha \partial_t T(x,y) = 0,
+\]
+tj. Laplaceovo ena\v cbo, z (nehomogenimi) Dirichletovimi robnimi pogoji.
+
+\section{Rezultati}
+
+\begin{thebibliography}{9}
+	\bibitem{podgornik}
+		R. Podgornik
+		{\em Mehanika kontinuov},
+		2007,
+		\url{http://www-f1.ijs.si/~rudi/lectures/mk-1.9.pdf}
+\end{thebibliography}
+
+\end{document}
