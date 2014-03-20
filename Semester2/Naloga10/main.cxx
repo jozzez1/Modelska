@@ -6,26 +6,36 @@
 
 int main (int argc, char ** argv)
 {
-    if (argc != 2)
+    if (argc != 3)
     {
         std::cerr << "Wrong program usage! Try:" 	<< std::endl;
-        std::cerr << argv[0] << " <filename>" 	    << std::endl;
+        std::cerr << argv[0] << " <filename> <hw>"  << std::endl;
         exit (EXIT_FAILURE);
     }
 
     // we get the filename
     std::string filename (argv[1]);
+    int mode = atoi (argv[2]);
 
     // from the format we read N
     // fortmat is -N-md.txt ...
-    size_t start    = filename.find_first_of ("-"),
-           stop     = filename.find_last_of  ("-"),
+    size_t start    = filename.find_first_of ("_"),
+           stop     = filename.find_last_of  ("_"),
            dot      = filename.find_last_of (".");
 
     // sp this the int
     size_t N = atoi ((filename.substr(start+1, stop-1)).c_str()) + 2;
-    std::string title = "Poves, \\Delta m = " + filename.substr(stop+1,dot);
-    title.replace (title.end()-4, title.end(), "");
+    std::string Mass = filename.substr (stop+1,dot),
+                title;
+    Mass.replace (Mass.end() - 4, Mass.end(), "");
+    double M = atof (Mass.c_str());
+
+    if (mode != 3 && M != 4)
+        title = "Poves, \\Delta m = " + Mass;
+    else if (mode != 3 && M == 4)
+        title = "Dolga palica";
+    else if (mode == 3)
+        title = "Profil valja";
 
     mglData x (N, N),
             y (N, N),
@@ -66,13 +76,22 @@ int main (int argc, char ** argv)
     mglGraph gr (0, 800, 800);
     gr.SetRanges (x,y);
     gr.SetRange ('c', z);
-    gr.Colorbar ("wyqrRk_");
+    gr.Colorbar ("wyqrRk>I");
     gr.Axis("q");
     gr.Box ("q");
 
-    gr.Cont (x, y, z, "t");
-    gr.Dens (x, y, z, "wyqrRk");
-    gr.Plot (X, Y, "W2i");
+    if (mode != 3 && M != 4)
+    {
+        gr.Dens (x, y, z, "wyqrRk");
+        gr.Cont (x, y, z, "YeqrR");
+    }
+    if (mode == 3 || M == 4)
+    {
+        gr.Dens (x, y, z, "kRrqyw");
+        gr.Cont (x, y, z, "RrqeY");
+    }
+    if (M != 4 && mode == 3)
+        gr.Plot (X, Y, "W2i");
     gr.Title (title.c_str());
 
     gr.WritePNG (filename.c_str(), "Poves");

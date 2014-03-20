@@ -1,9 +1,9 @@
 function z = solve1 (N, md)
 	pkg load signal
-	A = dens (N, md);
+	F = dens (N, md);
 
 	%% for now let's compute 2D Four. trans
-	Fhat = dst2 (A);
+	Fhat = dst2 (F);
 	
 	for m = 1:N
 		for n = 1:N
