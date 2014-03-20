@@ -25,6 +25,7 @@ int main (int argc, char ** argv)
     // sp this the int
     size_t N = atoi ((filename.substr(start+1, stop-1)).c_str()) + 2;
     std::string title = "Poves, \\Delta m = " + filename.substr(stop+1,dot);
+    title.replace (title.end()-4, title.end(), "");
 
     mglData x (N, N),
             y (N, N),
@@ -71,7 +72,7 @@ int main (int argc, char ** argv)
 
     gr.Cont (x, y, z, "t");
     gr.Dens (x, y, z, "wyqrRk");
-    gr.Plot (X, Y, "W2");
+    gr.Plot (X, Y, "W2i");
     gr.Title (title.c_str());
 
     gr.WritePNG (filename.c_str(), "Poves");
