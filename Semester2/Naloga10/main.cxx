@@ -71,7 +71,7 @@ int main (int argc, char ** argv)
     fin.close ();
 
     // now we change the ending for output
-    filename.replace (filename.end()-3, filename.end(), "");
+    filename.replace (filename.end()-4, filename.end(), "");
     filename.append("_");
     filename.append(argv[2]);
     filename.append(".png");

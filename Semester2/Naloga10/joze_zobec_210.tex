@@ -46,7 +46,7 @@ Fourierovo vrsto. Problemi so tipa
 \]
 Prva naloga zahteva, da izra\v cunamo poves, zaradi lastne te\v ze. To je isto, kot \v ce na idealno
 brezmasno plo\v s\v co pritiskamo z neko silo $-F_z(x,y)$ v smeri `$z$'. Iz kurza mehanike
-kontinuov~\cite[str.~84]{podgornik} se spomnimo, da poves opi\v se ena\v cba
+kontinuov~\cite[str.~84]{podgornik} se spomnimo, da elasti\v cno deformacijo opi\v se ena\v cba
 \[
 	K_c\Delta^2 \zeta (x,y) = +F_z(x,y), \quad \Delta = \nabla^2 = \partial_x^2 + \partial_y^2,
 \]
@@ -55,16 +55,14 @@ kar lahko razcepimo v dve ena\v cbi:
 	\nabla^2 f (x, y) &= F_z (x,y), \notag \\
 	K_c\nabla^2 \zeta (x,y) &= f (x,y),
 \end{align}
-kjer je $K_c$ elasti\v cni modul opne/tanke plo\v s\v ce. Ker tega ne vemo se bomo zadovoljili z
+kjer je $K_c$ elasti\v cni modul opne/tanke plo\v s\v ce. Ker tega ne poznamo se bomo zadovoljili z
 re\v sitvijo $f(x,y) \approx -K_c \zeta(x,y)$, saj $f(x,y)$ prav tako re\v si poves, vendar ne kot
-posledico elasti\v cnosti, ampak kot posledica kjer je $-F_z (x,y) \propto \rho (x,y)$, tj. bomo v
-brezdimenzijski obliki rekli kar $F(x,y) = -\rho(x,y)$. mase opne. Za $f(x,y)$ in $\zeta(x,y)$ veljajo
-(homogeni) Dirichletovi robni pogoji, tj.
+posledico elasti\v cnosti, ampak kot posledica minimizacije povr\v sine ob zunanji obremenitvi.
+V brezdimenzijski obliki bomo rekli kar $F_z(x,y) = \rho(x,y)$, tj. porazdelitev mase opne. Na\v sa
+ena\v cbo bo torej
 \[
-	f(x,y)\Big|_{\partial \mathcal{A}} = \zeta(x,y)\Big|_{\partial \mathcal{A}} = 0,
+    \nabla^2 \zeta (x,y) = \rho (x,y).
 \]
-kjer je $\mathcal{A}$ definicijsko obmo\v cje na\v se diferencialne ena\v cbe.
-
 Prednost uporabe Fourierove transformacije je ta, da diferencialne ena\v cbe v dualnem prostoru (Four.
 prostor) postanejo algebrajske, ki pa jih la\v zje re\v simo. \v Zal pa take metode lahko uporabimo zgolj
 na lepih geometrijah.
@@ -100,8 +98,15 @@ operatorja se zapi\v se kot
     U^m_{\ell - 1}\bigg(1 - \frac{h}{2r}\bigg) + U^m_{\ell + 1}\bigg(1 + \frac{h}{2r}\bigg) +
         U^m_\ell \big(2 - 4\cos(m\pi/N)\big)
 \]
+Za mnoge prostorske simetrije operatorja $\nabla^2$ nastopajo trigonometri\v cne funkcije med
+lastnimi, kar pomeni, da \v ceprav ne moremo narediti FFT v vseh smereh, ga lahko izvedemo
+vsaj v eni smeri, preostale pa pa nadomestimo lahko z diferencami. \v Zal pa je FFT omejena le
+na diferencialne ena\v cbe nad lepimi domenami $\mathcal{A}$ (tj. njihov rob je odsekoma raven).
 
 \section{Rezultati}
+
+Za izra\v cun sem kombiniral {\tt C++} in {\tt Octave}, za prikaz pa {\tt Gnuplot} in {\tt MathGL},
+da bi dosegel optimalno razmerje med hitrostjo ra\v cunanja, izrisovanja in seveda hitrostjo programiranja.
 
 Funkcijo gostote $\rho (x,y)$ sem si zamislil kot
 \[
@@ -112,29 +117,116 @@ Funkcijo gostote $\rho (x,y)$ sem si zamislil kot
         \right.
 \]
 kjer je "`kri\v z"' lik iz \v seste naloge. Homogena opna torej ustreza primeru $\Delta m = 0$.
-Rezultati so bili zadosti dobre \v ze z $N = 120$.
+Rezultati so bili zadosti dobre \v ze z $N = 120$. Primerjal sem samo 1D FFT in 2D FFT. Ugotovil
+sem, da 2D FFT metoda traja skoraj dvakrat dlje za $N = 120$, vendar pa da bolj natan\v cne rezultate,
+kar lahko vidimo na sliki~\ref{gr1}. Poglejmo si rezultate za nekaj razli\v cnih $\Delta m$ na slikah~\ref{gr2},
+~\ref{gr2},~\ref{gr3},~\ref{gr4},~\ref{gr5},~\ref{gr6},~\ref{gr7},~\ref{gr8} in \ref{gr9}.
 
 \begin{figure}[H]\centering
-    \includegraphics[width=0.7\textwidth]{solution_120_0}
-    \vspace{-32pt}
-    \caption{Re\v sitev za $N = 120$, homogena opna.}
-    \vspace{-20pt}
+    \input{napaka.tex}
+    \caption{Ujemanje 1D in 2D FFT po decimalkah. Vidimo, da imamo ujemanje med eno in tremi decimalnimi
+        mesti, kar ni dovolj dobro.}
+    \label{gr1}
 \end{figure}
 
 \begin{figure}[H]\centering
-    \includegraphics[width=0.7\textwidth]{solution_120_3}
+    \includegraphics[width=0.7\textwidth]{solution_120_0_1}
     \vspace{-32pt}
-    \caption{Re\v sitev za $N = 120$, nehomogena opna. Primer za $\Delta m > 0$.}
-    \vspace{-20pt}
+    \caption{2D FFT za homogeno opno.}
+    \vspace{-18pt}
+    \label{gr2}
 \end{figure}
 
 \begin{figure}[H]\centering
-    \includegraphics[width=0.7\textwidth]{solution_120_-1}
+    \includegraphics[width=0.7\textwidth]{solution_120_0_2}
     \vspace{-32pt}
-    \caption{Primer, ko je kri\v z brezmasen.}
-    \vspace{-20pt}
+    \caption{1D FFT za homogeno opno.}
+    \vspace{-18pt}
+    \label{gr3}
 \end{figure}
 
+\begin{figure}[H]\centering
+    \includegraphics[width=0.7\textwidth]{solution_120_1_1}
+    \vspace{-32pt}
+    \caption{2D FFT za opno, katere "`kri\v z"' ima dvakratno maso.}
+    \vspace{-18pt}
+    \label{gr4}
+\end{figure}
+
+\begin{figure}[H]\centering
+    \includegraphics[width=0.7\textwidth]{solution_120_1_2}
+    \vspace{-32pt}
+    \caption{Ista situacija kot na sliki~\ref{gr4}, le da imamo 1D FFT.}
+    \vspace{-18pt}
+    \label{gr5}
+\end{figure}
+
+\begin{figure}[H]\centering
+    \includegraphics[width=0.7\textwidth]{solution_120_-05_1}
+    \vspace{-32pt}
+    \caption{2D FFT za opno, katere "`kri\v z'" tehta pol toliko, kot preostali del.}
+    \vspace{-18pt}
+    \label{gr6}
+\end{figure}
+
+\begin{figure}[H]\centering
+    \includegraphics[width=0.7\textwidth]{solution_120_-05_2}
+    \vspace{-32pt}
+    \caption{1D FFT za opno, katere "`kri\v z'" tehta pol toliko, kot preostali del.}
+    \vspace{-18pt}
+    \label{gr7}
+\end{figure}
+
+\begin{figure}[H]\centering
+    \includegraphics[width=0.7\textwidth]{solution_120_3_1}
+    \vspace{-32pt}
+    \caption{2D FFT za opno, katere "`kri\v z'" tehta trikrat toliko, kot preostanek.}
+    \vspace{-18pt}
+    \label{gr8}
+\end{figure}
+
+\begin{figure}[H]\centering
+    \includegraphics[width=0.7\textwidth]{solution_120_3_2}
+    \vspace{-32pt}
+    \caption{1D FFT primerjava za prej\v snjo sliko (tj. sliko~\ref{gr8}).}
+    \vspace{-8pt}
+    \label{gr9}
+\end{figure}
+
+Ni velike rezlike -- seveda, na enem, oz. dveh decimalnih mestih, bosta barvna grafa za \v clove\v sko
+oko nerazlo\v cljiva, kljub temu, da sem jih dodatno opremil z izohipsami.
+
+\subsection{Cilinder}
+
+Kot sem povedal v uvodu, imamo za cilinder na voljo le 1D FFT. Rezultat je na sliki~\ref{gr10}.
+
+\begin{figure}[H]\centering
+    \includegraphics[width=0.7\textwidth]{cilinder_120_4_3}
+    \vspace{-32pt}
+    \caption{1D FFT temperaturni profil cilindra.}
+    \vspace{-8pt}
+    \label{gr10}
+\end{figure}
+
+Za primerjavo si poglejmo, kaj bi se zgodilo, \v ce bi "`valj"' razvili po sinusih -- dobili temperaturni
+profil dolge palice s kvadratnim profilom. Na slikah~\ref{gr11} in~\ref{gr12} vidimo kako velika je
+razlika glede na valj (tj. sliko~\ref{gr10}).
+
+\begin{figure}[H]\centering
+    \includegraphics[width=0.7\textwidth]{solution_120_4_2}
+    \vspace{-32pt}
+    \caption{1D FFT temperaturni profil dolge palice s kvadratnim profilom.}
+    \vspace{-18pt}
+    \label{gr11}
+\end{figure}
+
+\begin{figure}[H]\centering
+    \includegraphics[width=0.7\textwidth]{solution_120_4_2}
+    \vspace{-32pt}
+    \caption{2D FFT temperaturni profil dolge palice s kvadratnim profilom.}
+    \vspace{-18pt}
+    \label{gr12}
+\end{figure}
 
 \begin{thebibliography}{9}
     \bibitem{NR}
