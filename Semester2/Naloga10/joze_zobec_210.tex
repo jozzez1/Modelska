@@ -2,7 +2,7 @@
 \usepackage[slovene]{babel}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
-\usepackage[small, width=0.9\textwidth,labelfont=it]{caption}
+\usepackage[small, width=0.7\textwidth,labelfont=it]{caption}
 \usepackage[pdftex]{graphicx}
 \usepackage[usenames, dvipsnames]{xcolor}
 \usepackage{amssymb, fullpage, float, pdflscape, subcaption, amsmath, color, hyperref}
@@ -75,28 +75,78 @@ ima cilindri\v cno rotacijsko simetrijo. Re\v sevati moramo
 \[
 	\nabla^2 T (x,y) = g(x,y), \qquad g(x,y) = 0.
 \]
-Formalno je to Laplaceovo ena\v cba, vendar nehomogeni Dirichletovi robnimi pogoji poskrbijo, da
+Formalno je to Laplaceovo ena\v cba, vendar nehomogeni Dirichletovi robni pogoji poskrbijo, da
 $g(x,y) \neq 0$ za $(x,y) \in \partial \mathcal{A}$. Tako imamo spet Poissonovo ena\v cbo s homogenimi
 Dirichletovimi robnimi pogoji z $g (x,y)$
 \[
 	g(x,y) = \left\{\begin{array}{c c}
-			-1/N, & \text{\v ce\ } y = 0, \\
-			-1/N, & \text{ko\ } y = 1, \\
+			-N^2, & \text{ko\ } y = 0, \\
+			-N^2, & \text{ko\ } y = 1, \\
 			0, & \text{sicer.}
 		\end{array}
 		\right.
 \]
 Tu smo predpostavili, da je $\mathcal{A} = [0,1] \times [0,1]$ in da ga razre\v zemo na $N$ kosov
-v obeh smereh. V obeh primerih se poslu\v zimo (hitre) sinusne transformacije.
+v obeh smereh. V obeh primerih se poslu\v zimo (hitre) sinusne transformacije. Vendar jo za valj
+lahko uporabimo samo v osi cilidri\v cne simetije: v radialni smeri so lastne re\v sitve namre\v c
+Besselove funkcije. Po analogiji za tudi tu v radialni smeri re\v sujemo tridiagonalen sistem,
+ki odvod v radialni smeri aproksimira s kon\v cnimi diferencami. Relevantni del Laplaceovega
+operatorja se zapi\v se kot
+\[
+    \nabla^2 = \frac{1}{r} \partial_r + \partial_r^2 + \partial_z^2,
+\]
+\v ce prvi odvod aproksimiramo s simetri\v cno prvo diferenco, dobimo
+\[
+    U^m_{\ell - 1}\bigg(1 - \frac{h}{2r}\bigg) + U^m_{\ell + 1}\bigg(1 + \frac{h}{2r}\bigg) +
+        U^m_\ell \big(2 - 4\cos(m\pi/N)\big)
+\]
 
 \section{Rezultati}
 
+Funkcijo gostote $\rho (x,y)$ sem si zamislil kot
+\[
+    \rho (x,y) = \left\{\begin{array}{c c}
+            1, & \text{ko nismo na kri\v zu}, \\
+            1 + \Delta m, & \text{ko smo na kri\v zu},
+        \end{array}
+        \right.
+\]
+kjer je "`kri\v z"' lik iz \v seste naloge. Homogena opna torej ustreza primeru $\Delta m = 0$.
+Rezultati so bili zadosti dobre \v ze z $N = 120$.
+
+\begin{figure}[H]\centering
+    \includegraphics[width=0.7\textwidth]{solution_120_0}
+    \vspace{-32pt}
+    \caption{Re\v sitev za $N = 120$, homogena opna.}
+    \vspace{-20pt}
+\end{figure}
+
+\begin{figure}[H]\centering
+    \includegraphics[width=0.7\textwidth]{solution_120_3}
+    \vspace{-32pt}
+    \caption{Re\v sitev za $N = 120$, nehomogena opna. Primer za $\Delta m > 0$.}
+    \vspace{-20pt}
+\end{figure}
+
+\begin{figure}[H]\centering
+    \includegraphics[width=0.7\textwidth]{solution_120_-1}
+    \vspace{-32pt}
+    \caption{Primer, ko je kri\v z brezmasen.}
+    \vspace{-20pt}
+\end{figure}
+
+
 \begin{thebibliography}{9}
-	\bibitem{podgornik}
-		R. Podgornik
-		{\em Mehanika kontinuov},
-		2007,
-		\url{http://www-f1.ijs.si/~rudi/lectures/mk-1.9.pdf}
+    \bibitem{NR}
+        W. H. Press, S. A. Teukolsky, W. T. Vetterling, B. P. Flannery,
+        {\em Numerical Recipes: The Art of Scientific Computing},
+        Cambridge University Press,
+        2007
+    \bibitem{podgornik}
+        R. Podgornik,
+        {\em Mehanika kontinuov},
+        2007,
+        \url{http://www-f1.ijs.si/~rudi/lectures/mk-1.9.pdf}
 \end{thebibliography}
 
 \end{document}

@@ -71,7 +71,10 @@ int main (int argc, char ** argv)
     fin.close ();
 
     // now we change the ending for output
-    filename.replace (filename.end()-3, filename.end(), "png");
+    filename.replace (filename.end()-3, filename.end(), "");
+    filename.append("_");
+    filename.append(argv[2]);
+    filename.append(".png");
 
     mglGraph gr (0, 800, 800);
     gr.SetRanges (x,y);
@@ -90,7 +93,7 @@ int main (int argc, char ** argv)
         gr.Dens (x, y, z, "kRrqyw");
         gr.Cont (x, y, z, "RrqeY");
     }
-    if (M != 4 && mode == 3)
+    if (M != 4 && mode != 3)
         gr.Plot (X, Y, "W2i");
     gr.Title (title.c_str());
 

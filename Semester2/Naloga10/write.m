@@ -1,6 +1,6 @@
 function write (N, md, hw)
 	%% to save
-    base = "solution";
+    base = "solution_";
     switch (hw)
         case 1
         	z = solve1 (N, md);
@@ -8,7 +8,7 @@ function write (N, md, hw)
             z = solve2 (N, md);
         case 3
             z = solve3 (N, md);
-            base = "cilinder";
+            base = "cilinder_";
     endswitch
 
 	%% we add the boundaries
@@ -33,7 +33,7 @@ function write (N, md, hw)
 	ZZ = reshape (Z, (N+2)*(N+2), 1);
 
 	A = [XX, YY, ZZ];
-	data = ["solution_", int2str(N), "_", num2str(md), ".txt"]
+	data = [base, int2str(N), "_", num2str(md), ".txt"]
 	save ('-ascii', data, 'A');
 
     system (["./prg ", data, " ",int2str(hw)]);
