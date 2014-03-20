@@ -14,5 +14,6 @@ function z = solve1 (N, md)
 
 	z = idst2 (zhat);
 
+	pkg unload signal
 	return;
 endfunction

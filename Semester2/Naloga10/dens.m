@@ -14,8 +14,8 @@ function A = dens (N, md)
 		end
 	elseif md == 4		%% cylinder boundaries
 		A = zeros (N,N);
-		A (1,:) = -1/(N^2);
-		A (N,:) = -1/(N^2);
+		A (1,:) = -1*N^2;
+		A (N,:) = -1*N^2;
 	endif
 
 	return;
