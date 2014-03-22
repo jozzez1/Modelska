@@ -131,13 +131,13 @@ plot_xy (HMDT x, HMDT y, gsl_vector * FT,
     HMDT colors = mgl_create_data ();
     mgl_data_set_vector (colors, FT);
 
-    HMGL gr = mgl_create_graph (800, 400);
+    HMGL gr = mgl_create_graph (800, 400);      // we have to correct the aspect ratio
     mgl_set_range_val (gr, 'x', 1.2, -1.2);     // we invert the 'x' axis
-    mgl_set_range_val (gr, 'y', 1.2, 0);         // we invert the 'y' axis
+    mgl_set_range_val (gr, 'y', 1.2, 0);        // we invert the 'y' axis
     mgl_set_origin (gr, 1.2, 0, 0);
     mgl_axis (gr, "xy", "", "");
     mgl_tens_xy (gr, x, y, colors, "", "");
-    mgl_traj_xy (gr, X, Y, VX, VY, "", "");
+    mgl_traj_xy (gr, X, Y, VX, VY, "", "value 2");
     mgl_write_frame (gr, filename, "");
     mgl_delete_graph (gr);
 }
