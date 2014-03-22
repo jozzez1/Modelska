@@ -86,7 +86,7 @@ time_step (gsl_vector * FT, gsl_vector * fT, gsl_vector * main_diag, gsl_vector 
 }
 
 void
-get_xy (HMDT x, HMDT y, const gsl_vector * fT, unsigned int N)
+get_xy (HMDT x, HMDT y, gsl_vector * fT, unsigned int N)
 {
     mgl_data_set_value (x, 0, 0, 0, 0);
     mgl_data_set_value (y, 0, 0, 0, 0);
@@ -103,7 +103,29 @@ get_xy (HMDT x, HMDT y, const gsl_vector * fT, unsigned int N)
 }
 
 void
-plot_xy (HMDT x, HMDT y, gsl_vector * FT, char * filename)
+get_vxy (HMDT X, HMDT Y, HMDT VX, HMDT VY, gsl_vector * vx, gsl_vector * vy,
+        HMDT x0, HMDT y0, HMDT x1, HMDT y1, int N, double ht)
+{
+    unsigned int i;
+    for (i = N+1; i--;)
+    {
+        gsl_vector_set (vx, i, (mgl_data_get_value (x1, i, 0, 0) - mgl_data_get_value (x0, i, 0, 0))/ht);
+        gsl_vector_set (vy, i, (mgl_data_get_value (y1, i, 0, 0) - mgl_data_get_value (y0, i, 0, 0))/ht);
+    }
+
+    // and now we set the rest
+    for (i = 10; i--;)
+    {
+        mgl_data_set_value (X, mgl_data_get_value (x1, (i+1)*N/10, 0, 0), i, 0, 0);
+        mgl_data_set_value (Y, mgl_data_get_value (y1, (i+1)*N/10, 0, 0), i, 0, 0);
+        mgl_data_set_value (VX, gsl_vector_get (vx, (i+1)*N/10), i, 0, 0);
+        mgl_data_set_value (VY, gsl_vector_get (vy, (i+1)*N/10), i, 0, 0);
+    }
+}
+
+void
+plot_xy (HMDT x, HMDT y, gsl_vector * FT,
+        HMDT X, HMDT Y, HMDT VX, HMDT VY, char * filename)
 {
     // we use FT for colors
     HMDT colors = mgl_create_data ();
@@ -114,7 +136,8 @@ plot_xy (HMDT x, HMDT y, gsl_vector * FT, char * filename)
     mgl_set_range_val (gr, 'y', 1.2, 0);         // we invert the 'y' axis
     mgl_set_origin (gr, 1.2, 0, 0);
     mgl_axis (gr, "xy", "", "");
-    mgl_tens_xy (gr, x, y, colors, "", "b");
+    mgl_tens_xy (gr, x, y, colors, "", "");
+    mgl_traj_xy (gr, X, Y, VX, VY, "", "");
     mgl_write_frame (gr, filename, "");
     mgl_delete_graph (gr);
 }
@@ -131,10 +154,18 @@ solve (unsigned int N, unsigned long int T, unsigned int frames, double ht, doub
                * F          = gsl_vector_alloc (N),
                * main_diag  = gsl_vector_alloc (N-2),
                * side_diag  = gsl_vector_alloc (N-3),
-               * values     = gsl_vector_alloc (N-2);
+               * values     = gsl_vector_alloc (N-2),
+               * vx         = gsl_vector_alloc (N+1),
+               * vy         = gsl_vector_alloc (N+1);
 
-    HMDT x = mgl_create_data_size (N+1, 0, 0),
-         y = mgl_create_data_size (N+1, 0, 0);
+    HMDT x0 = mgl_create_data_size (N+1, 0, 0),
+         y0 = mgl_create_data_size (N+1, 0, 0),
+         x1 = mgl_create_data_size (N+1, 0, 0),
+         y1 = mgl_create_data_size (N+1, 0, 0),
+         VX = mgl_create_data_size (10, 0, 0),
+         VY = mgl_create_data_size (10, 0, 0),
+         X  = mgl_create_data_size (10, 0, 0),
+         Y  = mgl_create_data_size (10, 0, 0);
 
     char filename[15];
 
@@ -159,8 +190,10 @@ solve (unsigned int N, unsigned long int T, unsigned int frames, double ht, doub
 
         // and only plot then
         sprintf (filename, "anim/%06lu.jpg", frames-1-i);
-        get_xy (x, y, fT, N);
-        plot_xy (x, y, FT, filename);
+        get_xy (x0, y0, f0, N);
+        get_xy (x1, y1, f1, N);
+        get_vxy (X, Y, VX, VY, vx, vy, x0, y0, x1, y1, N, ht);
+        plot_xy (x1, y1, FT, X, Y, VX, VY, filename);
     }
 
     // free all those variables
@@ -173,8 +206,16 @@ solve (unsigned int N, unsigned long int T, unsigned int frames, double ht, doub
     gsl_vector_free (side_diag);
     gsl_vector_free (main_diag);
     gsl_vector_free (values);
-    mgl_delete_data (x);
-    mgl_delete_data (y);
+    gsl_vector_free (vx);
+    gsl_vector_free (vy);
+    mgl_delete_data (x0);
+    mgl_delete_data (y0);
+    mgl_delete_data (x1);
+    mgl_delete_data (y1);
+    mgl_delete_data (VX);
+    mgl_delete_data (VY);
+    mgl_delete_data (X);
+    mgl_delete_data (Y);
 
     // use mencoder to make animation from those pics
     // -------------------------------------------------
