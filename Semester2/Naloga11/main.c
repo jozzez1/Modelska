@@ -105,9 +105,10 @@ get_xy (HMDT x, HMDT y, const gsl_vector * fT, unsigned int N)
 void
 plot_xy (HMDT x, HMDT y, char * filename)
 {
-    HMGL gr = mgl_create_graph (800, 800);
+    HMGL gr = mgl_create_graph (800, 400);
     mgl_set_range_val (gr, 'x', 1.2, -1.2);     // we invert the 'x' axis
-    mgl_set_range_val (gr, 'y', 1.2, 0);    // we invert the 'y' axis
+    mgl_set_range_val (gr, 'y', 1.2, 0);         // we invert the 'y' axis
+    mgl_set_origin (gr, 1.2, 0, 0);
     mgl_axis (gr, "xy", "", "");
     mgl_plot_xy (gr, x, y, "", "b");
     mgl_write_frame (gr, filename, "");
@@ -141,10 +142,10 @@ solve (unsigned int N, unsigned long int T, double ht, double fi0)
     Fnew (FT, main_diag, values, f1, f0, side_diag, ht);
 
     unsigned long int i,j;
-    for (i = 10*T; i--; )
+    for (i = T; i--; )
     {
         // we will skip T frames
-        for (j = T; j--; )
+        for (j = 2*T; j--; )
         {
             gsl_vector_memcpy (F, FT);
             time_step (FT, fT, main_diag, values, F, side_diag, f1, f0, ht);
@@ -153,7 +154,7 @@ solve (unsigned int N, unsigned long int T, double ht, double fi0)
         }
 
         // and only plot then
-        sprintf (filename, "anim/%06lu.png", 10*T-1-i);
+        sprintf (filename, "anim/%06lu.jpg", T-1-i);
         get_xy (x, y, fT, N);
         plot_xy (x, y, filename);
     }
@@ -170,16 +171,29 @@ solve (unsigned int N, unsigned long int T, double ht, double fi0)
     gsl_vector_free (values);
     mgl_delete_data (x);
     mgl_delete_data (y);
+
+    // use mencoder to make animation from those pics
+    // -------------------------------------------------
+    system ("./anime.sh anim");
 }
 
 int main (int argc, char ** argv)
 {
-    unsigned int N      = 100;
-    unsigned long int T = 1000;
-    double ht           = 1e-4,
-           fi0          = M_PI*(0.5 + 0.3);
+    unsigned int N      = 500;
+    unsigned long int T = 10000;
+    double ht           = 1e-5,
+           fi0          = M_PI*0.5;
+
+    if (argc != 2)
+    {
+        printf ("Wrong program usage!\n");
+        printf ("Try:\n");
+        printf ("%s <fi0 [units of pi]>\n", argv[0]);
+        exit (EXIT_FAILURE);
+    }
+
+    fi0 += M_PI * atof (argv[1]);
 
     solve (N, T, ht, fi0);
-
-    return 0;
+    exit (EXIT_SUCCESS);
 }
