@@ -2,6 +2,8 @@
 #include <math.h>
 #include <gsl/gsl_vector.h>
 #include <gsl/gsl_linalg.h>
+#include <mgl2/data.h>
+#include <mgl2/mgl.h>
 
 static inline double
 pow2 (double x) { return x*x; };
@@ -83,15 +85,40 @@ time_step (gsl_vector * FT, gsl_vector * fT, gsl_vector * main_diag, gsl_vector 
     Fnew (FT, main_diag, values, fT, f1, side_diag, ht);
 }
 
-int main (int argc, char ** argv)
+void
+get_xy (HMDT x, HMDT y, const gsl_vector * fT, unsigned int N)
 {
-    unsigned int N  = 20,
-                 T  = 100000,
-                 i;
-    double ht       = 1e-4,
-           fi0      = M_PI*(0.5 + 0.3);
+    mgl_data_set_value (x, 0, 0, 0, 0);
+    mgl_data_set_value (y, 0, 0, 0, 0);
 
-    // allocation phase
+    unsigned int i;
+    for (i = N-1; i--;)
+    {
+        mgl_data_set_value (x, cos(gsl_vector_get (fT, N-2-i))/N + mgl_data_get_value (x, N-2-i, 0, 0), N-1-i, 0, 0);
+        mgl_data_set_value (y, sin(gsl_vector_get (fT, N-2-i))/N + mgl_data_get_value (y, N-2-i, 0, 0), N-1-i, 0, 0);
+    }
+    // these vectors have one extra component
+    mgl_data_set_value (x, cos(gsl_vector_get (fT, N-1))/N + mgl_data_get_value (x, N-1, 0, 0), N, 0, 0);
+    mgl_data_set_value (y, sin(gsl_vector_get (fT, N-1))/N + mgl_data_get_value (y, N-1, 0, 0), N, 0, 0);
+}
+
+void
+plot_xy (HMDT x, HMDT y, char * filename)
+{
+    HMGL gr = mgl_create_graph (800, 800);
+    mgl_set_range_val (gr, 'x', 1.2, -1.2);     // we invert the 'x' axis
+    mgl_set_range_val (gr, 'y', 1.2, 0);    // we invert the 'y' axis
+    mgl_axis (gr, "xy", "", "");
+    mgl_plot_xy (gr, x, y, "", "b");
+    mgl_write_frame (gr, filename, "");
+    mgl_delete_graph (gr);
+}
+
+void
+solve (unsigned int N, unsigned long int T, double ht, double fi0)
+{
+    // some variable declarations
+    // -------------------------------------------------
     gsl_vector * f0         = gsl_vector_alloc (N),
                * f1         = gsl_vector_alloc (N),
                * FT         = gsl_vector_alloc (N),
@@ -101,23 +128,38 @@ int main (int argc, char ** argv)
                * side_diag  = gsl_vector_alloc (N-3),
                * values     = gsl_vector_alloc (N-2);
 
-    // now we fill them
+    HMDT x = mgl_create_data_size (N+1, 0, 0),
+         y = mgl_create_data_size (N+1, 0, 0);
+
+    char filename[15];
+
+    // here we start solving
+    // -------------------------------------------------
     gsl_vector_set_all (f0, fi0);
     gsl_vector_set_all (f1, fi0);
     gsl_vector_set_all (side_diag, 1);
     Fnew (FT, main_diag, values, f1, f0, side_diag, ht);
 
-    for (i = T; i--; )
+    unsigned long int i,j;
+    for (i = 10*T; i--; )
     {
-        gsl_vector_memcpy (F, FT);
-        time_step (FT, fT, main_diag, values, F, side_diag, f1, f0, ht);
-        gsl_vector_memcpy (f0, f1);
-        gsl_vector_memcpy (f1, fT);
+        // we will skip T frames
+        for (j = T; j--; )
+        {
+            gsl_vector_memcpy (F, FT);
+            time_step (FT, fT, main_diag, values, F, side_diag, f1, f0, ht);
+            gsl_vector_memcpy (f0, f1);
+            gsl_vector_memcpy (f1, fT);
+        }
+
+        // and only plot then
+        sprintf (filename, "anim/%06lu.png", 10*T-1-i);
+        get_xy (x, y, fT, N);
+        plot_xy (x, y, filename);
     }
 
-    gsl_vector_add_constant(fT, -0.5*M_PI);
-    gsl_vector_fprintf (stdout, fT, "%f");
-
+    // free all those variables
+    // -------------------------------------------------
     gsl_vector_free (f0);
     gsl_vector_free (f1);
     gsl_vector_free (FT);
@@ -126,6 +168,18 @@ int main (int argc, char ** argv)
     gsl_vector_free (side_diag);
     gsl_vector_free (main_diag);
     gsl_vector_free (values);
+    mgl_delete_data (x);
+    mgl_delete_data (y);
+}
+
+int main (int argc, char ** argv)
+{
+    unsigned int N      = 100;
+    unsigned long int T = 1000;
+    double ht           = 1e-4,
+           fi0          = M_PI*(0.5 + 0.3);
+
+    solve (N, T, ht, fi0);
 
     return 0;
 }
