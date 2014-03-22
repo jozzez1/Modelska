@@ -103,20 +103,24 @@ get_xy (HMDT x, HMDT y, const gsl_vector * fT, unsigned int N)
 }
 
 void
-plot_xy (HMDT x, HMDT y, char * filename)
+plot_xy (HMDT x, HMDT y, gsl_vector * FT, char * filename)
 {
+    // we use FT for colors
+    HMDT colors = mgl_create_data ();
+    mgl_data_set_vector (colors, FT);
+
     HMGL gr = mgl_create_graph (800, 400);
     mgl_set_range_val (gr, 'x', 1.2, -1.2);     // we invert the 'x' axis
     mgl_set_range_val (gr, 'y', 1.2, 0);         // we invert the 'y' axis
     mgl_set_origin (gr, 1.2, 0, 0);
     mgl_axis (gr, "xy", "", "");
-    mgl_plot_xy (gr, x, y, "", "b");
+    mgl_tens_xy (gr, x, y, colors, "", "b");
     mgl_write_frame (gr, filename, "");
     mgl_delete_graph (gr);
 }
 
 void
-solve (unsigned int N, unsigned long int T, double ht, double fi0)
+solve (unsigned int N, unsigned long int T, unsigned int frames, double ht, double fi0)
 {
     // some variable declarations
     // -------------------------------------------------
@@ -142,7 +146,7 @@ solve (unsigned int N, unsigned long int T, double ht, double fi0)
     Fnew (FT, main_diag, values, f1, f0, side_diag, ht);
 
     unsigned long int i,j;
-    for (i = T; i--; )
+    for (i = frames; i--; )
     {
         // we will skip T frames
         for (j = 2*T; j--; )
@@ -154,9 +158,9 @@ solve (unsigned int N, unsigned long int T, double ht, double fi0)
         }
 
         // and only plot then
-        sprintf (filename, "anim/%06lu.jpg", T-1-i);
+        sprintf (filename, "anim/%06lu.jpg", frames-1-i);
         get_xy (x, y, fT, N);
-        plot_xy (x, y, filename);
+        plot_xy (x, y, FT, filename);
     }
 
     // free all those variables
@@ -179,8 +183,9 @@ solve (unsigned int N, unsigned long int T, double ht, double fi0)
 
 int main (int argc, char ** argv)
 {
-    unsigned int N      = 500;
-    unsigned long int T = 10000;
+    unsigned int N      = 500,
+                 frames = 2000;
+    unsigned long int T = 10000;    // number of frames we skip
     double ht           = 1e-5,
            fi0          = M_PI*0.5;
 
@@ -194,6 +199,6 @@ int main (int argc, char ** argv)
 
     fi0 += M_PI * atof (argv[1]);
 
-    solve (N, T, ht, fi0);
+    solve (N, T, frames, ht, fi0);
     exit (EXIT_SUCCESS);
 }
