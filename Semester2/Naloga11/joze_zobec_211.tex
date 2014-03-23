@@ -18,6 +18,10 @@
     \ensuremath{\varphi}
 }
 
+\renewcommand{\d}{
+    \ensuremath{\mathrm{d}}
+}
+
 \begin{document}
 
 \begin{center}
@@ -57,7 +61,7 @@ kjer so vozli\v s\v ca razmaknjena za $h = 1/N$.
 Diferen\v cne ena\v cbe so so reda $\mathcal{O}(h)$ in se glasijo:
 \begin{align}
     F^t_{i-1} + F^t_{i+1} - F^t_i\Bigg[2 + \bigg(\frac{\vfi^t_{i+1} - \vfi^t_{i-1}}{2}\bigg)^2\Bigg] =
-        \frac{h^2}{h_t^2}\big(\vfi^t_i - \vfi^{t-1}_i\big)^2,
+        -\frac{h^2}{h_t^2}\big(\vfi^t_i - \vfi^{t-1}_i\big)^2,
         \label{prva} \\
     \vfi^{t+1}_i = \frac{h_t^2}{h^2}\Bigg[\frac{1}{2}\big(\vfi^t_{i+1} - \vfi^t_{i-1}\big)
         \big(F^t_{i+1} - F^t_{i-1}\big) + F^t_i\big(\vfi^t_{i+1} + \vfi^t_{i-1} - 2\vfi^t_i\big)\Bigg] +
@@ -71,9 +75,15 @@ na koncéh za silo velja
     F^t_N &= 0,
     \label{FN}
 \end{align}
-za kot $\vfi$ pa
+kar moramo v ena\v cbi~\eqref{prva} upo\v stevati kot posebno ena\v cbo za $F_2$:
+\begin{equation}
+    F^t_3 - F_2^t\Big[1 + \textstyle{\frac{1}{4}}(\vfi^t_3 - \vfi^t_1)\Big] = -\big(\textstyle{\frac{h}{h_t}}\big)^2
+        (\vfi_2^t - \vfi_2^{t-1}) - h\sin\vfi^t_1.
+    \label{rp}
+\end{equation}
+Robni pogoji za kot $\vfi$ so
 \begin{align}
-    \vfi_1^t = \frac{2h}{F^{t-1}_2}\cos\vfi^t_2 - \vfi^t_3
+    \vfi_1^t = \frac{2h}{F^{t-1}_2}\cos\vfi^t_2 + \vfi^t_3
     \label{f1} \\
     \vfi_N^t = 2\vfi^t_{N-1} - \vfi^t_{N-2}
     \label{fN}
@@ -81,16 +91,69 @@ za kot $\vfi$ pa
 Poznamo $\vfi^0_i = \vfi^1_i = \vfi_0$, od koder lahko izra\v cunamo vse ostalo.
 
 \subsection{Algoritem}
-Ra\v cunski postopek izgleda takole:
+
+Najprej iz $\vfi (s, t=1)$ izra\v cunamo $F^1 (s)$ prek ena\v cb~\eqref{prva} (z robnim pogojem~\eqref{rp}) za
+$i = 2,\ldots,N-1$. $F^1_1$ in $F^1_N$ dolo\v cimo iz robnih pogojev~\eqref{F1} in~\eqref{FN}. Sedaj, ko imamo
+za\v cetna $F^t_i$ in $\vfi^t_i$ izvajamo algoritem:
 \begin{enumerate}
-    \item{Re\v simo tridiagonalni sistem ena\v cb~\eqref{prva} in izra\v cunamo $F^{t}_i$
-        za $i = 2,\ldots,N-1$.}
-    \item{Izra\v cunamo $F^t_1$ in $F^t_N$ po ena\v cbah~\eqref{F1} in~\eqref{FN}.}
     \item{Prek ena\v cbe~\eqref{druga} izra\v cunamo $\vfi^{t+1}_i$ za $i = 2,\ldots,N-1$.}
     \item{Re\v simo ena\v cbo~\eqref{f1} in izra\v cunamo $\vfi^{t+1}_1$, iz ena\v cbe~\eqref{fN} pa
         izra\v cunamo $\vfi^{t+1}_N$.}
-    \item{Po \v casu se premaknemo $t \to t+1$ in se vrnemo na prvi korak.}
+    \item{Re\v simo tridiagonalni sistem ena\v cb~\eqref{prva} (in~\eqref{rp} za $F^{t+1}_2$) in
+        izra\v cunamo $F^{t+1}_i$ za $i = 2,\ldots,N-1$.}
+    \item{Izra\v cunamo $F^{t+1}_1$ in $F^{t+1}_N$ po ena\v cbah~\eqref{F1} in~\eqref{FN}.}
+    \item{Premaknemo \v casovni indeks $t \to t+1$ in se vrnemo na to\v cko 1.}
 \end{enumerate}
 
+Rezultati so mo\v cno odvisni od tega, \v ce smo pravilno upo\v stevali predznake, kar mi je povzro\v cilo nemalo
+preglavic.
+
+\section{Rezultati}
+
+Grobo \v sablono programa sem najprej napravil v {\tt Octave}, ki pa se je izvajala prepo\v casi, zato sem
+napravil za hitrost opzimizirano varianto v programskem jeziku {\tt C}, pri \v cemer sem si dodatno pomagal
+s programom za profilno vodeno optimizcijo, {\tt gprof}. Kot ponavadi, sem tudi tokrat \v zrtvoval nekaj
+natan\v cnosti na ra\v cun hitrosti in vklopil {\tt -ffast-math}. Prevajalnik {\tt gcc-4.7} pri tem ne daje ve\v c
+konsistentnih rezultatov, {\tt clang-3.3} pa je \v se vedno stabilen pravilno zaokro\v zuje, zato sem uporabil
+slednjega.
+
+Ugotovil sem, da v moji implementaciji najve\v c klicev dobimo za izra\v cun diagonale na\v sega tridiagonalnega
+sistema, \v casovno najpotratnej\v si proces pa je izra\v cun $\vfi^{t+1}$.
+
+Rezultate sem za razli\v cne za\v cetne pogoje prikazal na prilo\v zenih animacijah, barva vzdol\v z verige
+prikazuje silo $F(s,t)$ med \v clenki, vektorji pa prikazujejo hitrost in so dol\v zine $2\sqrt{v_x^2 + v_y^2}$.
+Izris sem napravil s knji\v znico {\tt MathGL}, animacijo pa s programom {\tt mencoder}.
+\begin{itemize}
+    \item{{\tt ravna.avi} upo\v steva za\v cetne pogoje, kot jih navaja navodilio, veriga je videti nekam toga.
+        Za\v cetni kot sem nastavil na $10\pi/3$.}
+    \item{{\tt opletanje.avi}, tu sem za za\v cetne pogoje vzel $\vfi^1_i = \sin(i\pi/2N)$, za
+        $\vfi^0_i = \vfi^1_i + h_t i/N$. Opazoval sem opletanje verige. Ugotovil sem, da model vozlov na verigi ne
+        opi\v se pravilno -- v veliko primerih se takrat veriga strga (tj. $F \to \infty$), kar pa, kot vemo iz lastnih
+        izku\v senj, se ne zgodi prav pogosto. Zelo lepo je na za\v cetku videti povratni udarec verige ("`backlash"'),
+        vendar pa zaradi vozlov model na koncu dinamike ne opi\v se realisti\v cno.}
+    \item{{\tt valovanje.avi} prikazuje kako lepo se valovi \v sirijo vzdol\v z verige, venda pa eden izmed vozlov verigo
+        spet na koncu strga. $\vfi^1_i$ je isti kot za datoteko {\tt opletanje.avi}, vendar pa je
+        $\vfi^0_i = \vfi^1_i + h_t\sin(i\pi/N)$.}
+    \item{{\tt cela.avi} prikazuje $\vfi^0_i = \vfi^1_i = \frac{\pi}{10}i/N$. Ta za\v cetni pogoj je verigo obdr\v zal
+        celo dlje, zato sem to datoteko kar poimenoval {\tt cela.avi}.}
+\end{itemize}
+Animacije so narejene pri $h_t = 10^{-5}$, $N = 500$, zlepil sem po 34 sli\v cic na sekundo. Med izrisom dveh zaporednih
+sli\v cic, sem jih $10^5$ izpustil, razen za datoteke {\tt opletanje.avi}, {\tt valovenje.avi} in {\tt cela.avi}, kjer
+sem jih izpustil po 1000.
+
+Ker imamo vse hitrosti in pozicije, lahko iz tega izra\v cunamo tudi energijo. Ohranjanje energije nam bo pokazatelj
+natan\v cnosti metode.
+
+Energija je vsota kinteti\v cne in potencialne: $E_\text{tot.} = T + V = T_\text{trans.} + T_\text{rot.} + V$.
+Grag~\ref{gr1} prikazuje ohranjanje energije.
+
+\begin{figure}[H]\centering
+    \includegraphics[width=0.9\textwidth]{energija1.png}
+    \caption{Ohranjanje energije za animacijo {\tt ravna.avi}. Zeleni del prikazuje kineti\v cno energijo, modri
+        del pa potencialno, pri kateri sem dodal $h_0 = 0.6$, da bi zagotovil $V \geq 0$. Indeks `$t$' je
+        \v casovni indeks, ki je bil inkrementiran po vsakih $h_t^{-1}$ (tj. $10^5$) korakih. Energija se ohranja
+        na tri decimalna mesta.}
+    \label{gr1}
+\end{figure}
 
 \end{document}

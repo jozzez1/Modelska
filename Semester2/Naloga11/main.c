@@ -8,6 +8,22 @@
 static inline double
 pow2 (double x) { return x*x; };
 
+static inline void
+start_different (gsl_vector * v, double fi0, unsigned int N)
+{
+    unsigned int i;
+    for (i = N; i--;)
+        gsl_vector_set (v, i, M_PI/2 + i*fi0/(N-1));
+}
+
+static inline void
+follow_different (gsl_vector * v1, gsl_vector * v, unsigned int N)
+{
+    unsigned int i;
+    for (i = N; i--;)
+        gsl_vector_set (v1, i, gsl_vector_get (v, i) + 5e-6*sin(i*2*M_PI/(N-1)));
+}
+
 void
 tridiag_params (gsl_vector * main_diag, gsl_vector * values,
         gsl_vector * f1, gsl_vector * f0, double ht)
@@ -124,6 +140,30 @@ get_vxy (HMDT X, HMDT Y, HMDT VX, HMDT VY, gsl_vector * vx, gsl_vector * vy,
 }
 
 void
+get_energy (HMDT T, HMDT TpV, HMDT time,
+        HMDT y, gsl_vector * vx, gsl_vector * vy, unsigned int k, unsigned int N)
+{
+    double TYT = 0,
+           VX  = 0,
+           VY  = 0;
+
+    unsigned int i;
+    for (i = N; i--;)
+    {
+        TYT += mgl_data_get_value (y, i, 0, 0);
+        VX  += gsl_vector_get (vx, i);
+        VY  += gsl_vector_get (vy, i);
+    }
+    TYT /= N;
+    VX  *= VX/N;
+    VY  *= VY/N;
+
+    mgl_data_set_value (T, 0.5 * (VX + VY), k, 0, 0);
+    mgl_data_set_value (TpV, 0.6 - TYT + mgl_data_get_value (T, k, 0, 0), k, 0, 0);
+    mgl_data_set_value (time, k, k, 0, 0);
+}
+
+void
 plot_xy (HMDT x, HMDT y, gsl_vector * FT,
         HMDT X, HMDT Y, HMDT VX, HMDT VY, char * filename)
 {
@@ -139,6 +179,24 @@ plot_xy (HMDT x, HMDT y, gsl_vector * FT,
     mgl_tens_xy (gr, x, y, colors, "", "");
     mgl_traj_xy (gr, X, Y, VX, VY, "", "value 2");
     mgl_write_frame (gr, filename, "");
+    mgl_delete_graph (gr);
+}
+
+void
+plot_energy (HMDT T, HMDT TpV, HMDT time)
+{
+    HMGL gr = mgl_create_graph (1200, 800);
+
+    mgl_set_quality (gr, 6);
+    mgl_set_range_dat (gr, 'x', time, 0);
+    mgl_set_range_val (gr, 'y', 0, 0.35);
+    mgl_axis (gr, "xy", "", "");
+    mgl_label (gr, 'x', "indeks t", 0, "");
+    mgl_label (gr, 'y', "Energija", 0, "");
+    mgl_box (gr);
+    mgl_area_xy (gr, time, T, "ey", "");
+    mgl_region_xy (gr, time, TpV, T, "cb", "");
+    mgl_write_png (gr, "energija.png", "Energy plot");
     mgl_delete_graph (gr);
 }
 
@@ -165,7 +223,10 @@ solve (unsigned int N, unsigned long int T, unsigned int frames, double ht, doub
          VX = mgl_create_data_size (10, 0, 0),
          VY = mgl_create_data_size (10, 0, 0),
          X  = mgl_create_data_size (10, 0, 0),
-         Y  = mgl_create_data_size (10, 0, 0);
+         Y  = mgl_create_data_size (10, 0, 0),
+         kin    = mgl_create_data_size (frames, 0, 0),
+         TpV    = mgl_create_data_size (frames, 0, 0),
+         time   = mgl_create_data_size (frames, 0, 0);
 
     char filename[15];
 
@@ -193,8 +254,11 @@ solve (unsigned int N, unsigned long int T, unsigned int frames, double ht, doub
         get_xy (x0, y0, f0, N);
         get_xy (x1, y1, f1, N);
         get_vxy (X, Y, VX, VY, vx, vy, x0, y0, x1, y1, N, ht);
-        plot_xy (x1, y1, FT, X, Y, VX, VY, filename);
+        get_energy (kin, TpV, time, y1, vx, vy, i, N);
+//        plot_xy (x1, y1, FT, X, Y, VX, VY, filename);
+        printf ("frame %lu\n", frames - 1 -i);
     }
+    plot_energy (kin, TpV, time);
 
     // free all those variables
     // -------------------------------------------------
@@ -216,16 +280,19 @@ solve (unsigned int N, unsigned long int T, unsigned int frames, double ht, doub
     mgl_delete_data (VY);
     mgl_delete_data (X);
     mgl_delete_data (Y);
+    mgl_delete_data (kin);
+    mgl_delete_data (TpV);
+    mgl_delete_data (time);
 
     // use mencoder to make animation from those pics
     // -------------------------------------------------
-    system ("./anime.sh anim");
+    //system ("./anime.sh anim");
 }
 
 int main (int argc, char ** argv)
 {
     unsigned int N      = 500,
-                 frames = 2000;
+                 frames = 600;
     unsigned long int T = 10000;    // number of frames we skip
     double ht           = 1e-5,
            fi0          = M_PI*0.5;
