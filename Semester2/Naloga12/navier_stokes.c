@@ -12,10 +12,10 @@ initial_conditions (double * zeta, double * u,
         u [i + (N-1)*N] = 1;
 
         // zeta(i,j) one before last has to be fixed
-        zeta [i + (N-2)*N] = N*u[i + (N-1)*N];
+        zeta [i + (N-2)*N] = u[i + (N-1)*N] * (signed int) N;
 
         // and the very last line -- the velocity for psi
-        zeta [i + (N-1)*N] = -2*N;
+        zeta [i + (N-1)*N] = -2 * (signed int) N;
     }
 } 
 
