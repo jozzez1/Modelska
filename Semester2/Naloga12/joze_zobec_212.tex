@@ -1,0 +1,94 @@
+\documentclass[a4 paper, 12pt]{article}
+\usepackage[slovene]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[small, width=0.7\textwidth,labelfont=it]{caption}
+\usepackage[pdftex]{graphicx}
+\usepackage[usenames, dvipsnames]{xcolor}
+\usepackage{amssymb, fullpage, float, pdflscape, subcaption, amsmath, color, hyperref}
+
+\hypersetup{
+	colorlinks=true,
+	linkcolor=black!60!red,
+	citecolor=black!60!green,
+	urlcolor=black!60!cyan
+}
+
+\newcommand{\vfi}{
+    \ensuremath{\varphi}
+}
+
+\renewcommand{\d}{
+    \ensuremath{\delta}
+}
+
+\newcommand{\der}[3][]{
+    \ensuremath{ \frac{\partial^{#1} #2}{\partial #3^{#1}} }
+}
+
+\renewcommand{\Re}{
+    \ensuremath{\mathrm{Re}}
+}
+
+\newcommand{\sfrac}[2]{
+    \ensuremath{\textstyle{\frac{#1}{#2}}}
+}
+
+\newcommand{\z}{
+    \ensuremath{\zeta}
+}
+
+\newcommand{\V}{
+    \ensuremath{\mathbf{v}}
+}
+
+\begin{document}
+
+\begin{center}
+\textsc{Modelska analiza II}\\
+\textsc{2011/12}\\[0.5cm]
+\textbf{12. naloga -- Navier-Stokesov sistem}
+\end{center}
+\begin{flushright}
+\textbf{Jože Zobec}\\
+\end{flushright}
+
+\section{Razmislek}
+
+V tej nalogi bomo re\v sevali Navier-Stokesov sistem dvo-dimenzionalne nestisljive
+teko\v cine (kapljevine). Izmed mo\v znosti, ki so nam na voljo, bomo za to vajo
+uporabili metodo, ki reducira eno izmed ena\v cb -- metodo, ki dinamiko napove prek
+vrtin\v cnosti, `$\zeta$',
+\[
+    \der{\zeta}{t} + \der{u\zeta}{x} + \der{v\zeta}{y} - \frac{1}{\Re}\bigg(\der[2]{\zeta}{x}
+        + \der[2]{\zeta}{y}\bigg) = 0.
+\]
+Hitrostno polje, $\V = (u, v)$, dobimo iz tokovne funkcije, `$\psi$', 
+\[
+    u = \der{\psi}{y}, \qquad v = -\der{\psi}{x},
+\]
+ki je z vrtin\v cnostjo povezana prek Poissonove ena\v cbe,
+\begin{equation}
+    \nabla^2 \psi = \zeta.
+    \label{poisson}
+\end{equation}
+Pri tem je zagotovljena identiteta $\partial_x u + \partial_y v = 0$. \v Casovni korak je omejen
+po Courtanovem pogoju. Robni pogoj za $\psi$ prevedemo na robni pogoj $\zeta$, toka v steno ne
+sme biti. Vse odvode prepi\v semo v diskretne in dobimo eksplicitne ena\v cbe za \v casovni razvoj:
+\begin{equation}
+    \z_{i,j}^{t+1} = \z_{i,j}^{t} + \Delta_{i,j}^t,
+\end{equation}
+\begin{align}
+    \Delta_{i,j}^t =& \sfrac{\d}{h}\Big[\sfrac{1}{h\Re}\big(\z^t_{i,j+1} + \z^t_{i,j-1} + \z^t_{i+1,j} +
+        \z^t_{i-1,j} - 4\z^t_{i,j}\big) \notag \\
+        &- \sfrac{1}{2}\big((u\z)^t_{i,j+1} - (u\z)^t_{i,j-1} + (v\z)^t_{i+1,j} - (v\z)^t_{i-1,j}\big)\Big],
+\end{align}
+hitrostno polje dobimo kot
+\begin{equation}
+    \sfrac{1}{2h}\big(\psi^t_{i+1,j} - \psi^t_{i-1,j}\big) = u^t_{i,j}, \quad
+    \sfrac{1}{2h}\big(\psi^t_{i,j-1} - \psi^t_{i,j+1}\big) = v^t_{i,j}.
+\end{equation}
+Ena\v cbo~\eqref{poisson} lahko re\v sujemo na mnogo razli\v cnih na\v cinov, vendar mislim,
+da bo \v slo najhitreje z metodo {\tt SOR} s \v Cebi\v sevim pospe\v sevanjem konvergence.
+
+\end{document}
