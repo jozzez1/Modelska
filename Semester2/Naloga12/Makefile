@@ -11,10 +11,13 @@ CFLAGS=		-I/usr/local/include \
 			${WARN} ${OPTFLAGS} -g
 
 all: main.o
-	${CC} ${CFLAGS} ${LIBFLAGS} main.o sor.o -o ${PRGNAM}
+	${CC} ${CFLAGS} ${LIBFLAGS} main.o navier_stokes.o sor.o -o ${PRGNAM}
 
-main.o: sor.o
+main.o: navier_stokes.o sor.o
 	${CC} ${CFLAGS} -c main.c
+
+navier_stokes.o: sor.o
+	${CC} ${CFLAGS} -c navier_stokes.c
 
 sor.o:
 	${CC} ${CFLAGS} -c sor.c
@@ -22,6 +25,7 @@ sor.o:
 clean:
 .for file in \
 	sor.o \
+	navier_stokes.o \
 	prg.core
 	rm -f ${file}
 .endfor

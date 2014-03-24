@@ -1,6 +1,5 @@
 #ifndef SOR_H
 #define SOR_H
-#include <math.h>
 
 static inline double
 pow2 (double x) { return x*x; };

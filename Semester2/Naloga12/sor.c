@@ -84,8 +84,6 @@ SOR (double * psi, const double * zeta,
     {
         get_xi (xi, norm2, psi, zeta, N);
         full_step (psi, w, J, xi, N);
-
     } while (*norm2 > p2);
 }
-
 
