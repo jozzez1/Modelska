@@ -6,9 +6,9 @@ get_xi (double * xi, double * norm2,
 {
     *norm2 = 0;
     unsigned int i,j, k;
-    for (i = N-1; i--;)
+    for (i = N-2; i--;) // xi must not change the boundary!
     {
-        for (j = N-1; j--;)
+        for (j = N-2; j--;)
         {
             k = j+1 + (i+1)*N;
             xi[k] = psi[k+1] + psi[k-1] + psi[k+N] + psi[k-N] - 4*psi[k] - zeta[k];
