@@ -2,23 +2,20 @@
 #include "navier_stokes.h"
 
 void
-initialize_variables (double * psi, double * zeta, double * u, double * v,
-       const unsigned int N)
+initial_conditions (double * zeta, double * u,
+        const unsigned int N)
 {
-    unsigned int i,j,k;
+    unsigned int i;
     for (i = N; i--;)
     {
-        for (j = N; j--;)
-        {
-            k = j + i*N;
-            psi [k]   = 0;
-            zeta [k]  = 0;
-            u [k]     = 0;
-            v [k]     = 0;
-        }
-
         // the lowest edge for u is a bit different
         u [i + (N-1)*N] = 1;
+
+        // zeta(i,j) one before last has to be fixed
+        zeta [i + (N-2)*N] = N*u[i + (N-1)*N];
+
+        // and the very last line -- the velocity for psi
+        zeta [i + (N-1)*N] = -2*N;
     }
 } 
 

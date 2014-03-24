@@ -2,7 +2,7 @@
 #define NAVIER_STOKES_H
 
 // initialize the arrays to their initial states
-void initialize_variables (double * psi, double * zeta, double * u, double * v, const unsigned int N);
+void initial_conditions (double * zeta, double * u, const unsigned int N);
 
 // get the velocities from psi
 void get_vxy (double * u, double * v, const double * psi, const unsigned int N);
