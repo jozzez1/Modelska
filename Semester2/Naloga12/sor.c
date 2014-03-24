@@ -1,8 +1,7 @@
-#include <stdio.h>
 #include "sor.h"
 
 void
-print_array (double * xi, unsigned long N)
+print_array (const double * xi, unsigned long N)
 {
     unsigned int i,j;
     for (i = 0; i <= N-1; i++)
@@ -11,13 +10,14 @@ print_array (double * xi, unsigned long N)
             printf ("% .1lf\t", xi[j + i*N]);
         printf ("\n");
     }
+    printf ("\n");
 }
-
 
 void
 get_xi (double * xi, double * norm2,
         const double * psi, const double * zeta, const unsigned int N)
 {
+//    print_array (zeta, N);
     *norm2 = 0;
     unsigned int i,j, k;
     for (i = N-2; i--;) // xi must not change the boundary!
@@ -29,36 +29,31 @@ get_xi (double * xi, double * norm2,
             *norm2 += pow2(xi[k]);
         }
     }
+    print_array (psi, N);
 }
 
 void
 step_even (double * psi,
         const double * w, const double * xi, const unsigned int N)
 {
-    unsigned int i,j,k;
-    for (i = N; i -= 2;)
+    unsigned int k = N*N-2;
+    do
     {
-        for (j = N; j -= 2;)
-        {
-            k = j + i*N;
-            psi[k] += 0.25 * (*w) * xi[k];
-        }
-    }
+        psi[k] += 0.25 * (*w) * xi[k];
+        k -= 2;
+    } while (k+2);
 }
 
 void
 step_odd (double * psi,
         const double * w, const double * xi, const unsigned int N)
 {
-    unsigned int i,j,k;
-    for (i = N; i -= 2;)
+    unsigned int k = N*N-1;
+    do
     {
-        for (j = N; j -= 2;)
-        {
-            k = j+1 + (i+1)*N;
-            psi[k] += 0.25 * (*w) * xi[k];
-        }
-    }
+        psi[k] += 0.25 * (*w) * xi[k];
+        k -= 2;
+    } while (k+1);
 }
 
 void
@@ -98,6 +93,7 @@ SOR (double * psi, const double * zeta,
     {
         get_xi (xi, norm2, psi, zeta, N);
         full_step (psi, w, J, xi, N);
+//        printf ("%lf\n", *norm2);
     } while (*norm2 > p2);
 }
 
