@@ -1,3 +1,5 @@
+#ifndef SOR_H
+#define SOR_H
 #include <math.h>
 
 static inline double
@@ -11,3 +13,17 @@ void step_even (double * psi, const double * w, const double * xi, unsigned int 
 
 // the odd SOR step
 void step_odd (double * psi, const double * w, const double * xi, unsigned int N);
+
+// next overrelaxation coefficient
+void next_w (double * w, const double * J);
+
+// first full SOR step is different, because of w_0 = 1 and w_1/2 = ...
+void first_step (double * psi, double * w, const double * J, const double * xi, const unsigned int N);
+
+// the rest of the steps are regular, so ... YAY!
+void full_step (double * psi, double * w, const double * J, const double * xi, const unsigned int N);
+
+// solve the Poisson equation
+void SOR (double * psi, const double * zeta, double * xi, double * w, const double * J, double * norm2, const double p, const unsigned int N);
+
+#endif

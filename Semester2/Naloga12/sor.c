@@ -46,3 +46,46 @@ step_odd (double * psi,
         }
     }
 }
+
+void
+next_w (double * w, const double * J)
+{
+    *w = 1.0/(1 - 0.25*pow2(*J) * *w);
+}
+
+void
+first_step (double * psi, double * w,
+        const double * J, const double * xi, const unsigned int N)
+{
+    *w = 1;
+    step_even (psi, w, xi, N);
+    *w = 1.0 / (1 - 0.5*pow2(*J));
+    step_odd (psi, w, xi, N);
+}
+
+void
+full_step (double * psi, double * w,
+        const double * J, const double * xi, const unsigned int N)
+{
+    next_w (w, J);
+    step_even (psi, w, xi, N);
+    next_w (w, J);
+    step_odd (psi, w, xi, N);
+}
+
+void
+SOR (double * psi, const double * zeta,
+        double * xi, double * w, const double * J, double * norm2, const double p, const unsigned int N)
+{
+    get_xi (xi, norm2, psi, zeta, N);
+    first_step (psi, w, J, xi, N);
+    double p2 = pow2(p);
+    do
+    {
+        get_xi (xi, norm2, psi, zeta, N);
+        full_step (psi, w, J, xi, N);
+
+    } while (*norm2 > p2);
+}
+
+
