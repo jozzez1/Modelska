@@ -43,14 +43,14 @@ void solve (const unsigned int N,
 
 int main (int argc, char ** argv)
 {
-    unsigned int N  = 12;
+    unsigned int N  = 11;
     unsigned long T = 1000,
                   F = 100;
     double delta    = 1e-3,
            Re       = 1e-2,
            precision= 1e-5;
 
-    assert (!(N & 1));
+    assert (N & 1);     // SOR converges only if N is an odd number
     assert (delta < 0.4/N);
 
     solve (N, T, F, delta, Re, precision);
