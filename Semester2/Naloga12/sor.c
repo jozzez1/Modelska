@@ -1,12 +1,12 @@
 #include "sor.h"
 
-double
+inline double
 pow2 (const double x)
 {
     return x*x;
 }
 
-void
+inline void
 print_array (const double * xi, unsigned long N)
 {
     unsigned int i,j;

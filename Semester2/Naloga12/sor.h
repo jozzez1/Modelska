@@ -2,6 +2,7 @@
 #define SOR_H
 
 #include <stdio.h>
+#include <assert.h>
 
 // power of 2
 double pow2 (const double x);
