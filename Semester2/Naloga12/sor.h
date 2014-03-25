@@ -1,9 +1,6 @@
 #ifndef SOR_H
 #define SOR_H
 
-static inline double
-pow2 (double x) { return x*x; };
-
 // get XI and its norm
 void get_xi (double * xi, double * norm2, const double * psi, const double * zeta, const unsigned int N);
 
@@ -24,9 +21,5 @@ void full_step (double * psi, double * w, double * xi, double * norm2, const dou
 
 // solve the Poisson equation
 void SOR (double * psi, double * w, double * xi, double * norm2, const double * zeta, const double * J, const double p, const unsigned int N);
-
-// for debugging purposes
-#include <stdio.h>
-void print_array (const double * xi, unsigned long N);
 
 #endif

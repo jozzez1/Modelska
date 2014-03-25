@@ -1,4 +1,3 @@
-#include "sor.h"
 #include "navier_stokes.h"
 
 void

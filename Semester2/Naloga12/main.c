@@ -4,6 +4,7 @@
 #include <math.h>
 #include "navier_stokes.h"
 #include "sor.h"
+#include "global.h"
 
 void solve (const unsigned int N,
         const unsigned long T,
