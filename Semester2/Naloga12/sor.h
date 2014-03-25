@@ -17,12 +17,16 @@ void step_odd (double * psi, const double * w, const double * xi, unsigned int N
 void next_w (double * w, const double * J);
 
 // first full SOR step is different, because of w_0 = 1 and w_1/2 = ...
-void first_step (double * psi, double * w, const double * J, const double * xi, const unsigned int N);
+void first_step (double * psi, double * w, double * xi, double * norm2, const double * zeta, const double * J, const unsigned int N);
 
 // the rest of the steps are regular, so ... YAY!
-void full_step (double * psi, double * w, const double * J, const double * xi, const unsigned int N);
+void full_step (double * psi, double * w, double * xi, double * norm2, const double * zeta, const double * J, const unsigned int N);
 
 // solve the Poisson equation
-void SOR (double * psi, const double * zeta, double * xi, double * w, const double * J, double * norm2, const double p, const unsigned int N);
+void SOR (double * psi, double * w, double * xi, double * norm2, const double * zeta, const double * J, const double p, const unsigned int N);
+
+// for debugging purposes
+#include <stdio.h>
+void print_array (const double * xi, unsigned long N);
 
 #endif
