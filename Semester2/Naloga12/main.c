@@ -2,8 +2,9 @@
 #include <stdlib.h>
 #include <assert.h>
 #include <math.h>
-#include "navier_stokes.h"
+#include "global.h"
 #include "sor.h"
+#include "navier_stokes.h"
 
 void solve (const unsigned int N,
         const unsigned long T,
@@ -14,7 +15,8 @@ void solve (const unsigned int N,
 {
     // variable declarations
     // --------------------------------------------------------
-    double * zeta   = (double *) calloc (N*N, sizeof(double)),
+    double * tmp    = (double *) calloc (N*N, sizeof(double)),
+           * zeta   = (double *) calloc (N*N, sizeof(double)),
            * psi    = (double *) calloc (N*N, sizeof(double)),
            * xi     = (double *) calloc (N*N, sizeof(double)),
            * u      = (double *) calloc (N*N, sizeof(double)),
@@ -30,7 +32,18 @@ void solve (const unsigned int N,
     // first we set the non-zero conditions
     initial_conditions (zeta, u, N);
     // and now we iterate
-    SOR (psi, &w, xi, &norm2, zeta, &J, precision, N);
+//    unsigned int i;
+//    for (i = frames; i--;)
+//    {
+        SOR (psi, &w, xi, &norm2, zeta, &J, precision, N);
+        get_vxy (u, v, psi, N);
+        print_array (tmp, N);
+        swap (&zeta, &tmp, N*N);
+        print_array (tmp, N);
+        iterate_zeta (zeta, tmp, u, v, &delta, &Re, N);
+        print_array (zeta, N);
+//        fix_zeta_boundaries (zeta, psi, N);
+//    }
 
     // variable deallocation
     // --------------------------------------------------------

@@ -1,24 +1,5 @@
 #include "sor.h"
 
-inline double
-pow2 (const double x)
-{
-    return x*x;
-}
-
-inline void
-print_array (const double * xi, unsigned long N)
-{
-    unsigned int i,j;
-    for (i = 0; i <= N-1; i++)
-    {
-        for (j = 0; j <= N-1; j++)
-            printf ("% .1lf\t", xi[j + i*N]);
-        printf ("\n");
-    }
-    printf ("\n");
-}
-
 void
 get_xi (double * xi, double * norm2,
         const double * psi, const double * zeta, const unsigned int N)
@@ -100,8 +81,6 @@ SOR (double * psi, double * w, double * xi, double * norm2,
     do
     {
         full_step (psi, w, xi, norm2, zeta, J, N);
-        printf ("Norma2 = %lf w = %lf\n", *norm2, *w);
-        print_array (psi, N);
     } while (p2 < *norm2);
 }
 

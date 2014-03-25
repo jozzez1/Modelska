@@ -1,14 +1,6 @@
 #ifndef SOR_H
 #define SOR_H
-
-#include <stdio.h>
-#include <assert.h>
-
-// power of 2
-double pow2 (const double x);
-
-// for debugging
-void print_array (const double * xi, unsigned long N);
+#include "global.h"
 
 // get XI and its norm
 void get_xi (double * xi, double * norm2, const double * psi, const double * zeta, const unsigned int N);

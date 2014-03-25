@@ -10,23 +10,27 @@ LIBFLAGS=	-L/usr/local/lib \
 CFLAGS=		-I/usr/local/include \
 		${WARN} ${OPTFLAGS} -g
 
-all: main.o
-	${CC} ${CFLAGS} ${LIBFLAGS} main.o navier_stokes.o sor.o -o ${PRGNAM}
+all: main.o global.o
+	${CC} ${CFLAGS} ${LIBFLAGS} main.o navier_stokes.o sor.o global.o -o ${PRGNAM}
 
-main.o: navier_stokes.o sor.o
+main.o: navier_stokes.o global.o
 	${CC} ${CFLAGS} -c main.c
 
-navier_stokes.o: sor.o
+navier_stokes.o: sor.o global.o
 	${CC} ${CFLAGS} -c navier_stokes.c
 
-sor.o:
+sor.o: global.o
 	${CC} ${CFLAGS} -c sor.c
+
+global.o:
+	${CC} ${CFLAGS} -c global.c
 
 clean:
 .for file in \
 	main.o \
-	sor.o \
 	navier_stokes.o \
+	sor.o \
+	global.o \
 	prg.core
 	rm -f ${file}
 .endfor

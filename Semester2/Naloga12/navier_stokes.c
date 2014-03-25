@@ -11,10 +11,10 @@ initial_conditions (double * zeta, double * u,
         u [i + (N-1)*N] = 1;
 
         // zeta(i,j) one before last has to be fixed
-        zeta [i + (N-2)*N] = u[i + (N-1)*N] * (signed int) N;
+        zeta [i + (N-2)*N] = u[i + (N-1)*N] * (double) N;
 
         // and the very last line -- the velocity for psi
-        zeta [i + (N-1)*N] = -2 * (signed int) N;
+        zeta [i + (N-1)*N] = (-1) * (2.0 * N);
     }
 } 
 
@@ -28,24 +28,26 @@ get_vxy (double * u, double * v,
         for (j = N-1; j--;)
         {
             k = j+1 + (i+1)*N;
-            u [k] = (psi[k + N] - psi[k - N]) * 0.5 * N;
-            v [k] = (psi[k - 1] - psi[k + 1]) * 0.5 * N;
+            u [k] = (psi[k + N] - psi[k - N]) * (0.5 * N);
+            v [k] = (psi[k - 1] - psi[k + 1]) * (0.5 * N);
         }
     }
 }
 
 void
 iterate_zeta (double * zeta,
-        const double * u, const double * v, const double * delta,  const double * Re, const unsigned int N)
+        const double * tmp_zeta, const double * u, const double * v, const double * delta,  const double * Re, const unsigned int N)
 {
     unsigned int i,j,k;
-    for (i = N-1; i--;)
+    double a = *delta * (double) N,
+           b = ((double) N) / *Re;
+    for (i = N-2; i--;)
     {
-        for (j = N-1; j--;)
+        for (j = N-2; j--;)
         {
             k = j+1 + (i+1)*N;
-            zeta[k] += *delta * N * (N * (zeta[k+1] + zeta[k-1] + zeta[k+N] + zeta[k-N] - 4*zeta[k])/ *Re
-                    - 0.5*(u[k+1]*zeta[k+1] - u[k-1]*zeta[k-1] + v[k+N]*zeta[k+N] - v[k-N]*zeta[k-N]));
+            zeta[k] += a * (b * (tmp_zeta[k+1] + tmp_zeta[k-1] + tmp_zeta[k+N] + tmp_zeta[k-N] - 4*tmp_zeta[k])
+                    - 0.5*(u[k+1]*tmp_zeta[k+1] - u[k-1]*tmp_zeta[k-1] + v[k+N]*tmp_zeta[k+N] - v[k-N]*tmp_zeta[k-N]));
         }
     }
 }
