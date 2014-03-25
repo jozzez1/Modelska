@@ -32,20 +32,17 @@ void solve (const unsigned int N,
 
     // first we set the non-zero conditions
     initial_conditions (zeta, u, N);
-//    print_array (zeta, N);
     // and now we iterate
     unsigned int i;
     for (i = frames; i--;)
     {
         SOR (psi, &w, xi, &norm2, zeta, &J, precision, N);
-//        print_array (psi, N);
         get_vxy (u, v, psi, N);
 
         swap (&zeta, &tmp, &swp);
 
         iterate_zeta (zeta, tmp, u, v, &delta, &Re, N);
         fix_zeta_boundaries (zeta, psi, N);
-//        print_array (zeta, N);
         printf ("i = %u\n", i);
     }
 
@@ -62,9 +59,9 @@ void solve (const unsigned int N,
 
 int main (int argc, char ** argv)
 {
-    unsigned int N  = 501;
+    unsigned int N  = 11;
     unsigned long T = 1000,
-                  F = 100;
+                  F = 10000000;
     double delta    = 1e-6,
            Re       = 1e-2,
            precision= 1e-5;

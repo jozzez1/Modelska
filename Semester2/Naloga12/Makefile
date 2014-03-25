@@ -1,9 +1,9 @@
 CC=		clang
 PRGNAM=		prg
 CPUOPT=		-march=corei7 -mssse3 -msse4.1
-OFLAG=		-O3
+OFLAG=		-Ofast
 OPTFLAGS=	${OFLAG} ${CPUOPT} \
-		-funroll-loops -ffast-math -fstack-protector
+		-funroll-loops -ffast-math -fno-stack-protector
 WARN=		-Wall
 LIBFLAGS=	-L/usr/local/lib \
 	       	-lm
