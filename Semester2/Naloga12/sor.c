@@ -32,9 +32,10 @@ get_xi (double * xi, double * norm2,
         {
             k = j+1 + (i+1)*N;
             xi[k] = psi[k+1] + psi[k-1] + psi[k+N] + psi[k-N] - 4*psi[k] - zeta[k]*h*h;
-            *norm2 += pow2(xi[k]);
+            *norm2 += xi[k]*xi[k];
         }
     }
+    print_array (zeta, N);
 }
 
 void
@@ -71,6 +72,7 @@ void
 first_step (double * psi, double * w, double * xi, double * norm2, 
         const double * zeta, const double * J,const unsigned int N)
 {
+    print_array (zeta, N);
     *w = 1;
     get_xi (xi, norm2, psi, zeta, N);
     step_even (psi, w, xi, N);
@@ -96,10 +98,9 @@ SOR (double * psi, double * w, double * xi, double * norm2,
         const double * zeta, const double * J, const double p, const unsigned int N)
 {
     first_step (psi, w, xi, norm2, zeta, J, N);
-    double p2 = pow2(p);
     do
     {
-        full_step (psi, w, xi, norm2, J, xi, N);
-    } while (*norm2 > p2);
+        full_step (psi, w, xi, norm2, zeta, J, N);
+    } while (p < *norm2);
 }
 
