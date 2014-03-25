@@ -37,7 +37,7 @@ void solve (const unsigned int N,
     for (i = frames; i--;)
     {
         SOR (psi, &w, xi, &norm2, zeta, &J, precision, N);
-        get_vxy (u, v, delta, psi, N);
+        get_vxy_and_delta (u, v, delta, psi, N);
 
         swap (&zeta, &tmp, &swp);
 
@@ -59,9 +59,9 @@ void solve (const unsigned int N,
 
 int main (int argc, char ** argv)
 {
-    unsigned int N  = 11;
+    unsigned int N  = 101;
     unsigned long T = 1000,
-                  F = 10000000;
+                  F = 1000000;
     double delta    = 1e-6,
            Re       = 1e-2,
            precision= 1e-5;
