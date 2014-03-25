@@ -6,8 +6,25 @@ pow2 (const double x)
     return x*x;
 }
 
+inline double
+mabs (const double *x)
+{
+    double re = *x;
+    if (x < 0) re = -re;
+    return re;
+}
+
+inline double
+get_greater (const double *x, const double *y)
+{
+    double re = mabs(x),
+           fe = mabs(y);
+    if (re < fe) re = fe;
+    return re;
+}
+
 inline void
-print_array (const double * xi, unsigned long N)
+print_array (const double * xi, const unsigned long N)
 {
     unsigned int i,j;
     for (i = 0; i <= N-1; i++)

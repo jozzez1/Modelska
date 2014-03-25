@@ -9,9 +9,9 @@
 void solve (const unsigned int N,
         const unsigned long T,
         const unsigned long frames,
-        const double delta,
         const double Re,
-        const double precision)
+        const double precision,
+        double * delta)
 {
     // variable declarations
     // --------------------------------------------------------
@@ -37,13 +37,13 @@ void solve (const unsigned int N,
     for (i = frames; i--;)
     {
         SOR (psi, &w, xi, &norm2, zeta, &J, precision, N);
-        get_vxy (u, v, psi, N);
+        get_vxy (u, v, delta, psi, N);
 
         swap (&zeta, &tmp, &swp);
 
-        iterate_zeta (zeta, tmp, u, v, &delta, &Re, N);
+        iterate_zeta (zeta, tmp, u, v, delta, &Re, N);
         fix_zeta_boundaries (zeta, psi, N);
-        printf ("i = %u\n", i);
+        printf ("i = %u\tdelta = %.2e\n", i, *delta);
     }
 
     // variable deallocation
@@ -69,7 +69,7 @@ int main (int argc, char ** argv)
     assert (N & 1);     // SOR converges only if N is an odd number
     assert (delta < 0.4/N);
 
-    solve (N, T, F, delta, Re, precision);
+    solve (N, T, F, Re, precision, &delta);
 
     return 0;
 }

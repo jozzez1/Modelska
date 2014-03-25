@@ -19,11 +19,13 @@ initial_conditions (double * zeta, double * u,
 } 
 
 void
-get_vxy (double * u, double * v,
+get_vxy (double * u, double * v, double * delta,
         const double * psi, const unsigned int N)
 {
     unsigned int i,j,k;
-    double over_two_h = 0.5 * N;
+    double over_two_h = 0.5 * N,
+           vxmax      = 0,
+           vymax      = 0;
     for (i = N-1; i--;)
     {
         for (j = N-1; j--;)
@@ -31,8 +33,13 @@ get_vxy (double * u, double * v,
             k = j+1 + (i+1)*N;
             u [k] = (psi[k + N] - psi[k - N]) * over_two_h; 
             v [k] = (psi[k - 1] - psi[k + 1]) * over_two_h;
+
+            vxmax = get_greater (&u[k], &vxmax);
+            vymax = get_greater (&v[k], &vymax);
         }
     }
+    // and now we correct the time step -- it's 10-times smaller than the limit one
+    *delta = 1.0 / (40 * N * sqrt(pow2(vxmax) + pow2(vymax)));
 }
 
 void
