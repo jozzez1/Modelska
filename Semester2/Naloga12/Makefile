@@ -1,14 +1,14 @@
-CC=			clang
+CC=		clang
 PRGNAM=		prg
 CPUOPT=		-march=corei7 -mssse3 -msse4.1
 OFLAG=		-O3
 OPTFLAGS=	${OFLAG} ${CPUOPT} \
-			-funroll-loops -ffast-math -fstack-protector
+		-funroll-loops -ffast-math -fstack-protector
 WARN=		-Wall
 LIBFLAGS=	-L/usr/local/lib \
 	       	-lm
 CFLAGS=		-I/usr/local/include \
-			${WARN} ${OPTFLAGS} -g
+		${WARN} ${OPTFLAGS} -g
 
 all: main.o
 	${CC} ${CFLAGS} ${LIBFLAGS} main.o navier_stokes.o sor.o -o ${PRGNAM}
