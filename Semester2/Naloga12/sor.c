@@ -16,6 +16,8 @@ get_xi (double * xi, double * norm2,
             *norm2 += pow2(xi[k]);
         }
     }
+    assert (!isinf(*norm2));
+    assert (!isnan(*norm2));
 }
 
 void

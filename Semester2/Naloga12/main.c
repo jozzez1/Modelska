@@ -17,6 +17,7 @@ void solve (const unsigned int N,
     // --------------------------------------------------------
     double * tmp    = (double *) calloc (N*N, sizeof(double)),
            * zeta   = (double *) calloc (N*N, sizeof(double)),
+           * swp    = (double *) calloc (N*N, sizeof(double)),
            * psi    = (double *) calloc (N*N, sizeof(double)),
            * xi     = (double *) calloc (N*N, sizeof(double)),
            * u      = (double *) calloc (N*N, sizeof(double)),
@@ -31,23 +32,28 @@ void solve (const unsigned int N,
 
     // first we set the non-zero conditions
     initial_conditions (zeta, u, N);
+//    print_array (zeta, N);
     // and now we iterate
-//    unsigned int i;
-//    for (i = frames; i--;)
-//    {
+    unsigned int i;
+    for (i = frames; i--;)
+    {
         SOR (psi, &w, xi, &norm2, zeta, &J, precision, N);
+//        print_array (psi, N);
         get_vxy (u, v, psi, N);
-        print_array (tmp, N);
-        swap (&zeta, &tmp, N*N);
-        print_array (tmp, N);
+
+        swap (&zeta, &tmp, &swp);
+
         iterate_zeta (zeta, tmp, u, v, &delta, &Re, N);
-        print_array (zeta, N);
-//        fix_zeta_boundaries (zeta, psi, N);
-//    }
+        fix_zeta_boundaries (zeta, psi, N);
+//        print_array (zeta, N);
+        printf ("i = %u\n", i);
+    }
 
     // variable deallocation
     // --------------------------------------------------------
+    free (tmp);
     free (zeta);
+    free (swp);
     free (psi);
     free (xi);
     free (u);
@@ -56,10 +62,10 @@ void solve (const unsigned int N,
 
 int main (int argc, char ** argv)
 {
-    unsigned int N  = 11;
+    unsigned int N  = 501;
     unsigned long T = 1000,
                   F = 100;
-    double delta    = 1e-3,
+    double delta    = 1e-6,
            Re       = 1e-2,
            precision= 1e-5;
 

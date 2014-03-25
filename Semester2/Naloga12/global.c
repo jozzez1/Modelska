@@ -20,12 +20,11 @@ print_array (const double * xi, unsigned long N)
 }
 
 void
-swap (double ** A, double ** B, const unsigned int N)
+swap (double ** A, double ** B, double ** swp)
 {
-    double * swap = malloc (N * sizeof(double));
-    swap = *B;
+    // we just swap the addresses of the arrays
+    *swp = *B;
     *B = *A;
-    A = &swap;
-    free (swap);
+    *A = *swp;
 }
 

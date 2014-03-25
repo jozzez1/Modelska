@@ -10,6 +10,6 @@ double pow2 (const double x);
 void print_array (const double * xi, unsigned long N);
 
 // swap the two arrays in constant time
-void swap (double ** A, double ** B, const unsigned int N);
+void swap (double ** A, double ** B, double ** swp);
 
 #endif

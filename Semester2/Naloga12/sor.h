@@ -1,6 +1,8 @@
 #ifndef SOR_H
 #define SOR_H
 #include "global.h"
+#include <assert.h>
+#include <math.h>
 
 // get XI and its norm
 void get_xi (double * xi, double * norm2, const double * psi, const double * zeta, const unsigned int N);
