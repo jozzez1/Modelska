@@ -1,6 +1,6 @@
 #ifndef NAVIER_STOKES_H
 #define NAVIER_STOKES_H
-#include "global.h"
+#include "sor.h"
 
 // initialize the arrays to their initial states
 void initial_conditions (double * zeta, double * u, const unsigned int N);

@@ -1,5 +1,23 @@
-#include "global.h"
 #include "sor.h"
+
+double
+pow2 (const double x)
+{
+    return x*x;
+}
+
+void
+print_array (const double * xi, unsigned long N)
+{
+    unsigned int i,j;
+    for (i = 0; i <= N-1; i++)
+    {
+        for (j = 0; j <= N-1; j++)
+            printf ("% .1lf\t", xi[j + i*N]);
+        printf ("\n");
+    }
+    printf ("\n");
+}
 
 void
 get_xi (double * xi, double * norm2,
