@@ -1,10 +1,10 @@
 CC=			clang
 PRGNAM=		prg
 CPUOPT=		-march=corei7 -mssse3 -msse4.1
-OFLAG=		-Ofast
+OFLAG=		-O3
 OPTFLAGS=	${OFLAG} ${CPUOPT} \
-			-funroll-loops -ffast-math -fno-stack-protector
-WARN=		-Wall -Wno-return-type-c-linkage
+			-funroll-loops -ffast-math -fstack-protector
+WARN=		-Wall
 LIBFLAGS=	-L/usr/local/lib \
 	       	-lm
 CFLAGS=		-I/usr/local/include \
@@ -24,6 +24,7 @@ sor.o:
 
 clean:
 .for file in \
+	main.o \
 	sor.o \
 	navier_stokes.o \
 	prg.core
