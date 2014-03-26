@@ -19,12 +19,12 @@ void solve (const unsigned int N,
            * zeta   = (double *) calloc (N*N, sizeof(double)),
            * swp    = (double *) calloc (N*N, sizeof(double)),
            * psi    = (double *) calloc (N*N, sizeof(double)),
-           * xi     = (double *) calloc (N*N, sizeof(double)),
            * u      = (double *) calloc (N*N, sizeof(double)),
            * v      = (double *) calloc (N*N, sizeof(double));
 
     double J        = cos(M_PI/N),
            norm2    = 0,
+           xi       = 0,
            w        = 0;
 
     // solution
@@ -36,7 +36,7 @@ void solve (const unsigned int N,
     unsigned int i;
     for (i = 10; i--;)
     {
-        SOR (psi, &w, xi, &norm2, zeta, &J, precision, N);
+        SOR (psi, &w, &xi, &norm2, zeta, &J, precision, N);
         get_vxy_and_delta (u, v, delta, psi, N);
         swap (&zeta, &tmp, &swp);
         iterate_zeta (zeta, tmp, u, v, delta, &Re, N);
@@ -48,7 +48,7 @@ void solve (const unsigned int N,
     // the rest we can do normally
     for (i = frames; i--;)
     {
-        SOR (psi, &w, xi, &norm2, zeta, &J, precision, N);
+        SOR (psi, &w, &xi, &norm2, zeta, &J, precision, N);
         get_vxy (u, v, psi, N);
         swap (&zeta, &tmp, &swp);
         iterate_zeta (zeta, tmp, u, v, delta, &Re, N);
@@ -62,7 +62,6 @@ void solve (const unsigned int N,
     free (zeta);
     free (swp);
     free (psi);
-    free (xi);
     free (u);
     free (v);
 }
