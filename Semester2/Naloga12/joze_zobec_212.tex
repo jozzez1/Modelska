@@ -89,6 +89,40 @@ hitrostno polje dobimo kot
     \sfrac{1}{2h}\big(\psi^t_{i,j-1} - \psi^t_{i,j+1}\big) = v^t_{i,j}.
 \end{equation}
 Ena\v cbo~\eqref{poisson} lahko re\v sujemo na mnogo razli\v cnih na\v cinov, vendar mislim,
-da bo \v slo najhitreje z metodo {\tt SOR} s \v Cebi\v sevim pospe\v sevanjem konvergence.
+da gre najhitreje z metodo {\tt SOR} s \v Cebi\v sevim pospe\v sevanjem konvergence.
+
+\section{Implementacija}
+
+Tako kot prej sem napisal karseda za hitrost optimizirano razli\v cico programa v programskem jeziku
+{\tt C}, kjer sem najbolj po\v zre\v sne funkcije pohitril/nadomestil ob namigih progrmom {\tt gprof}.
+Dodatno optimizacijo sem napravil tako, da je za mojo $N \times N$ mre\v zo bil $N$ vedno lih. Sku\v sal sem
+napraviti program, ki bi \v cim manj preverjal parametre in se \v cim bolj osredoto\v cil na ra\v cunanje.
+
+Nekako je bilo treba pravilno dolo\v ziti $\delta$ (tj. \v casovni korak). Tega sem dolo\v cil tako, da sem
+prvih 10 \v casovnih iteracij $\delta$ ra\v cunal sproti s hitrostmi in rekel
+\[
+    \delta = \frac{1}{40 N v_\text{max}},
+\]
+nato pa preostanek upo\v steval po zadnjem izra\v cunanem $\delta$. Za izra\v cun nove iteracije $\zeta$ sem
+imel pripravjeno pomo\v zen blok spomina. Za izra\v cun $\zeta^{t+1}$ sem ju zamenjal v konstantem \v casu
+(tj. zgolj zamenjal naslov spominskega bloka).
+
+\begin{table}[H]\centering
+    \caption{Spodaj vidimo kolik\v sen dele\v z \v casa izvajanja programa vzame posamezen del algoritma.
+    Kot vidimo, se je \v Cebi\v sevo pospe\v sevanje izpla\v calo, saj je ra\v cunanje Poissonove ena\v cbe
+    primerljivo z ra\v cunanjem eksplicitne \v casovne sheme za $\zeta$.}
+    \begin{tabular}{r|r}
+        dele\v z & Proces \\
+        \hline
+        $31 \%$ & lihi koraki ({\tt SOR}) \\
+        $31 \%$ & sodi koraki ({\tt SOR}) \\
+        $22 \%$ & $\zeta^{t} \to \zeta^{t+1}$ \\
+        $11 \%$ & izra\v cuni $u_{ij}$ in $v_{ij}$ \\
+        $0 \%$  & izra\v cun $\delta$ \\
+        $0 \%$  & zamenjava spominskega bloka \\
+        \hline
+        $5 \%$  & ostalo (alokacija spomin, robni pogoji $\zeta$ \ldots)
+    \end{tabular}
+\end{table}
 
 \end{document}

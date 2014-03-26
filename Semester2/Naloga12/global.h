@@ -14,7 +14,7 @@ double mabs (const double *x);
 double get_greater (const double *x, const double *y);
 
 // for debugging
-void print_array (const double * xi, const unsigned long N);
+void print_array (FILE * fout, const double * xi, const unsigned long N);
 
 // swap the two arrays in constant time
 void swap (double ** A, double ** B, double ** swp);

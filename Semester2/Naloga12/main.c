@@ -58,9 +58,9 @@ void solve (const unsigned int N,
 
     // variable deallocation
     // --------------------------------------------------------
-    free (tmp);
-    free (zeta);
-    free (swp);
+    if (swp)    free (swp);    // <-- could be unallocated at this point
+    if (tmp)    free (tmp);    // because of that switcheroo
+
     free (psi);
     free (u);
     free (v);
@@ -68,7 +68,7 @@ void solve (const unsigned int N,
 
 int main (int argc, char ** argv)
 {
-    unsigned int N  = 11;
+    unsigned int N  = 101;
     unsigned long T = 1000,
                   F = 1000000;
     double delta    = 1e-6,
