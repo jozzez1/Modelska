@@ -32,15 +32,25 @@ void solve (const unsigned int N,
 
     // first we set the non-zero conditions
     initial_conditions (zeta, u, N);
-    // and now we iterate
+    // we use the 1st 10 iterations to predict delta
     unsigned int i;
-    for (i = frames; i--;)
+    for (i = 10; i--;)
     {
         SOR (psi, &w, xi, &norm2, zeta, &J, precision, N);
         get_vxy_and_delta (u, v, delta, psi, N);
-
         swap (&zeta, &tmp, &swp);
+        iterate_zeta (zeta, tmp, u, v, delta, &Re, N);
+        fix_zeta_boundaries (zeta, psi, N);
+        printf ("i = %u\tdelta = %.2e\n", i, *delta);
 
+    }
+
+    // the rest we can do normally
+    for (i = frames; i--;)
+    {
+        SOR (psi, &w, xi, &norm2, zeta, &J, precision, N);
+        get_vxy (u, v, psi, N);
+        swap (&zeta, &tmp, &swp);
         iterate_zeta (zeta, tmp, u, v, delta, &Re, N);
         fix_zeta_boundaries (zeta, psi, N);
         printf ("i = %u\tdelta = %.2e\n", i, *delta);
@@ -59,7 +69,7 @@ void solve (const unsigned int N,
 
 int main (int argc, char ** argv)
 {
-    unsigned int N  = 101;
+    unsigned int N  = 11;
     unsigned long T = 1000,
                   F = 1000000;
     double delta    = 1e-6,
