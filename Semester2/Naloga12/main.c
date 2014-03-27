@@ -55,8 +55,6 @@ void solve (const unsigned int N,
         printf ("i = %u\tdelta = %.2e\n", i, *delta);
     }
 
-
-
     // the rest we can do normally
     for (i = frames; i--;)
     {

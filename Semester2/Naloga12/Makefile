@@ -32,7 +32,8 @@ clean:
 	sor.o \
 	global.o \
 	prg.gmon \
-	prg.core
+	prg.core \
+	anim/*
 	rm -f ${file}
 .endfor
 

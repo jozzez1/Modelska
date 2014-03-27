@@ -166,6 +166,9 @@ init_markers (point * markers, const unsigned M, const unsigned N)
         }
         y -= h;
     }
+    markers[0].x = x;
+    markers[0].y = y + h;
+
     assert (!i);
 }
 
@@ -176,7 +179,7 @@ iterate_markers (point * markers,
     unsigned int i;
     for (i= M; i--;)
     {
-        unsigned int k = (unsigned int) N * markers[i].y + N*N * (unsigned int) markers[i].x;
+        unsigned int k = (unsigned int) (N*markers[i].x) + N * ((unsigned int) (N*markers[i].y));
         markers[i].x += (*delta)*u[k];
         markers[i].y += (*delta)*v[k];
     }
@@ -202,8 +205,8 @@ plot_markers (point * markers, const unsigned int M, const char * filename)
     mgl_set_origin (gr, 0, 0, 0);
     mgl_axis (gr, "xy", "", "");
     mgl_box (gr);
-    mgl_plot_xy (gr, x, y, " #.", "");
-    mgl_write_png (gr, filename, "Position of the markers");
+    mgl_plot_xy (gr, x, y, " .", "");
+    mgl_write_frame (gr, filename, "Position of the markers");
 
     mgl_delete_graph (gr);
     mgl_delete_data (x);
