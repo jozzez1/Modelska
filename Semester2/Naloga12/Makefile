@@ -31,6 +31,7 @@ clean:
 	navier_stokes.o \
 	sor.o \
 	global.o \
+	prg.gmon \
 	prg.core
 	rm -f ${file}
 .endfor

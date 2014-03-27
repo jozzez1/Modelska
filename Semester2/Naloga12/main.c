@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <assert.h>
 #include <math.h>
+#include <getopt.h>
 #include "global.h"
 #include "sor.h"
 #include "navier_stokes.h"
@@ -68,16 +69,52 @@ void solve (const unsigned int N,
 
 int main (int argc, char ** argv)
 {
-    unsigned int N  = 101;
+    unsigned int N  = 101,
+                 arg;
     unsigned long T = 1000,
                   F = 1000000;
     double delta    = 1e-6,
            Re       = 1e-2,
            precision= 1e-5;
 
-    assert (N & 1);     // SOR converges only if N is an odd number
-    assert (delta < 0.4/N);
+    struct option longopts[] =
+    {
+        {"N",       required_argument,  NULL,   'N' },
+        {"Re",      required_argument,  NULL,   'R' },
+        {"prec",    required_argument,  NULL,   'p' },
+        {"time",    required_argument,  NULL,   'T' },
+        {"frames",  required_argument,  NULL,   'F' },
+        {"help",    no_argument,        NULL,   'h' },
+        {0, 0, 0, 0}
+    };
 
+	while ((arg = getopt_long (argc, argv, "N:R:p:T:F:h", longopts, NULL)) != -1)
+	{
+        switch (arg)
+        {
+            case 'N': N             = atoi (optarg); break;
+            case 'R': Re            = atof (optarg); break;
+            case 'p': precision     = atof (optarg); break;
+            case 'T': T             = atoi (optarg); break;
+            case 'F': F             = atoi (optarg); break;
+            case 'h':
+                      printf("-N, --N:       set the matrix rank\n");
+                      printf("-R, --Re:      Reynold's number\n");
+                      printf("-p, --prec:    SOR precision condition\n");
+                      printf("-T, --time:    number of time slides\n");
+                      printf("-F, --frames:  number of total frames\n");
+                      printf("-h, --help:    print this list\n");
+                      exit (EXIT_SUCCESS);
+            default:
+                      printf("Wrong usage!\n");
+                      printf("Try\n");
+                      printf("%s -h\n", argv[0]);
+                      printf("to see options.\n");
+                      exit (EXIT_FAILURE);
+        }
+    }
+
+    assert (N & 1);     // SOR converges only if N is an odd number
     solve (N, T, F, Re, precision, &delta);
 
     return 0;
