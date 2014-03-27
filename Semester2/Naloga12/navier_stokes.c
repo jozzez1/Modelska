@@ -154,7 +154,7 @@ plot_markers (point * markers, const unsigned int M, const unsigned int k)
     mgl_set_origin (gr, 0, 0, 0);
     mgl_axis (gr, "xy", "", "");
     mgl_box (gr);
-    mgl_plot_xy (gr, x, y, " +", "");
+    mgl_plot_xy (gr, x, y, " .", "");
     mgl_write_png (gr, "markers.png", "Position of the markers");
 
     mgl_delete_graph (gr);
