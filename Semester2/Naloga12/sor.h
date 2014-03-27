@@ -1,8 +1,6 @@
 #ifndef SOR_H
 #define SOR_H
 #include "global.h"
-#include <assert.h>
-#include <math.h>
 
 // the even SOR step
 void step_even (double * psi, double * norm2, double * xi, const double * w, const double * zeta, const unsigned int N);

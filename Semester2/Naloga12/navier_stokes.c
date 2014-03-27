@@ -101,11 +101,10 @@ fix_zeta_boundaries (double * zeta, const double * psi, const unsigned int N)
 void
 init_markers (point * markers, const unsigned M, const unsigned N)
 {
-    double h = sqrt(M)/N,
+    double h = 1 /(2 + sqrt(M)),
            x = 1-h,
            y = 1-h;
     unsigned int i = M-1;
-    
     while (y >= h && i)
     {
         x = 1-h;
@@ -116,9 +115,10 @@ init_markers (point * markers, const unsigned M, const unsigned N)
 
             i--;
             x -= h;
-            y -= h;
         }
+        y -= h;
     }
+    assert (!i);
 }
 
 void
@@ -134,3 +134,30 @@ iterate_markers (point * markers,
     }
 }
 
+void
+plot_markers (point * markers, const unsigned int M, const unsigned int k)
+{
+    HMDT x = mgl_create_data_size (M, 0, 0),
+         y = mgl_create_data_size (M, 0, 0);
+
+    unsigned int i;
+    for (i = M; i--;)
+    {
+        mgl_data_set_value (x, markers[i].x, i, 0, 0);
+        mgl_data_set_value (y, markers[i].y, i, 0, 0);
+    }
+
+    HMGL gr = mgl_create_graph (800, 800);
+    mgl_set_quality (gr, 6);
+    mgl_set_range_val (gr, 'x', 0, 1);
+    mgl_set_range_val (gr, 'y', 1, 0);
+    mgl_set_origin (gr, 0, 0, 0);
+    mgl_axis (gr, "xy", "", "");
+    mgl_box (gr);
+    mgl_plot_xy (gr, x, y, " +", "");
+    mgl_write_png (gr, "markers.png", "Position of the markers");
+
+    mgl_delete_graph (gr);
+    mgl_delete_data (x);
+    mgl_delete_data (y);
+}

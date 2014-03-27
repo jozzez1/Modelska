@@ -3,6 +3,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <math.h>
+#include <assert.h>
 #include <mgl2/data.h>
 #include <mgl2/mgl.h>
 
@@ -25,6 +26,6 @@ void swap (double ** A, double ** B, double ** swp);
 void init_xy (double * x, double * y, const unsigned int N);
 
 // plot the stuff using mathgl
-void plot_vector (const double * x, const double * y, const double * u, const double * v, const unsigned int N);
+void plot_flow (const double * x, const double * y, const double * u, const double * v, const unsigned int N);
 
 #endif

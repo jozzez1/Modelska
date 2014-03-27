@@ -30,4 +30,7 @@ void init_markers (point * markers, const unsigned M, const unsigned N);
 // iterate the marker to the next coordinate
 void iterate_markers (point * markers, const unsigned int M, const double * u, const double * v, const double * delta, const unsigned int N);
 
+// plot the markers for animation
+void plot_markers (point * markers, const unsigned int M);
+
 #endif

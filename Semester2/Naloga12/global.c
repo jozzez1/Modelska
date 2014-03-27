@@ -62,7 +62,7 @@ init_xy (double * x, double * y, const unsigned int N)
 }
 
 void
-plot_vector (const double * x, const double * y, const double * u, const double * v, const unsigned int N)
+plot_flow (const double * x, const double * y, const double * u, const double * v, const unsigned int N)
 {
     HMDT X = mgl_create_data_size (N, N, 1),
          Y = mgl_create_data_size (N, N, 1),
