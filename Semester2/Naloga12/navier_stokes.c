@@ -204,7 +204,6 @@ plot_markers (point * markers, const unsigned int M, const char * filename)
     mgl_box (gr);
     mgl_plot_xy (gr, x, y, " .", "");
     mgl_write_frame (gr, filename, "Position of the markers");
-    system ("./anime.sh anim");
 
     mgl_delete_graph (gr);
     mgl_delete_data (x);

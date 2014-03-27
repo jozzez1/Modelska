@@ -72,6 +72,7 @@ void solve (const unsigned int N,
         printf ("i = %u\tdelta = %.2e\n", i, *delta);
     }
     plot_flow (x, y, u, v, N);
+    system ("./anime.sh anim");
 
     // variable deallocation
     // --------------------------------------------------------
