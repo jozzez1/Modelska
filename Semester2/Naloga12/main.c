@@ -21,7 +21,9 @@ void solve (const unsigned int N,
            * swp    = (double *) calloc (N*N, sizeof(double)),
            * psi    = (double *) calloc (N*N, sizeof(double)),
            * u      = (double *) calloc (N*N, sizeof(double)),
-           * v      = (double *) calloc (N*N, sizeof(double));
+           * v      = (double *) calloc (N*N, sizeof(double)),
+           * x      = (double *) calloc (N*N, sizeof(double)),
+           * y      = (double *) calloc (N*N, sizeof(double));
 
     double J        = cos(M_PI/N),
            norm2    = 0,
@@ -33,6 +35,7 @@ void solve (const unsigned int N,
 
     // first we set the non-zero conditions
     initial_conditions (zeta, u, N);
+    init_xy (x, y, N);
     // we use the 1st 10 iterations to predict delta
     unsigned int i;
     for (i = 10; i--;)
@@ -43,7 +46,6 @@ void solve (const unsigned int N,
         iterate_zeta (zeta, tmp, u, v, delta, &Re, N);
         fix_zeta_boundaries (zeta, psi, N);
         printf ("i = %u\tdelta = %.2e\n", i, *delta);
-
     }
 
     // the rest we can do normally
@@ -56,6 +58,9 @@ void solve (const unsigned int N,
         fix_zeta_boundaries (zeta, psi, N);
         printf ("i = %u\tdelta = %.2e\n", i, *delta);
     }
+    print_array (stdout, u, N);
+    print_array (stdout, v, N);
+    plot_vector (x, y, u, v, N);
 
     // variable deallocation
     // --------------------------------------------------------
@@ -65,6 +70,8 @@ void solve (const unsigned int N,
     free (psi);
     free (u);
     free (v);
+    free (x);
+    free (y);
 }
 
 int main (int argc, char ** argv)
@@ -114,7 +121,7 @@ int main (int argc, char ** argv)
         }
     }
 
-    assert (N & 1);     // SOR converges only if N is an odd number
+    assert (N & 1);     // SOR is written in such a way, that it converges only for odd N
     solve (N, T, F, Re, precision, &delta);
 
     return 0;

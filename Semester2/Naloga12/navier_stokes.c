@@ -14,7 +14,7 @@ initial_conditions (double * zeta, double * u,
         zeta [i + (N-2)*N] = u[i + (N-1)*N] * (double) N;
 
         // and the very last line -- the velocity for psi
-        zeta [i + (N-1)*N] = (-1) * (2.0 * N);
+        zeta [i + (N-1)*N] = (-2.0 * N);
     }
 } 
 
@@ -26,9 +26,9 @@ get_vxy_and_delta (double * u, double * v, double * delta,
     double over_two_h = 0.5 * N,
            vxmax      = 0,
            vymax      = 0;
-    for (i = N-1; i--;)
+    for (i = N-2; i--;)
     {
-        for (j = N-1; j--;)
+        for (j = N-2; j--;)
         {
             k = j+1 + (i+1)*N;
             u [k] = (psi[k + N] - psi[k - N]) * over_two_h; 
@@ -48,13 +48,13 @@ get_vxy (double * u, double * v,
 {
     unsigned int i,j,k;
     double over_two_h = 0.5 * N;
-    for (i = N-1; i--;)
+    for (i = N-2; i--;)
     {
-        for (j = N-1; j--;)
+        for (j = N-2; j--;)
         {
             k = j+1 + (i+1)*N;
-            u [k] = (psi[k + N] - psi[k - N]) * over_two_h; 
-            v [k] = (psi[k - 1] - psi[k + 1]) * over_two_h;
+            u [k] = (psi[k - N] - psi[k + N]) * over_two_h; // we have to change the sign
+            v [k] = (psi[k + 1] - psi[k - 1]) * over_two_h; // because our coordinate system is inverted
         }
     }
 }

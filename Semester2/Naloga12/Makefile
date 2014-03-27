@@ -4,9 +4,9 @@ CPUOPT=		-march=corei7 -mssse3 -msse4.1
 OFLAG=		-Ofast
 OPTFLAGS=	${OFLAG} ${CPUOPT} \
 		-funroll-loops -ffast-math -fno-stack-protector
-WARN=		-Wall
+WARN=		-Wall -Wno-typedef-redefinition
 LIBFLAGS=	-L/usr/local/lib \
-	       	-lm
+	       	-lm -lmgl -lmgl-wnd
 CFLAGS=		-I/usr/local/include \
 		${WARN} ${OPTFLAGS} -g
 
