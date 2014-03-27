@@ -3,6 +3,7 @@
 #include <assert.h>
 #include <math.h>
 #include <getopt.h>
+#include <sys/stat.h>
 #include "global.h"
 #include "sor.h"
 #include "navier_stokes.h"
@@ -28,7 +29,8 @@ void solve (const unsigned int N,
 
     point * markers = (point *) malloc (M * sizeof (point));
 
-    char filename [15];
+    char filename [23],
+         base [8];
 
     double J        = cos(M_PI/N),
            norm2    = 0,
@@ -37,11 +39,14 @@ void solve (const unsigned int N,
 
     // solution
     // --------------------------------------------------------
-
     // first we set the non-zero conditions
     initial_conditions (zeta, u, N);
     init_xy (x, y, N);
     init_markers (markers, M, N);
+
+    // we create the directory for animation
+    sprintf(base, "Re-%u", (unsigned int) Re);
+    mkdir (base, S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
     // we use the 1st 10 iterations to predict delta
     unsigned int i, j;
     for (i = 10; i--;)
@@ -67,12 +72,13 @@ void solve (const unsigned int N,
             iterate_markers (markers, M, u, v, delta, N);
             fix_zeta_boundaries (zeta, psi, N);
         }
-        sprintf (filename, "anim/%06lu.jpg", frames -1 -i);
+        sprintf (filename, "%s/%06lu.jpg", base, frames -1 -i);
         plot_markers (markers, M, filename);
         printf ("i = %u\tdelta = %.2e\n", i, *delta);
     }
     plot_flow (x, y, u, v, N);
-    system ("./anime.sh anim");
+    sprintf (filename, "./anime.sh %s", base);
+    system (filename);
 
     // variable deallocation
     // --------------------------------------------------------
@@ -109,8 +115,8 @@ int main (int argc, char ** argv)
         {0, 0, 0, 0}
     };
 
-	while ((arg = getopt_long (argc, argv, "N:M:R:p:T:F:h", longopts, NULL)) != -1)
-	{
+    while ((arg = getopt_long (argc, argv, "N:M:R:p:T:F:h", longopts, NULL)) != -1)
+    {
         switch (arg)
         {
             case 'N': N             = atoi (optarg); break;
