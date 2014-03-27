@@ -69,7 +69,7 @@ void solve (const unsigned int N,
             iterate_markers (markers, M, u, v, delta, N);
             fix_zeta_boundaries (zeta, psi, N);
         }
-        sprintf (filename, "anim/%06lu.jpg", frames);
+        sprintf (filename, "anim/%06lu.jpg", frames -1 -i);
         plot_markers (markers, M, filename);
         printf ("i = %u\tdelta = %.2e\n", i, *delta);
     }
