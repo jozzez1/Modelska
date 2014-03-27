@@ -109,7 +109,6 @@ init_xy (double * x, double * y, const unsigned int N)
             k = i + j*N;    // MathGL requires its arguments to be in col. major format
             x[k] = i*1.0/(N-1);
             y[k] = j*1.0/(N-1);
-            printf ("(x,y) = (%.1lf,%.1lf)\n", x[k], y[k]);
         }
     }
 }
@@ -126,8 +125,6 @@ plot_flow (const double * x, const double * y, const double * u, const double * 
     mgl_data_set_double (Y, y, N, N, 1);
     mgl_data_set_double (VX,u, N, N, 1);
     mgl_data_set_double (VY,v, N, N, 1);
-
-    printf ("X=%lf x=%lf\n", mgl_data_get_value (X, 4, 2, 0), x[4 + 2*N]);
 
     HMGL gr = mgl_create_graph (800, 800);
     mgl_set_quality (gr, 6);
