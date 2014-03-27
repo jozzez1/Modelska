@@ -28,6 +28,8 @@ void solve (const unsigned int N,
 
     point * markers = (point *) malloc (M * sizeof (point));
 
+    char filename [15];
+
     double J        = cos(M_PI/N),
            norm2    = 0,
            xi       = 0,
@@ -41,7 +43,7 @@ void solve (const unsigned int N,
     init_xy (x, y, N);
     init_markers (markers, M, N);
     // we use the 1st 10 iterations to predict delta
-    unsigned int i;
+    unsigned int i, j;
     for (i = 10; i--;)
     {
         SOR (psi, &w, &xi, &norm2, zeta, &J, precision, N);
@@ -53,16 +55,22 @@ void solve (const unsigned int N,
         printf ("i = %u\tdelta = %.2e\n", i, *delta);
     }
 
+
+
     // the rest we can do normally
     for (i = frames; i--;)
     {
-        SOR (psi, &w, &xi, &norm2, zeta, &J, precision, N);
-        get_vxy (u, v, psi, N);
-        swap (&zeta, &tmp, &swp);
-        iterate_zeta (zeta, tmp, u, v, delta, &Re, N);
-        iterate_markers (markers, M, u, v, delta, N);
-        fix_zeta_boundaries (zeta, psi, N);
-        plot_markers (markers, M);
+        for (j = T; j--;)
+        {
+            SOR (psi, &w, &xi, &norm2, zeta, &J, precision, N);
+            get_vxy (u, v, psi, N);
+            swap (&zeta, &tmp, &swp);
+            iterate_zeta (zeta, tmp, u, v, delta, &Re, N);
+            iterate_markers (markers, M, u, v, delta, N);
+            fix_zeta_boundaries (zeta, psi, N);
+        }
+        sprintf (filename, "anim/%06lu.jpg", frames);
+        plot_markers (markers, M, filename);
         printf ("i = %u\tdelta = %.2e\n", i, *delta);
     }
     plot_flow (x, y, u, v, N);
@@ -84,8 +92,8 @@ int main (int argc, char ** argv)
     unsigned int N  = 101,
                  M  = 50,
                  arg;
-    unsigned long T = 1000,
-                  F = 1000000;
+    unsigned long T = 100000,
+                  F = 100;
     double delta    = 1e-6,
            Re       = 1e-2,
            precision= 1e-5;

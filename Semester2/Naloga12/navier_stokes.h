@@ -17,6 +17,12 @@ void iterate_zeta (double * zeta, const double * tmp_zeta, const double * u, con
 // fix zeta boundaries
 void fix_zeta_boundaries (double * zeta, const double * psi, const unsigned int N);
 
+// initialize the x and y vectors
+void init_xy (double * x, double * y, const unsigned int N);
+
+// plot the stuff using mathgl
+void plot_flow (const double * x, const double * y, const double * u, const double * v, const unsigned int N);
+
 // markers for animation
 typedef struct point
 {
@@ -31,6 +37,6 @@ void init_markers (point * markers, const unsigned M, const unsigned N);
 void iterate_markers (point * markers, const unsigned int M, const double * u, const double * v, const double * delta, const unsigned int N);
 
 // plot the markers for animation
-void plot_markers (point * markers, const unsigned int M);
+void plot_markers (point * markers, const unsigned int M, const char * filename);
 
 #endif
