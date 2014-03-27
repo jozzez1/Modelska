@@ -17,4 +17,17 @@ void iterate_zeta (double * zeta, const double * tmp_zeta, const double * u, con
 // fix zeta boundaries
 void fix_zeta_boundaries (double * zeta, const double * psi, const unsigned int N);
 
+// markers for animation
+typedef struct point
+{
+    double x,
+           y;
+} point;
+
+// spread M markers to be equidistant over the N x N grid
+void init_markers (point * markers, const unsigned M, const unsigned N);
+
+// iterate the marker to the next coordinate
+void iterate_markers (point * markers, const unsigned int M, const double * u, const double * v, const double * delta, const unsigned int N);
+
 #endif

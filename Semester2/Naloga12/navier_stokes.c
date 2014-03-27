@@ -97,3 +97,40 @@ fix_zeta_boundaries (double * zeta, const double * psi, const unsigned int N)
         zeta [k + (N-1)*N] = 2*over_h * (over_h * psi[k + (N-2)*N] - 1);
     }
 }
+
+void
+init_markers (point * markers, const unsigned M, const unsigned N)
+{
+    double h = sqrt(M)/N,
+           x = 1-h,
+           y = 1-h;
+    unsigned int i = M-1;
+    
+    while (y >= h && i)
+    {
+        x = 1-h;
+        while (x >= h && i)
+        {
+            markers[i].x = x;
+            markers[i].y = y;
+
+            i--;
+            x -= h;
+            y -= h;
+        }
+    }
+}
+
+void
+iterate_markers (point * markers,
+        const unsigned int M, const double * u, const double * v, const double * delta, const unsigned int N)
+{
+    unsigned int i;
+    for (i= M; i--;)
+    {
+        unsigned int k = (unsigned int) N * markers[i].y + N*N * (unsigned int) markers[i].x;
+        markers[i].x += (*delta)*u[k];
+        markers[i].y += (*delta)*v[k];
+    }
+}
+

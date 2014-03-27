@@ -58,8 +58,6 @@ void solve (const unsigned int N,
         fix_zeta_boundaries (zeta, psi, N);
         printf ("i = %u\tdelta = %.2e\n", i, *delta);
     }
-    print_array (stdout, u, N);
-    print_array (stdout, v, N);
     plot_vector (x, y, u, v, N);
 
     // variable deallocation
