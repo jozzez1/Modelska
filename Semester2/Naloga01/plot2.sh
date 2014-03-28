@@ -18,8 +18,8 @@ set key t l
 
 set multiplot layout 2,1
 set title 'Absolutna napaka linearne napovedi za \\texttt{$filename}'
-plot "$1" u 1:(abs(\$2 - \$3)) w l title 'napaka pri \$p = 30\$', \
-	"$1" u 1:4 w l lt -1 title '\$\sigma_{\varepsilon}\$'
+plot "$1" u 1:(abs(\$2 - \$3)) w l title 'napaka pri \$p = 30\$'#, \
+#	"$1" u 1:4 w l lt -1 title '\$\sigma_{\varepsilon}\$'
 
 set title 'Primerjeva napovedi s pravimi vrednostmi'
 plot "$1" u 1:2 w l title 'prave vrednosti', \
