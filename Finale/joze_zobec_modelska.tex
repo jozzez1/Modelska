@@ -8,6 +8,18 @@
     \ensuremath{\mathbf{r}}
 }
 
+\renewcommand{\L}{
+    \ensuremath{\mathcal{L}}
+}
+
+\newcommand{\e}{
+    \ensuremath{\mathrm{e}}
+}
+
+\newcommand{\sfrac}[2]{
+    \ensuremath{\textstyle{\frac{#1}{#2}}}
+}
+
 \begin{document}
 
 \section{Navodilo}
@@ -19,10 +31,65 @@ planeta. Koliko parametrov ima model?
 
 V tem primeru imamo veliko sre\v co, saj je sistem zaprt, kar pomeni $\dot{E} = 0$. Zaradi tega bomo
 za re\v sevanje problema napravili simplekti\v cen integrator s pomo\v cjo Trotter-Suzukijevega
-razcepa, za katerega pa ne potrebujemo Newtonovega zakona, ampak samo Hamiltonko:
-\[
+razcepa, za katerega pa ne potrebujemo Newtonovega zakona, ampak samo klasi\v cno hamiltonko:
+\begin{equation}
     H = \frac{1}{2}\sum_{k = 1}^N \frac{p_k^2}{m_k} - \frac{\kappa}{4\pi}\sum_{k,\ell}
-        \frac{m_k m_\ell}{|\r_k - \r_\ell|}
+        \frac{m_k m_\ell}{|\r_k - \r_\ell|}.
+    \label{hamilton}
+\end{equation}
+Dinamiko dolo\v cimo prek Liouvillovega operatorja $\L$:
+\begin{equation}
+    -i\L \equiv \{\bullet, H\}, \quad \dot{x}(t) = -i\L x(t),
+    \label{liouville}
+\end{equation}
+kjer je $\{\bullet, \bullet\}$ Poissonov oklepaj, $x$ pa neka koli\v cina. Iz Ena\v cbe~\eqref{liouville}
+dobimo klasi\v cni propagator $U(t)$:
+\begin{equation}
+    x(t + \delta t) = U(\delta t)\ x(t) = \exp(\delta t\L)\ x(t),
+\end{equation}
+katerega lahko razstavimo na kineti\v cni in potencialni del. Propagator se potem glasi
+\begin{equation}
+    \exp(\delta t \L) = \exp(\delta t \{\bullet, T\} + \delta t \{\bullet, V\}),
+    \label{propagator}
+\end{equation}
+zanj pa velja Trotterjeva formula
+\begin{equation}
+    \exp(\delta t\{\bullet,T\} + \delta t\{\bullet,V\}) = \lim_{n \to \infty}
+        \Big(\exp(\sfrac{\delta t}{n}\{\bullet,T\})\exp(\sfrac{\delta t}{n}\{\bullet,V\})\Big)^n.
+\end{equation}
+Tega izraza seveda ne bomo ra\v cunali, saj bi potrebovali neskon\v cen produk. Raje bi konsistentno z
+natan\v cnostjo pobrali le kon\v cno mnogo faktorjev. Tu nam na pomo\v c prisko\v cijo
+Baker-Campbell-Hausorff-ova identiteta:
+\[
+    C = \log{\e^{A + B}} = A + B + \sfrac{1}{2}[A,B] + \sfrac{1}{12}\big[A,[A,B]\big] -
+        \sfrac{1}{12}\big[B,[A,B]\big] +\ldots
 \]
+S pomo\v cjo le-te si lahko zamislimo pogoja
+\begin{align}
+    \e^C &= \e^{c_1 A}\e^{d_1 B}\e^{c_2 A}\e^{d_2 B}\e^{c_3 A}\cdot \ldots \cdot \e^{c_n A}\e^{d_n B} \\
+    \e^C &= \e^{w_1 A}\e^{z_1 B}\e^{w_2 A}\e^{z_2 B}\e^{w_3 A}\cdot \ldots \cdot \e^{z_n B}\e^{w_{n+1} A}
+\end{align}
+in izra\v cunamo koeficiente $c_i$ in $d_j$ nesimetri\v cne oz. koeficiente $w_i$, $z_i$ simetrizirane
+formule da bo to res do reda natan\v cnosti $n$, ki se sorazmeren s \v stevilom prisotnih faktorjev.
+Simetrizirane formule so natan\v cnej\v se zato bomo uporabili sledenje. Koeficienti so v splo\v snem
+lahko kompleksni. S pomo\v cjo slede\v sih identitet lahko propagator v ena\v cbi~\eqref{propagator}
+zapi\v semo kot npr.
+\[
+    \exp(\delta t\L) \approx \exp\big(\sfrac{\delta t}{2}\{\bullet, T\}\big)
+    \exp\big(\delta t\{\bullet, V\}\big)
+    \exp\big(\sfrac{\delta t}{2}\{\bullet, T\}\big) + \mathcal{O}(\delta t^3).
+\]
+Ta shema je Trotter-Suzukijev razcep reda $2$ in jo ozna\v cimo z $S_2(\delta t)$. Na preprost na\v cin
+lahko od tod dobimo Trotter-Suzukijev razcep reda $4$,
+\[
+    S_4 (\delta t) = S_2(x_0 \delta t) S_2(x_1 \delta t) S_2(x_0 \delta t), \quad
+    x_0 = \frac{1}{2 - \sqrt[3]{2}},\ x_1 = -\frac{\sqrt[3]{2}}{2 - \sqrt[3]{2}},
+\]
+ki ga bomo uporabljali tekom te doma\v ce naloge, saj je \v ze kar precej natan\v cen.
+
+\subsection{Prosti parametri}
+
+Da preverimo\v stevilo prostih parametrov moramo hamiltonko~\eqref{hamilton} pretvoriti v brezdimenzijsko
+obliko.
 
 \end{document}
