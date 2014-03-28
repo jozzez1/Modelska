@@ -7,7 +7,7 @@ function fT = fnew (FT, f1, f0, ht)
         fT(i) = fT(i) * ((ht/h)^2) + 2*f1(i) - f0(i);
     end
 
-    fT(1) = (-1)*(2*cos(fT(2))/(N * FT(1)) - fT(3));
+    fT(1) = -(2*cos(fT(2))/(N * FT(1)) - fT(3));
     fT(N) = 2*fT(N-1) - fT(N-2);
 
     %% we have to fix it to become a column-vector

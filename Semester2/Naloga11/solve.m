@@ -1,5 +1,5 @@
 function [FF, ff] = solve (N, ht, fi0, T)
-    f0 = mod(start (fi0, N), 2*pi);
+    f0 = start (fi0, N);
     f1 = f0;
 
     ff = [f0, f1];
