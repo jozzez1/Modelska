@@ -1,0 +1,28 @@
+\documentclass[12pt, a4paper]{article}
+\usepackage[slovene]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{amsmath, amssymb}
+
+\renewcommand{\r}{
+    \ensuremath{\mathbf{r}}
+}
+
+\begin{document}
+
+\section{Navodilo}
+
+Razi\v s\v ci prostor kro\v znih orbit planeta okrog dvojne zvezde v pribli\v zku zanemarljive mase
+planeta. Koliko parametrov ima model?
+
+\section{Razmislek}
+
+V tem primeru imamo veliko sre\v co, saj je sistem zaprt, kar pomeni $\dot{E} = 0$. Zaradi tega bomo
+za re\v sevanje problema napravili simplekti\v cen integrator s pomo\v cjo Trotter-Suzukijevega
+razcepa, za katerega pa ne potrebujemo Newtonovega zakona, ampak samo Hamiltonko:
+\[
+    H = \frac{1}{2}\sum_{k = 1}^N \frac{p_k^2}{m_k} - \frac{\kappa}{4\pi}\sum_{k,\ell}
+        \frac{m_k m_\ell}{|\r_k - \r_\ell|}
+\]
+
+\end{document}
