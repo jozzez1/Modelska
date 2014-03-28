@@ -49,16 +49,19 @@ void solve (const unsigned int N,
     mkdir (base, S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH);
     // we use the 1st 10 iterations to predict delta
     unsigned int i, j;
-    for (i = 10; i--;)
+    if (*delta == 0)
     {
-        SOR (psi, &w, &xi, &norm2, zeta, &J, precision, N);
-        get_vxy_and_delta (u, v, delta, psi, N);
-        swap (&zeta, &tmp, &swp);
-        iterate_zeta (zeta, tmp, u, v, delta, &Re, N);
-        iterate_markers (markers, M, u, v, delta, N);
-        fix_zeta_boundaries (zeta, psi, N);
-        printf ("i = %u\tdelta = %.2e\n", i, *delta);
+        for (i = 10; i--;)
+        {
+            SOR (psi, &w, &xi, &norm2, zeta, &J, precision, N);
+            get_vxy_and_delta (u, v, delta, psi, N);
+            swap (&zeta, &tmp, &swp);
+            iterate_zeta (zeta, tmp, u, v, delta, &Re, N);
+            iterate_markers (markers, M, u, v, delta, N);
+            fix_zeta_boundaries (zeta, psi, N);
+        }
     }
+    printf ("Using delta = %.2e\n", *delta);
 
     // the rest we can do normally
     for (i = frames; i--;)
@@ -74,7 +77,7 @@ void solve (const unsigned int N,
         }
         sprintf (filename, "%s/%06lu.jpg", base, frames -1 -i);
         plot_markers (markers, M, filename);
-        printf ("i = %u\tdelta = %.2e\n", i, *delta);
+        printf ("i = %u\n", i);
     }
     plot_flow (x, y, u, v, N);
     sprintf (filename, "./anime.sh %s", base);
@@ -99,7 +102,7 @@ int main (int argc, char ** argv)
                  arg;
     unsigned long T = 100000,
                   F = 100;
-    double delta    = 1e-6,
+    double delta    = 0,
            Re       = 1e-2,
            precision= 1e-5;
 
@@ -111,11 +114,12 @@ int main (int argc, char ** argv)
         {"prec",    required_argument,  NULL,   'p' },
         {"time",    required_argument,  NULL,   'T' },
         {"frames",  required_argument,  NULL,   'F' },
+        {"delta",   required_argument,  NULL,   'd' },
         {"help",    no_argument,        NULL,   'h' },
         {0, 0, 0, 0}
     };
 
-    while ((arg = getopt_long (argc, argv, "N:M:R:p:T:F:h", longopts, NULL)) != -1)
+    while ((arg = getopt_long (argc, argv, "N:M:R:d:p:T:F:h", longopts, NULL)) != -1)
     {
         switch (arg)
         {
@@ -125,12 +129,14 @@ int main (int argc, char ** argv)
             case 'p': precision     = atof (optarg); break;
             case 'T': T             = atoi (optarg); break;
             case 'F': F             = atoi (optarg); break;
+            case 'd': delta         = atof (optarg); break;
             case 'h':
                       printf("-N, --N:       set the matrix rank\n");
                       printf("-M, --M:       set the number of markers\n");
                       printf("-R, --Re:      Reynold's number\n");
                       printf("-p, --prec:    SOR precision condition\n");
                       printf("-T, --time:    number of time slides\n");
+                      printf("-d, --delta:   force to use this delta\n");
                       printf("-F, --frames:  number of total frames\n");
                       printf("-h, --help:    print this list\n");
                       exit (EXIT_SUCCESS);

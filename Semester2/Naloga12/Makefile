@@ -25,6 +25,9 @@ sor.o: global.o
 global.o:
 	${CC} ${CFLAGS} -c global.c
 
+purge: clean
+	find . -name "*.jpg" -exec rm {} +
+
 clean:
 .for file in \
 	main.o \
@@ -32,8 +35,7 @@ clean:
 	sor.o \
 	global.o \
 	prg.gmon \
-	prg.core \
-	anim/*
+	prg.core
 	rm -f ${file}
 .endfor
 
