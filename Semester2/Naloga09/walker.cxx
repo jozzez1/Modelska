@@ -369,9 +369,9 @@ Walker::plot_vec (int mode)
 
 	gr.Vect (x, y, vx, vy, "fkUBbrR", "f");	// this is row-major, despite the example
 
-	// wave front-lines -- we'll insert them manually
+	// current-lines -- we'll insert them manually
 	for (int i = 0; i <= 19; i++)
-		gr.FlowP (mglPoint ((xmax - xmin)*i/(19) + xmin, ymin), x, y, vx, vy, "Ubq");
+		gr.FlowP (mglPoint (xmin, (ymax - ymin)*i/(19) + ymin), x, y, vy, vx, "vkUBbrR");
 	gr.Plot (px, py, "r");
 	
 	gr.Title (naslov.data());

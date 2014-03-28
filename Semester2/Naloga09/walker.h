@@ -37,6 +37,9 @@ class Walker
 		// potention, input are global coordinates
 		double potential (int, Vector2d);
 
+		// calculate capacity/force
+		double effect (void)
+
 		// functions to fill the matrix/vectors
 		void init_points (int, int, double, double);
 		void fillu (int);
