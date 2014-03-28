@@ -8,6 +8,10 @@
     \ensuremath{\mathbf{r}}
 }
 
+\newcommand{\p}{
+    \ensuremath{\mathbf{p}}
+}
+
 \renewcommand{\L}{
     \ensuremath{\mathcal{L}}
 }
@@ -18,6 +22,10 @@
 
 \newcommand{\sfrac}[2]{
     \ensuremath{\textstyle{\frac{#1}{#2}}}
+}
+
+\newcommand{\Frac}[2]{
+    \ensuremath{\displaystyle{\frac{#1}{#2}}}
 }
 
 \begin{document}
@@ -33,11 +41,11 @@ V tem primeru imamo veliko sre\v co, saj je sistem zaprt, kar pomeni $\dot{E} = 
 za re\v sevanje problema napravili simplekti\v cen integrator s pomo\v cjo Trotter-Suzukijevega
 razcepa, za katerega pa ne potrebujemo Newtonovega zakona, ampak samo klasi\v cno hamiltonko:
 \begin{equation}
-    H = \frac{1}{2}\sum_{k = 1}^N \frac{p_k^2}{m_k} - \frac{\kappa}{4\pi}\sum_{k,\ell}
-        \frac{m_k m_\ell}{|\r_k - \r_\ell|}.
+    H = \frac{1}{2}\sum_{k = 1}^N \frac{|\p_k|^2}{m_k} - \frac{\kappa}{4\pi}\sum_{k,\ell}
+        \frac{m_k m_\ell}{|\r_k - \r_\ell|},
     \label{hamilton}
 \end{equation}
-Dinamiko dolo\v cimo prek Liouvillovega operatorja $\L$:
+vektorje smo ozna\v cili z mastnim tiskom. Dinamiko dolo\v cimo prek Liouvillovega operatorja $\L$:
 \begin{equation}
     -i\L \equiv \{\bullet, H\}, \quad \dot{x}(t) = -i\L x(t),
     \label{liouville}
@@ -57,8 +65,8 @@ zanj pa velja Trotterjeva formula
     \exp(\delta t\{\bullet,T\} + \delta t\{\bullet,V\}) = \lim_{n \to \infty}
         \Big(\exp(\sfrac{\delta t}{n}\{\bullet,T\})\exp(\sfrac{\delta t}{n}\{\bullet,V\})\Big)^n.
 \end{equation}
-Tega izraza seveda ne bomo ra\v cunali, saj bi potrebovali neskon\v cen produk. Raje bi konsistentno z
-natan\v cnostjo pobrali le kon\v cno mnogo faktorjev. Tu nam na pomo\v c prisko\v cijo
+Tega izraza seveda ne bomo ra\v cunali, saj bi potrebovali neskon\v cen produkt. Raje bi konsistentno z
+natan\v cnostjo pobrali le kon\v cno mnogo faktorjev. Tu nam na pomo\v c prisko\v ci
 Baker-Campbell-Hausorff-ova identiteta:
 \[
     C = \log{\e^{A + B}} = A + B + \sfrac{1}{2}[A,B] + \sfrac{1}{12}\big[A,[A,B]\big] -
@@ -70,9 +78,9 @@ S pomo\v cjo le-te si lahko zamislimo pogoja
     \e^C &= \e^{w_1 A}\e^{z_1 B}\e^{w_2 A}\e^{z_2 B}\e^{w_3 A}\cdot \ldots \cdot \e^{z_n B}\e^{w_{n+1} A}
 \end{align}
 in izra\v cunamo koeficiente $c_i$ in $d_j$ nesimetri\v cne oz. koeficiente $w_i$, $z_i$ simetrizirane
-formule da bo to res do reda natan\v cnosti $n$, ki se sorazmeren s \v stevilom prisotnih faktorjev.
+formule da bo to res do reda natan\v cnosti $n$, ki je sorazmeren s \v stevilom prisotnih faktorjev.
 Simetrizirane formule so natan\v cnej\v se zato bomo uporabili sledenje. Koeficienti so v splo\v snem
-lahko kompleksni. S pomo\v cjo slede\v sih identitet lahko propagator v ena\v cbi~\eqref{propagator}
+lahko kompleksni. S pomo\v cjo prej\v snjih identitet lahko propagator v ena\v cbi~\eqref{propagator}
 zapi\v semo kot npr.
 \[
     \exp(\delta t\L) \approx \exp\big(\sfrac{\delta t}{2}\{\bullet, T\}\big)
@@ -82,14 +90,59 @@ zapi\v semo kot npr.
 Ta shema je Trotter-Suzukijev razcep reda $2$ in jo ozna\v cimo z $S_2(\delta t)$. Na preprost na\v cin
 lahko od tod dobimo Trotter-Suzukijev razcep reda $4$,
 \[
-    S_4 (\delta t) = S_2(x_0 \delta t) S_2(x_1 \delta t) S_2(x_0 \delta t), \quad
+    S_4 (\delta t) = S_2(x_0 \delta t) S_2(x_1 \delta t) S_2(x_0 \delta t) + \mathcal{O}(\delta t^5), \quad
     x_0 = \frac{1}{2 - \sqrt[3]{2}},\ x_1 = -\frac{\sqrt[3]{2}}{2 - \sqrt[3]{2}},
 \]
-ki ga bomo uporabljali tekom te doma\v ce naloge, saj je \v ze kar precej natan\v cen.
+ki ga bomo uporabljali tekom te doma\v ce naloge, saj je \v ze kar precej natan\v cen, poleg tega, da so
+koeficienti \v se vedno vsi realni.
 
 \subsection{Prosti parametri}
 
-Da preverimo\v stevilo prostih parametrov moramo hamiltonko~\eqref{hamilton} pretvoriti v brezdimenzijsko
-obliko.
+Da preverimo \v stevilo prostih parametrov moramo hamiltonko~\eqref{hamilton} pretvoriti v brezdimenzijsko
+obliko. Energija se bo \v zal ohranjala samo, kadar upo\v stevamo tudi maso planeta, tako da je ne bomo
+zanemarili. Naj bo $m_3$ masa planeta, $m_1$ in $m_2$ pa naj bosta masi zvezde. Definirajmo brezdimenzijski
+masi
+\begin{equation}
+    M_1 \equiv \frac{m_1}{m_3}, \quad M_2 \equiv \frac{m_2}{m_3}.
+\end{equation}
+Nekaj svobode imamo \v se za to, kako bomo merili dol\v zine. Smiselno je, da bi merili v enotah oddaljenosti
+zvezd na za\v cetku, tj. $\rho_0 = |\r_1 (0) - \r_2 (0)|$. Da bomo lahko naredili polno brezdimenzijsko
+transformacijo potrebujemo \v se skalo za \v cas. Merili ga bomo v enotah $\tau$, ki je
+\[
+    \frac{1}{\tau^2} \equiv \frac{\kappa m_3}{4\pi\rho_0^3}.
+\]
+Hamiltonian se potem glasi
+\begin{align*}
+    H =& \frac{\rho_0^2}{2 m_3\tau^2} \big(\sfrac{1}{M_1}|\p_1|^2\tau^2/\rho_0^2 + \sfrac{1}{M_2}|\p_2|^2\tau^2/\rho_0^2 +
+        |\p_3|^2\tau^2/\rho_0^2\big) -\\
+       &- \Frac{\kappa m_3^2}{4\pi\rho_0}\bigg(\Frac{M_1}{|\r_1 - \r_3|/\rho_0} + \Frac{M_2}{|\r_2 - \r_3|/\rho_0} +
+        \Frac{M_1 M_2}{|\r_1 - \r_2|/\rho_0}\bigg),
+\end{align*}
+kjer lahko konstanto $\kappa m_3^2/4\pi\rho_0$ izrazimo s $\tau$ in dobimo $m_3\rho_0^2/\tau^2$.
+Sedaj uvedemo brezdimenzijske impulze in brezdimenzijske dol\v zine
+\begin{equation}
+    \frac{\p}{m_3\rho_0/\tau} \mapsto \p, \quad \frac{\r}{\rho_0} \mapsto \r,
+\end{equation}
+kar hamiltonian poenostavi v
+\begin{align*}
+    H =& \frac{m_3\rho_0^2}{2\tau^2} (\sfrac{1}{M_1}|\p_1|^2 + \sfrac{1}{M_2}|\p_2|^2 + |\p_3|^2) -\\
+       &- \Frac{m_3\rho_0^2}{\tau^2}\bigg(\Frac{M_1}{|\r_1 - \r_3|} + \Frac{M_2}{|\r_2 - \r_3|} +
+        \Frac{M_1 M_2}{|\r_1 - \r_2|}\bigg).
+\end{align*}
+Kar nam \v se preostana je, da uvedemo brezdimenzijsko transformacijo in energijo merimo v enotah
+$m_3\rho_0^2/\tau^2$, tj.
+\[
+    \frac{\tau^2}{\rho_0^2 m_3}H \mapsto H
+\]
+in dobimo brezdimenzijski hamiltonian
+\begin{equation}
+    H = \frac{1}{2}\Big(\sfrac{1}{M_1}|\p_1|^2 + \sfrac{1}{M_2}|\p_2|^2 + |\p_3|^2\Big)
+        - \bigg(\Frac{M_1}{|\r_1 - \r_3|} + \Frac{M_2}{|\r_2 - \r_3|} + \Frac{M_1 M_2}{|\r_1 - \r_2|}\bigg).
+    \label{brezdim}
+\end{equation}
+Prosti parametri modela so $M_1$, $M_2$ in pa za\v cetni pogoji, ki jih je $2 \cdot 3^d$, kjer je $d$
+\v stevilo prostorskih dimenzij, ki so nam na voljo. \v Ce se dr\v zimo vezi, da je oddaljenost med zvezdama
+na za\v cetku $1$, imamo en za\v cetni pogoj manj\footnote{Ena\v cba~\eqref{brezdim} velja tudi \v ce je
+$\rho_0$ karkoli drugega.}.
 
 \end{document}
