@@ -28,6 +28,14 @@
     \ensuremath{\displaystyle{\frac{#1}{#2}}}
 }
 
+\newcommand{\der}[3][]{
+    \ensuremath{ \frac{\partial^{#1} #2}{\partial #3^{#1}} }
+}
+
+\newcommand{\pl}{
+    \ensuremath{\dot{+}}
+}
+
 \begin{document}
 
 \section{Navodilo}
@@ -140,9 +148,69 @@ in dobimo brezdimenzijski hamiltonian
         - \bigg(\Frac{M_1}{|\r_1 - \r_3|} + \Frac{M_2}{|\r_2 - \r_3|} + \Frac{M_1 M_2}{|\r_1 - \r_2|}\bigg).
     \label{brezdim}
 \end{equation}
-Prosti parametri modela so $M_1$, $M_2$ in pa za\v cetni pogoji, ki jih je $2 \cdot 3^d$, kjer je $d$
+Prosti parametri modela so $M_1$, $M_2$ in pa za\v cetni pogoji, ki jih je $2 \cdot 3d$, kjer je $d$
 \v stevilo prostorskih dimenzij, ki so nam na voljo. \v Ce se dr\v zimo vezi, da je oddaljenost med zvezdama
 na za\v cetku $1$, imamo en za\v cetni pogoj manj\footnote{Ena\v cba~\eqref{brezdim} velja tudi \v ce je
 $\rho_0$ karkoli drugega.}.
+
+\subsubsection{Smiselne vrednosti parametrov}
+Ta hamiltonian je \v cisto splo\v sen za gibanje treh (ne nujno nebesnih) to\v ckastih teles pod vplivom sile
+gravitacije. Da bodo zvezde res zvezde, si bomo za zgled vzeli res te\v zak planet, Jupiter, ki je \v se
+vedno tiso\v c-krat la\v zji od na\v sega Sonca. Kot smiselna se zato zdi omejitev $M_{1,2} \geq 1000$.
+Prav tako je smiselno, da so razdalje med zvezdama na za\v cetku res 1.
+
+Za\v cetnih pogojev imamo torej $2 \cdot 3d - 1$. Smiselno je, da preverimo za $d = 2$ in za $d = 3$.
+
+\subsection{Diskretizacija in integracija}
+
+Na\v so re\v sitev bomo gledali ob diskretnih \v casih, kjer nas ni treba skrbeti za ekstrapolacijo
+re\v sitve, saj je na\v s integrator simplekti\v cen in eksaktno v vseh redih ohranja simplekti\v cno
+formo. Ne glede na to, kateri red integratorja bomo izbrali, bomo potrebovali $\exp\big(\delta
+t\{\bullet,T\}\big) q_i$ in pa $\exp\big(\delta t\{\bullet,V\}\big) p_i$. Koordinate $i$-tega telesa bomo
+ozna\v cili z $\r_k = (r_{k,1}, r_{k,2}, r_{k,3})^T$, njegove impulze pa s $\p_k = (p_{k,1}, p_{k,2}, p_{k,3})^T$.
+Dobimo dve matriko koordinat in matriko impulzov, s komponentami $r_{k,\ell}$. Stolpci te matrike so bodisi
+krajevni vektorji telesa, bodisi vektorji hitrosti tega telesa. Propagatorji za "`pol"' koraka se glasijo
+\begin{align}
+    \exp(c\ \delta t\{\bullet, T\}) r_{k,\ell}(t) &\approx r_{k,\ell}(t) + c\delta t\{r_{k,\ell}(t), T\} = r_{k,\ell}(t)
+        + c\delta t \frac{p_{k,\ell}(t)}{M_\ell} \notag \\
+    \exp(c\ \delta t\{\bullet, T\}) p_{k,\ell}(t) &= p_{k,\ell} (t) \notag \\
+    \exp(c\ \delta t\{\bullet, V\}) r_{k,\ell}(t) &= r_{k,\ell} (t) \notag \\
+    \exp(c\ \delta t\{\bullet, V\}) p_{k,\ell}(t) &\approx p_{k,\ell} (t) + c\delta t\{p_{k,\ell}(t), V\} = p_{k,\ell}(t)
+        -c\delta t \der{V}{r_{k\ell}}
+\end{align}
+kjer je seveda $M_3 = 1$. Zadnji Poissonov oklepaj je tr\v si oreh, zato ga bomo zapisali posebej:
+\begin{equation*}
+    \{p_{k,\ell}, V\} = \sum_{i,j}\bigg(\der{p_{k\ell}}{r_{ij}}\der{V}{p_{ij}} - \der{p_{k\ell}}{p_{ij}}
+        \der{V}{r_{ij}}\bigg) = - \der{V}{r_{k\ell}}.
+\end{equation*}
+Krajevni odvod potenciala lahko zapi\v semo kot
+\begin{align*}
+    -\der{V}{r_{k\ell}} =& \der{}{r_{k\ell}} \sum_{i=2}^N\sum_{j < i} M_i M_j \Big[\sum_m(r_{mi} - r_{mj})^2\Big]^{-1/2} \\
+    =& \sum_{i=2}^N\sum_{j<i} M_i M_j \Big[\sum_m (r_{mi} - r_{mj})^2\Big]^{-3/2}
+        \big(-\sfrac{1}{2}\big)\displaystyle{\der{}{r_{k\ell}}}\sum_n\big(r_{ni} - r_{nj}\big)^2 \\
+    =& \sum_{i = 2}^N\sum_{j<i} \frac{M_i M_j}{-2\big[\sum_m (r_{mi} - r_{mj})^2\big]^{-3/2}}
+        2(r_{ni} - r_{nj})(\delta_{i\ell} - \delta_{j\ell})\delta_{nk} \\
+    =& -\sum_{j < \ell} M_\ell M_j\Big[\sum_m (r_{m\ell} - r_{mj})^2\Big]^{-3/2}(r_{k\ell} - r_{kj}) \\
+    &- \sum_{i = \ell+1}^N M_{\ell} M_i\Big[\sum_m (r_{m\ell} - r_{mi})^2\Big]^{-3/2}(r_{k\ell} - r_{ki}) 
+\end{align*}
+Ta izraz lahko zapi\v semo bolj elegantno. Uvedemo operacijo se\v stevanja znotraj mno\v zice $\{1,2,3\}$:
+\begin{align*}
+    \pl : \mathbb{N} \times \mathbb{N} &\to \{1,2,3\} \\
+    \pl : (m,n) &\mapsto (m + n - 1 \mod 3) + 1
+\end{align*}
+kar bomo ozna\v cevali kar z $m\pl n$. Odvod lahko potem prepi\v semo v dosti lep\v so obliko:
+\begin{align}
+    -\der{V}{r_{k\ell}} &= M_\ell M_{\ell \pl 1} \Big[\sum_m(r_{m,\ell} - r_{m,\ell\pl1})^2\Big]^{-3/2}(r_{k,\ell\pl1}
+        - r_{k,\ell}) \notag \\
+    &+ M_\ell M_{\ell\pl2}\Big[\sum_m(r_{m,\ell} - r_{m,\ell\pl2})^2\Big]^{-3/2}(r_{k,\ell\pl2} - r_{k,\ell}).
+    \label{odvod}
+\end{align}
+Ena\v cba~\eqref{odvod} je seveda pri \v casu $t$.
+
+\subsection{Izbira programskega orodja}
+
+Na voljo imamo veliko paleto programskih jezikov. \v Casovno iteracijo bi bilo najbolj elegantno izvesti
+v funkcijskem programskem jeziku, kot je npr {\tt Haskell}, vendar na\v se knjigovodstvo zajema samo 3
+telesa v $d = 2$ in $d = 3$, zaradi \v cesar bomo uporabili {\tt Octave}.
 
 \end{document}
