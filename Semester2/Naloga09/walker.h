@@ -38,7 +38,7 @@ class Walker
 		double potential (int, Vector2d);
 
 		// calculate capacity/force
-		double effect (void)
+		double effect (void);
 
 		// functions to fill the matrix/vectors
 		void init_points (int, int, double, double);

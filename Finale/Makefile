@@ -1,4 +1,4 @@
-CXX=	clang++
+CXX=		clang++
 PRGNAM=		prg
 CPUOPT=		-march=corei7 -mssse3 -msse4.1
 OFLAG=		-Ofast
