@@ -36,6 +36,14 @@
     \ensuremath{\dot{+}}
 }
 
+\renewcommand{\d}{
+    \ensuremath{\mathrm{d}}
+}
+
+\newcommand{\w}{
+    \ensuremath{\omega}
+}
+
 \begin{document}
 
 \section{Navodilo}
@@ -45,64 +53,15 @@ planeta. Koliko parametrov ima model?
 
 \section{Razmislek}
 
-V tem primeru imamo veliko sre\v co, saj je sistem zaprt, kar pomeni $\dot{E} = 0$. Zaradi tega bomo
-za re\v sevanje problema napravili simplekti\v cen integrator s pomo\v cjo Trotter-Suzukijevega
-razcepa, za katerega pa ne potrebujemo Newtonovega zakona, ampak samo klasi\v cno hamiltonko:
+V pribli\v zku zanemarljiva mase planeta, je vsa dinamika ki jo potrebujemo vezana na gibanje planeta
+v \v casovno odvisnem zunanjem potencialu (ki ga ustvarjata zvezdi) $V_\odot(\r, t)$. Hamiltonian celotnega
+sistema je
 \begin{equation}
     H = \frac{1}{2}\sum_{k = 1}^N \frac{|\p_k|^2}{m_k} - \frac{\kappa}{4\pi}\sum_{k,\ell}
         \frac{m_k m_\ell}{|\r_k - \r_\ell|},
     \label{hamilton}
 \end{equation}
-vektorje smo ozna\v cili z mastnim tiskom. Dinamiko dolo\v cimo prek Liouvillovega operatorja $\L$:
-\begin{equation}
-    -i\L \equiv \{\bullet, H\}, \quad \dot{x}(t) = -i\L x(t),
-    \label{liouville}
-\end{equation}
-kjer je $\{\bullet, \bullet\}$ Poissonov oklepaj, $x$ pa neka koli\v cina. Iz Ena\v cbe~\eqref{liouville}
-dobimo klasi\v cni propagator $U(t)$:
-\begin{equation}
-    x(t + \delta t) = U(\delta t)\ x(t) = \exp(\delta t\L)\ x(t),
-\end{equation}
-katerega lahko razstavimo na kineti\v cni in potencialni del. Propagator se potem glasi
-\begin{equation}
-    \exp(\delta t \L) = \exp(\delta t \{\bullet, T\} + \delta t \{\bullet, V\}),
-    \label{propagator}
-\end{equation}
-zanj pa velja Trotterjeva formula
-\begin{equation}
-    \exp(\delta t\{\bullet,T\} + \delta t\{\bullet,V\}) = \lim_{n \to \infty}
-        \Big(\exp(\sfrac{\delta t}{n}\{\bullet,T\})\exp(\sfrac{\delta t}{n}\{\bullet,V\})\Big)^n.
-\end{equation}
-Tega izraza seveda ne bomo ra\v cunali, saj bi potrebovali neskon\v cen produkt. Raje bi konsistentno z
-natan\v cnostjo pobrali le kon\v cno mnogo faktorjev. Tu nam na pomo\v c prisko\v ci
-Baker-Campbell-Hausorff-ova identiteta:
-\[
-    C = \log{\e^{A + B}} = A + B + \sfrac{1}{2}[A,B] + \sfrac{1}{12}\big[A,[A,B]\big] -
-        \sfrac{1}{12}\big[B,[A,B]\big] +\ldots
-\]
-S pomo\v cjo le-te si lahko zamislimo pogoja
-\begin{align}
-    \e^C &= \e^{c_1 A}\e^{d_1 B}\e^{c_2 A}\e^{d_2 B}\e^{c_3 A}\cdot \ldots \cdot \e^{c_n A}\e^{d_n B} \\
-    \e^C &= \e^{w_1 A}\e^{z_1 B}\e^{w_2 A}\e^{z_2 B}\e^{w_3 A}\cdot \ldots \cdot \e^{z_n B}\e^{w_{n+1} A}
-\end{align}
-in izra\v cunamo koeficiente $c_i$ in $d_j$ nesimetri\v cne oz. koeficiente $w_i$, $z_i$ simetrizirane
-formule da bo to res do reda natan\v cnosti $n$, ki je sorazmeren s \v stevilom prisotnih faktorjev.
-Simetrizirane formule so natan\v cnej\v se zato bomo uporabili sledenje. Koeficienti so v splo\v snem
-lahko kompleksni. S pomo\v cjo prej\v snjih identitet lahko propagator v ena\v cbi~\eqref{propagator}
-zapi\v semo kot npr.
-\[
-    \exp(\delta t\L) \approx \exp\big(\sfrac{\delta t}{2}\{\bullet, T\}\big)
-    \exp\big(\delta t\{\bullet, V\}\big)
-    \exp\big(\sfrac{\delta t}{2}\{\bullet, T\}\big) + \mathcal{O}(\delta t^3).
-\]
-Ta shema je Trotter-Suzukijev razcep reda $2$ in jo ozna\v cimo z $S_2(\delta t)$. Na preprost na\v cin
-lahko od tod dobimo Trotter-Suzukijev razcep reda $4$,
-\[
-    S_4 (\delta t) = S_2(x_0 \delta t) S_2(x_1 \delta t) S_2(x_0 \delta t) + \mathcal{O}(\delta t^5), \quad
-    x_0 = \frac{1}{2 - \sqrt[3]{2}},\ x_1 = -\frac{\sqrt[3]{2}}{2 - \sqrt[3]{2}},
-\]
-ki ga bomo uporabljali tekom te doma\v ce naloge, saj je \v ze kar precej natan\v cen, poleg tega, da so
-koeficienti \v se vedno vsi realni.
+vektorje smo ozna\v cili z mastnim tiskom.
 
 \subsection{Prosti parametri}
 
@@ -153,67 +112,95 @@ Prosti parametri modela so $M_1$, $M_2$ in pa za\v cetni pogoji, ki jih je $2 \c
 na za\v cetku $1$, imamo en za\v cetni pogoj manj\footnote{Ena\v cba~\eqref{brezdim} velja tudi \v ce je
 $\rho_0$ karkoli drugega.}.
 
-\subsubsection{Smiselne vrednosti parametrov}
 Ta hamiltonian je \v cisto splo\v sen za gibanje treh (ne nujno nebesnih) to\v ckastih teles pod vplivom sile
 gravitacije. Da bodo zvezde res zvezde, si bomo za zgled vzeli res te\v zak planet, Jupiter, ki je \v se
 vedno tiso\v c-krat la\v zji od na\v sega Sonca. Kot smiselna se zato zdi omejitev $M_{1,2} \geq 1000$.
 Prav tako je smiselno, da so razdalje med zvezdama na za\v cetku res 1.
 
-Za\v cetnih pogojev imamo torej $2 \cdot 3d - 1$. Sedaj moramo premisliti, ali je smiselno obravnavati
-primer $d = 3$, saj za ravnino zado\v s\v cajo tri\v to\v cke. Vendar pa lahko ravnino definiramo tudi z dvema
-vektorjema, ki nista vzporedna. Izbrali bomo za\v cetna vektorja hitrosti zvezd -- tako bosta obe zvezdi
-na za\v cetku $r_{3,1}(t = 0) = r_{3,2}(t = 0) = 0 = p_{3,1}(t = 0) = p_{3,2} (t = 0) = 0$, kar nam da 4 nove vezi.
-V tridimenzionalnem primeru potem samo planet dobi dva nova za\v cetna pogoja.
+\section{Pribli\v zek zanemarljive mase planeta}
 
-\subsection{Diskretizacija in integracija}
-
-Na\v so re\v sitev bomo gledali ob diskretnih \v casih, kjer nas ni treba skrbeti za ekstrapolacijo
-re\v sitve, saj je na\v s integrator simplekti\v cen in eksaktno v vseh redih ohranja simplekti\v cno
-formo. Ne glede na to, kateri red integratorja bomo izbrali, bomo potrebovali $\exp\big(\delta
-t\{\bullet,T\}\big) q_i$ in pa $\exp\big(\delta t\{\bullet,V\}\big) p_i$. Koordinate $i$-tega telesa bomo
-ozna\v cili z $\r_k = (r_{k,1}, r_{k,2}, r_{k,3})^T$, njegove impulze pa s $\p_k = (p_{k,1}, p_{k,2}, p_{k,3})^T$.
-Dobimo dve matriko koordinat in matriko impulzov, s komponentami $r_{k,\ell}$. Stolpci te matrike so bodisi
-krajevni vektorji telesa, bodisi vektorji hitrosti tega telesa. Propagatorji za "`pol"' koraka se glasijo
+Hamiltonian~\eqref{brezdim} do sedaj eksaktno ohranja energijo. Vendar vidimo, da bo \v clen v potencialu, ki je
+sorazmeren z $M_1 M_2$ bistveno ve\v cji od \v clenov, ki so sorazmerni zgolj z $M_{1,2}$ (mogo\v ce za faktor 1000),
+saj sta $M_1$ in $M_2$ vsaj reda velikosti $\mathcal{O}(10^3)$. To pomeni, da planet ne bo bistveno vplival na
+spremembo gibalne koli\v cine zvezde,
+\begin{equation}
+    \d\p_{1,2} = \dot{\p}_{1,2}\ \d t = \{\p_{1,2}, V\}\ \d t \approx
+        \Big\{\p_{1,2}, -\sfrac{M_1M_2}{|\r_1 - \r_2|}\Big\}\ \d t
+\end{equation}
+Prav tako se zvezdi glede na planet premikata zelo po\v casi -- efekt planete bi bil viden \v sele po zelo dolgem
+\v casu (po mnogih planetarnih obhodih), saj je sprememba $\r$ ute\v zena z $1/M_{1,2}$. Sprememba koordinat
+je
+\begin{equation}
+    \d \r_{1,2} = \dot{\r}_{1,2}\ \d t = \{\r_{1,2}, T\}\ \d t = \big\{\r_{1,2}, \sfrac{1}{2M_{1,2}}|\p_{1,2}|^2\big\}\ \d t.
+\end{equation}
+Ker smo pri spremembi gibalne koli\v cine naredili napako, ki je bila reda $\mathcal{O}(10^3)$, je ta napaka sedaj
+samo $\mathcal{O}(10^{-6})$, torej smo vpliv planeta upravi\v ceno zanemarili.
+\subsection{Orbiti zvezd}
+Orbiti zvezd, $\r_1(t)$ in $\r_2(t)$, v pribli\v zku zanemarljive mase planeta lahko, izra\v cunamo analiti\v cno brez
+uporabe numeri\v cnih orodij. Iz Poissonovih oklepajev dobimo slede\v ce gibalne ena\v cbe:
 \begin{align}
-    \exp(c\ \delta t\{\bullet, T\}) r_{k,\ell}(t) &\approx r_{k,\ell}(t) + c\delta t\{r_{k,\ell}(t), T\} = r_{k,\ell}(t)
-        + c\delta t \frac{p_{k,\ell}(t)}{M_\ell} \notag \\
-    \exp(c\ \delta t\{\bullet, T\}) p_{k,\ell}(t) &= p_{k,\ell} (t) \notag \\
-    \exp(c\ \delta t\{\bullet, V\}) r_{k,\ell}(t) &= r_{k,\ell} (t) \notag \\
-    \exp(c\ \delta t\{\bullet, V\}) p_{k,\ell}(t) &\approx p_{k,\ell} (t) + c\delta t\{p_{k,\ell}(t), V\} = p_{k,\ell}(t)
-        -c\delta t \der{V}{r_{k\ell}}
+    \dot{\r}_{1,2}(t) &= \frac{\p_{1,2}(t)}{M_{1,2}} \\
+    \dot{\p}_{1,2}(t) &= \nabla_{1,2} \frac{M_1 M_2}{|\r_1 - \r_2|} = \pm \frac{M_1 M_2}{|\r_1 - \r_2|^3}(\r_2 - \r_1)
+    \label{predgibalni}
 \end{align}
-kjer je seveda $M_3 = 1$. Zadnji Poissonov oklepaj je tr\v si oreh, zato ga bomo zapisali posebej:
+Ker zvezdi ne \v cutita vpliva planeta, gremo lahko v sistem te\v zi\v s\v ca zvezd in uvedemo
+\begin{align*}
+    \r_c &= \sfrac{1}{2}(\r_1 + \r_2), \\
+    \r_* &= \sfrac{1}{2}(\r_1 - \r_2),
+\end{align*}
+kjer je $\r_c$ seveda te\v zi\v s\v ce dvozvezdnega sistema, $\r_*$ pa je vektor, katerega dvakratnik nas iz prve
+zvezde pripelje v drugo. Vektorja $\r_1$ in $\r_2$ lahko zapi\v semo kot linearni kombinaciji $\r_c$ in $\r_*$,
+\begin{align*}
+    \r_1 &= \r_c + \r_*, \\
+    \r_2 &= \r_c - \r_*.
+\end{align*}
+Vektorjema $\r_c$ in $\r_*$ ustrezata gibalni koli\v cini $\p_c$ in $\p_*$. Dobimo ju iz gibalnih ena\v cb za $\r_1$
+in $\r_2$:
+\begin{align}
+    \dot{\p}_c &= \p_1 + \p_2, \notag \\
+    \dot{\p}_* &= \p_1 - \p_2,
+\end{align}
+kjer vidimo, da mora biti $\p_c$ konstanta gibanja, \v ce je izpeljava pravilna. Gibalni ena\v cbi za $\r_c$ in $\r_*$ se
+potem glasita
+\begin{align}
+    \dot{\r}_c &= (\dot{\r}_1 + \dot{\r}_2)/2 = \sfrac{1}{2}\p_c\big(\sfrac{1}{M_1} + \sfrac{1}{M_2}\big) +
+        \sfrac{1}{2}\p_*\big(\sfrac{1}{M_1} - \sfrac{1}{M_2}\big) \notag \\
+    \dot{\r}_* &= (\dot{\r}_1 - \dot{\r}_2)/2 = \sfrac{1}{2}\p_*\big(\sfrac{1}{M_1} + \sfrac{1}{M_2}\big) +
+        \sfrac{1}{2}\p_c\big(\sfrac{1}{M_1} - \sfrac{1}{M_2}\big) \notag \\
+\end{align}
+gibalni ena\v cbi za $\p_c$ in $\p_*$ pa dobimo iz
+\begin{align}
+    \p_1 &= \sfrac{1}{2}(\p_c + \p_*), \notag \\
+    \p_2 &= \sfrac{1}{2}(\p_c - \p_*).
+\end{align}
+To lahko vstavimo v ena\v cbi~\eqref{predgibalni}, kar $\p_1$ in $\p_2$ izrazi v obliki
+\begin{align*}
+    \dot{\p}_1 &= (\dot{\p}_c + \dot{\p}_*)/2 = \frac{M_1M_2}{|2\r_*|^3}(-2\r_*) = -\frac{M_1M_2}{4|\r_*|^3}\r_*\ , \\
+    \dot{\p}_2 &= (\dot{\p}_c - \dot{\p}_*)/2 = \frac{M_1M_2}{|2\r_*|^3}\cdot 2\r_* = \frac{M_1M_2}{4|\r_*|^3}\r_*\ .
+\end{align*}
+\v Ce ti dve ena\v cbi se\v stejemo, nemudoma dobimo $\dot{\p}_c = 0$, kar smo tudi pri\v cakovali. Nadaljujemo z
+razliko prej\v snjih ena\v cb, po katerih dobimo $\dot{\p}_*$,
 \begin{equation*}
-    \{p_{k,\ell}, V\} = \sum_{i,j}\bigg(\der{p_{k\ell}}{r_{ij}}\der{V}{p_{ij}} - \der{p_{k\ell}}{p_{ij}}
-        \der{V}{r_{ij}}\bigg) = - \der{V}{r_{k\ell}}.
+    \dot{\p}_* = - \frac{M_1M_2}{2|\r_*|^3}\r_*.
 \end{equation*}
-Krajevni odvod potenciala lahko zapi\v semo kot
-\begin{align*}
-    -\der{V}{r_{k\ell}} =& \der{}{r_{k\ell}} \sum_{i=2}^N\sum_{j < i} M_i M_j \Big[\sum_m(r_{mi} - r_{mj})^2\Big]^{-1/2} \\
-    =& \sum_{i=2}^N\sum_{j<i} M_i M_j \Big[\sum_m (r_{mi} - r_{mj})^2\Big]^{-3/2}
-        \big(-\sfrac{1}{2}\big)\displaystyle{\der{}{r_{k\ell}}}\sum_n\big(r_{ni} - r_{nj}\big)^2 \\
-    =& \sum_{i = 2}^N\sum_{j<i} \frac{M_i M_j}{-2\big[\sum_m (r_{mi} - r_{mj})^2\big]^{-3/2}}
-        2(r_{ni} - r_{nj})(\delta_{i\ell} - \delta_{j\ell})\delta_{nk} \\
-    =& -\sum_{j < \ell} M_\ell M_j\Big[\sum_m (r_{m\ell} - r_{mj})^2\Big]^{-3/2}(r_{k\ell} - r_{kj}) \\
-    &- \sum_{i = \ell+1}^N M_{\ell} M_i\Big[\sum_m (r_{m\ell} - r_{mi})^2\Big]^{-3/2}(r_{k\ell} - r_{ki}) 
-\end{align*}
-Ta izraz lahko zapi\v semo bolj elegantno. Uvedemo operacijo se\v stevanja znotraj mno\v zice $\{1,2,3\}$:
-\begin{align*}
-    \pl : \mathbb{N} \times \mathbb{N} &\to \{1,2,3\} \\
-    \pl : (m,n) &\mapsto (m + n - 1 \mod 3) + 1
-\end{align*}
-kar bomo ozna\v cevali kar z $m\pl n$. Odvod lahko potem prepi\v semo v dosti lep\v so obliko:
+Sedaj imamo dve opciji: lahko centriramo impulz, ali pa te\v zi\v s\v ce. Zavoljo nadaljnega numeri\v cnega re\v sevanja
+problema, je bolje centrirati te\v zi\v s\v ce, tj. zahtevamo $\dot{\r}_c = 0$ in $\r_c (t = 0) = 0$. To mo\v cno
+poenostavi vse skupaj, saj potem $\r_1 = \r_*$ in $\r_2 = -\r_*$. Newtonov zakon za $\r_*$ se glasi
 \begin{align}
-    -\der{V}{r_{k\ell}} &= M_\ell M_{\ell \pl 1} \Big[\sum_m(r_{m,\ell} - r_{m,\ell\pl1})^2\Big]^{-3/2}(r_{k,\ell\pl1}
-        - r_{k,\ell}) \notag \\
-    &+ M_\ell M_{\ell\pl2}\Big[\sum_m(r_{m,\ell} - r_{m,\ell\pl2})^2\Big]^{-3/2}(r_{k,\ell\pl2} - r_{k,\ell}).
-    \label{odvod}
+    \ddot{\r}_* &= \sfrac{1}{2}\dot{\p}_*\big(\sfrac{1}{M_1} + \sfrac{1}{M_2}\big) \notag \\
+                &= -\frac{M_1 M_2}{2}\bigg(\frac{1}{M_1} + \frac{1}{M_2}\bigg)\frac{1}{|\r_*|^3}\r_* \notag \\
+                &= -\frac{M_1 + M_2}{2|\r_*|^2}\ \hat{\r}_*\ ,
+    \label{newton}
 \end{align}
-Ena\v cba~\eqref{odvod} je seveda pri \v casu $t$.
+kjer je $\hat{\r}_*$ enostski vektor v smeri $\r_*$. Ta problem je dvo-dimenzionalen, uporabimo lahko nastavek
+\[
+    \r_* = \begin{bmatrix} \rho(t) \cos(\w t) \\ \rho(t) \sin(\w t) \end{bmatrix}, \quad |\r_*(t)| = \rho(t),
+\]
+ga vstavimo v ena\v cbo~\eqref{newton} in dobimo
+\[
+    \ddot{\rho}(t) - \w^2\rho(t) - \frac{\Delta M}{2}\frac{1}{\rho^2(t)} = 0.
+\]
 
-\subsection{Izbira programskega orodja}
 
-Zaradi obstoje\v cega prikladnega vmesnika, sem se odlo\v cil, da bom uporabil programski jezik {\tt C++} v povezavi
-z {\tt MathGL}, {\tt OpenGL} in {\tt SDL}.
 
 \end{document}
