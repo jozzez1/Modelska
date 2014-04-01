@@ -1,5 +1,6 @@
 #include "trotter.h"
 
+// we pass all the needed parameters to this thingy
 Trotter::Trotter (unsigned int tot, double delta_t,
         double mass_1, double mass_2,
         point3 r1, point3 r2, point3 r3,
@@ -89,4 +90,24 @@ Trotter::update_V (void)
     V -= mass[1]/dist2(coordinate[1], coordinate[3])
         + mass[2]/dist2(coordinate[2], coordinate[3])
         + mass[1]*mass[2]/dist2(coordinate[1],coordinate[2]);
+}
+
+void
+Trotter::time_step (void)
+{
+    S4 ();
+    t += dt;
+}
+
+void
+Trotter::plot_current (void)
+{
+    mglGraph gr (800, 800);
+
+    mglData RX (3),
+            RY (3),
+            RZ (3),
+            PX (3),
+            PY (3),
+            PZ (3);
 }

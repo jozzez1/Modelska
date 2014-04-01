@@ -3,6 +3,8 @@
 
 #include <iostream>
 #include <vector>
+#include <mgl2/data.h>
+#include <mgl2/mgl.h>
 #include "global.h"
 
 typedef std::vector <point3> matrix;
@@ -26,6 +28,10 @@ class Trotter
         double energy (void)    { return T + V; };
         double potential (void) { return V; };
         double kinetic (void)   { return T; };
+
+        void time_step (void);
+        void plot_current (void);
+        void plot_orbits (void);
 
     private:
         matrix coordinate;

@@ -6,9 +6,9 @@ OPTFLAGS=	${OFLAG} ${CPUOPT} \
 		-funroll-loops -ffast-math -fno-stack-protector
 WARN=		-Wall -Wno-return-type-c-linkage
 LIBFLAGS=	-L/usr/local/lib \
-	       	-lm
+	       	-lm -lmgl -lmgl-wnd
 CXXFLAGS=	-I/usr/local/include \
-		${WARN} ${OPTFLAGS}
+		${WARN} ${OPTFLAGS} -g
 
 all: main.o global.o
 	${CXX} ${CXXFLAGS} ${LIBFLAGS} main.o global.o trotter.o -o ${PRGNAM}
