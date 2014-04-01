@@ -53,7 +53,7 @@ planeta. Koliko parametrov ima model?
 
 \section{Razmislek}
 
-V pribli\v zku zanemarljiva mase planeta, je vsa dinamika ki jo potrebujemo vezana na gibanje planeta
+V pribli\v zku zanemarljive mase planeta, je vsa dinamika ki jo potrebujemo vezana na gibanje planeta
 v \v casovno odvisnem zunanjem potencialu (ki ga ustvarjata zvezdi) $V_\odot(\r, t)$. Hamiltonian celotnega
 sistema je
 \begin{equation}
@@ -117,7 +117,7 @@ gravitacije. Da bodo zvezde res zvezde, si bomo za zgled vzeli res te\v zak plan
 vedno tiso\v c-krat la\v zji od na\v sega Sonca. Kot smiselna se zato zdi omejitev $M_{1,2} \geq 1000$.
 Prav tako je smiselno, da so razdalje med zvezdama na za\v cetku res 1.
 
-\section{Pribli\v zek zanemarljive mase planeta}
+\subsection{Pribli\v zek zanemarljive mase planeta}
 
 Hamiltonian~\eqref{brezdim} do sedaj eksaktno ohranja energijo. Vendar vidimo, da bo \v clen v potencialu, ki je
 sorazmeren z $M_1 M_2$ bistveno ve\v cji od \v clenov, ki so sorazmerni zgolj z $M_{1,2}$ (mogo\v ce za faktor 1000),
@@ -135,7 +135,7 @@ je
 \end{equation}
 Ker smo pri spremembi gibalne koli\v cine naredili napako, ki je bila reda $\mathcal{O}(10^3)$, je ta napaka sedaj
 samo $\mathcal{O}(10^{-6})$, torej smo vpliv planeta upravi\v ceno zanemarili.
-\subsection{Orbiti zvezd}
+\subsubsection{Orbiti zvezd}
 Orbiti zvezd, $\r_1(t)$ in $\r_2(t)$, v pribli\v zku zanemarljive mase planeta lahko, izra\v cunamo analiti\v cno brez
 uporabe numeri\v cnih orodij. Iz Poissonovih oklepajev dobimo slede\v ce gibalne ena\v cbe:
 \begin{align}
@@ -188,19 +188,12 @@ problema, je bolje centrirati te\v zi\v s\v ce, tj. zahtevamo $\dot{\r}_c = 0$ i
 poenostavi vse skupaj, saj potem $\r_1 = \r_*$ in $\r_2 = -\r_*$. Newtonov zakon za $\r_*$ se glasi
 \begin{align}
     \ddot{\r}_* &= \sfrac{1}{2}\dot{\p}_*\big(\sfrac{1}{M_1} + \sfrac{1}{M_2}\big) \notag \\
-                &= -\frac{M_1 M_2}{2}\bigg(\frac{1}{M_1} + \frac{1}{M_2}\bigg)\frac{1}{|\r_*|^3}\r_* \notag \\
-                &= -\frac{M_1 + M_2}{2|\r_*|^2}\ \hat{\r}_*\ ,
+                &= -\frac{M_1 M_2}{2}\bigg(\frac{1}{M_1} + \frac{1}{M_2}\bigg)\frac{1}{2|\r_*|^3}\r_* \notag \\
+                &= -\frac{M_1 + M_2}{4|\r_*|^2}\ \hat{\r}_*\ ,
     \label{newton}
 \end{align}
-kjer je $\hat{\r}_*$ enostski vektor v smeri $\r_*$. Ta problem je dvo-dimenzionalen, uporabimo lahko nastavek
-\[
-    \r_* = \begin{bmatrix} \rho(t) \cos(\w t) \\ \rho(t) \sin(\w t) \end{bmatrix}, \quad |\r_*(t)| = \rho(t),
-\]
-ga vstavimo v ena\v cbo~\eqref{newton} in dobimo
-\[
-    \ddot{\rho}(t) - \w^2\rho(t) - \frac{\Delta M}{2}\frac{1}{\rho^2(t)} = 0.
-\]
-
-
+kjer je $\hat{\r}_* \equiv \r_*/|\r_*|$ enostski vektor v smeri $\r_*$. Ta problem je dvo-dimenzionalen, zaradi simetrije
+problema se nam ponujajo polarne koordinate: bazne vektorje 
+lahko nastavek
 
 \end{document}
