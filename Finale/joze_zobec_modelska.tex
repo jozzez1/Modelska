@@ -2,7 +2,7 @@
 \usepackage[slovene]{babel}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
-\usepackage{amsmath, amssymb}
+\usepackage{amsmath, amssymb, fullpage}
 
 \renewcommand{\r}{
     \ensuremath{\mathbf{r}}
@@ -18,6 +18,10 @@
 
 \newcommand{\e}{
     \ensuremath{\mathrm{e}}
+}
+
+\newcommand{\ee}{
+    \ensuremath{\mathbf{e}}
 }
 
 \newcommand{\sfrac}[2]{
@@ -42,6 +46,10 @@
 
 \newcommand{\w}{
     \ensuremath{\omega}
+}
+
+\newcommand{\Varphi}{
+    \ensuremath{\tilde{\varphi}}
 }
 
 \begin{document}
@@ -143,57 +151,211 @@ uporabe numeri\v cnih orodij. Iz Poissonovih oklepajev dobimo slede\v ce gibalne
     \dot{\p}_{1,2}(t) &= \nabla_{1,2} \frac{M_1 M_2}{|\r_1 - \r_2|} = \pm \frac{M_1 M_2}{|\r_1 - \r_2|^3}(\r_2 - \r_1)
     \label{predgibalni}
 \end{align}
-Ker zvezdi ne \v cutita vpliva planeta, gremo lahko v sistem te\v zi\v s\v ca zvezd in uvedemo
+Da bomo to ena\v cbo lahko re\v sili, bomo uvedli spremenljivki
 \begin{align*}
-    \r_c &= \sfrac{1}{2}(\r_1 + \r_2), \\
-    \r_* &= \sfrac{1}{2}(\r_1 - \r_2),
+    \r_c &= M_1\r_1 + M_2\r_2, \\
+    \r_* &= M_1\r_1 - M_2\r_2,
 \end{align*}
-kjer je $\r_c$ seveda te\v zi\v s\v ce dvozvezdnega sistema, $\r_*$ pa je vektor, katerega dvakratnik nas iz prve
-zvezde pripelje v drugo. Vektorja $\r_1$ in $\r_2$ lahko zapi\v semo kot linearni kombinaciji $\r_c$ in $\r_*$,
+kjer je $\r_c$ sorazmeren s te\v zi\v s\v cem dvozvezdnega sistema, $\r_T = \r_c/(M_1 + M_2)$.Vektorja $\r_1$ in $\r_2$
+lahko zapi\v semo kot linearni kombinaciji $\r_c$ in $\r_*$,
 \begin{align*}
-    \r_1 &= \r_c + \r_*, \\
-    \r_2 &= \r_c - \r_*.
+    \r_1 &= \sfrac{1}{2M_1}(\r_c + \r_*) \\
+    \r_2 &= \sfrac{1}{2M_2}(\r_c - \r_*).
 \end{align*}
-Vektorjema $\r_c$ in $\r_*$ ustrezata gibalni koli\v cini $\p_c$ in $\p_*$. Dobimo ju iz gibalnih ena\v cb za $\r_1$
-in $\r_2$:
+Vektorjema $\r_c$ in $\r_*$ ustrezata gibalni koli\v cini $\p_c$ in $\p_*$. Dobimo ju iz gibalnih ena\v cb za $\r_c$
+in $\r_*$:
 \begin{align}
-    \dot{\p}_c &= \p_1 + \p_2, \notag \\
-    \dot{\p}_* &= \p_1 - \p_2,
+    \dot{\r}_c &= M_1\dot{\r}_1 + M_2\dot{\r}_2 = M_1\sfrac{\p_1}{M_1} + M_2\sfrac{\p_1}{M_2} = \p_1 + \p_2 = \p_c\ , \\
+    \dot{\r}_* &= M_1\dot{\r}_1 - M_2\dot{\r}_2 = M_1\sfrac{\p_1}{M_1} - M_2\sfrac{\p_1}{M_2} = \p_1 - \p_2 = \p_*\ ,
 \end{align}
-kjer vidimo, da mora biti $\p_c$ konstanta gibanja, \v ce je izpeljava pravilna. Gibalni ena\v cbi za $\r_c$ in $\r_*$ se
-potem glasita
-\begin{align}
-    \dot{\r}_c &= (\dot{\r}_1 + \dot{\r}_2)/2 = \sfrac{1}{2}\p_c\big(\sfrac{1}{M_1} + \sfrac{1}{M_2}\big) +
-        \sfrac{1}{2}\p_*\big(\sfrac{1}{M_1} - \sfrac{1}{M_2}\big) \notag \\
-    \dot{\r}_* &= (\dot{\r}_1 - \dot{\r}_2)/2 = \sfrac{1}{2}\p_*\big(\sfrac{1}{M_1} + \sfrac{1}{M_2}\big) +
-        \sfrac{1}{2}\p_c\big(\sfrac{1}{M_1} - \sfrac{1}{M_2}\big) \notag \\
-\end{align}
-gibalni ena\v cbi za $\p_c$ in $\p_*$ pa dobimo iz
+kjer vidimo, da mora biti $\p_c$ konstanta gibanja, \v ce je izpeljava pravilna. Impulza $\p_1$ in $\p_2$ lahko
+izrazimo kot
 \begin{align}
     \p_1 &= \sfrac{1}{2}(\p_c + \p_*), \notag \\
     \p_2 &= \sfrac{1}{2}(\p_c - \p_*).
 \end{align}
-To lahko vstavimo v ena\v cbi~\eqref{predgibalni}, kar $\p_1$ in $\p_2$ izrazi v obliki
+To lahko vstavimo v ena\v cbi~\eqref{predgibalni}, vendar moramo za to vedeti \v se kako se zapi\v se $\r_1 - \r_2$
+z $\r_c$ in $\r_*$. Velja
+\[
+    \r_1 - \r_2 = \sfrac{1}{2}\big(\sfrac{1}{M_1} + \sfrac{1}{M_2}\big)\r_* = \r_*/2\mu.
+\]
+Gibalne ena\v cbe za impulza zvezd lahko sedaj prepi\v semo v
 \begin{align*}
-    \dot{\p}_1 &= (\dot{\p}_c + \dot{\p}_*)/2 = \frac{M_1M_2}{|2\r_*|^3}(-2\r_*) = -\frac{M_1M_2}{4|\r_*|^3}\r_*\ , \\
-    \dot{\p}_2 &= (\dot{\p}_c - \dot{\p}_*)/2 = \frac{M_1M_2}{|2\r_*|^3}\cdot 2\r_* = \frac{M_1M_2}{4|\r_*|^3}\r_*\ .
+    \dot{\p}_1 &= (\dot{\p}_c + \dot{\p}_*)/2 = \frac{M_1M_2}{|\r_*/2\mu|^3}(-\r_*/2\mu)
+        = -\frac{4\mu^2 M_1M_2}{|\r_*|^2}\ \hat{\r}_*\ , \\
+    \dot{\p}_2 &= (\dot{\p}_c - \dot{\p}_*)/2 = \frac{M_1M_2}{|\r_*/2\mu|^3}\r_*/2\mu
+        = \frac{4\mu^2 M_1M_2}{|\r_*|^2}\ \hat{\r}_*\ ,
 \end{align*}
-\v Ce ti dve ena\v cbi se\v stejemo, nemudoma dobimo $\dot{\p}_c = 0$, kar smo tudi pri\v cakovali. Nadaljujemo z
-razliko prej\v snjih ena\v cb, po katerih dobimo $\dot{\p}_*$,
+kjer je $\hat{\r}_* \equiv \r_*/|\r_*|$ enotski vektor v smeri $\r_*$. \v Ce ti dve ena\v cbi se\v stejemo, nemudoma
+dobimo $\dot{\p}_c = 0$, kar smo tudi pri\v cakovali. Nadaljujemo z razliko prej\v snjih ena\v cb, po katerih
+dobimo $\dot{\p}_*$,
 \begin{equation*}
-    \dot{\p}_* = - \frac{M_1M_2}{2|\r_*|^3}\r_*.
+    \dot{\p}_* = - 8\mu^2\frac{M_1M_2}{|\r_*|^2}\ \hat{\r}_*.
 \end{equation*}
-Sedaj imamo dve opciji: lahko centriramo impulz, ali pa te\v zi\v s\v ce. Zavoljo nadaljnega numeri\v cnega re\v sevanja
-problema, je bolje centrirati te\v zi\v s\v ce, tj. zahtevamo $\dot{\r}_c = 0$ in $\r_c (t = 0) = 0$. To mo\v cno
-poenostavi vse skupaj, saj potem $\r_1 = \r_*$ in $\r_2 = -\r_*$. Newtonov zakon za $\r_*$ se glasi
-\begin{align}
-    \ddot{\r}_* &= \sfrac{1}{2}\dot{\p}_*\big(\sfrac{1}{M_1} + \sfrac{1}{M_2}\big) \notag \\
-                &= -\frac{M_1 M_2}{2}\bigg(\frac{1}{M_1} + \frac{1}{M_2}\bigg)\frac{1}{2|\r_*|^3}\r_* \notag \\
-                &= -\frac{M_1 + M_2}{4|\r_*|^2}\ \hat{\r}_*\ ,
+Brez izgube splo\v snosti lahko izhodi\v s\v ce sistema postavimo v te\v zi\v s\v ce ob \v casu $t = 0$, tj.
+$\r_c (t = 0) = 0$. Lahko si izberemo tudi pravi te\v zi\v s\v cni sistem, tj. $\dot{\r}_c = 0$, kar pomeni
+tudi $\p_c = 0$. Za opis gibanja $\r_1$ in $\r_2$ sedaj zado\v s\v ca le $\r_*$, katerega Newtonov zakon je
+\begin{equation}
+    \ddot{\r}_* = -8\mu^2 \frac{M_1M_2}{|\r_*|^2}\hat{\r}_*\ = - \frac{\alpha}{|\r_*|^2}\hat{\r}_*\ ,
     \label{newton}
+\end{equation}
+Ta problem je dvo-dimenzionalen (ker je potencial centralen), zaradi simetrije problema se nam ponujajo polarne
+koordinate $\r_*(t) = \r_* (r(t), \varphi(t))$. Pri\v celi bomo s prehodom v polarne koordinate:
+\begin{equation}
+    \ee_\rho = \cos\varphi\ \ee_x + \sin\varphi\ \ee_y, \quad \ee_\varphi = -\rho\sin\varphi\ \ee_x + \rho\cos\varphi\ \ee_y.
+\end{equation}
+Potem lahko na\v s krajevni vektor prepi\v semo v
+\begin{align}
+    \r_* &= \rho \cos\varphi\ \ee_x + \rho \sin\varphi\ \ee_y \notag \\
+         &= \rho\ \ee_\rho, \\
+    \dot{\r}_* &= \dot{\rho}\ee_\rho + \dot{\varphi}\ee_\varphi, \\
+    \ddot{\r}_* &= (\ddot{\rho} - \rho\dot{\varphi}^2)\ee_\rho + \bigg(\ddot{\varphi} + 
+        2\frac{\dot{\rho}\dot{\varphi}}{\rho}\bigg)\ee_\varphi.
 \end{align}
-kjer je $\hat{\r}_* \equiv \r_*/|\r_*|$ enostski vektor v smeri $\r_*$. Ta problem je dvo-dimenzionalen, zaradi simetrije
-problema se nam ponujajo polarne koordinate: bazne vektorje 
-lahko nastavek
+Baza v tem primeru ni normirana ($|\ee_\varphi| \neq 1$), vendar $|\r_*| = \rho$. Zaradi tega dobimo
+in $\hat{\r}_* = \r_*/\rho = \ee_\rho$. S procesom "`reverse engeneering"'
+ena\v cbe~\eqref{newton} lahko zapi\v semo Lagrangeian
+\begin{equation*}
+    L = \frac{1}{2}|\dot{\r}_*|^2 + \frac{\alpha}{\rho} = \frac{1}{2}(\dot{\rho}^2 + \dot{\varphi}^2\rho^2) +
+        \frac{\alpha}{\rho}.
+\end{equation*}
+Tu $\varphi$ ne nastopa eksplicitno, kar pomeni $\dot{p}_\varphi = 0$ oz. ohranitev vrtilne koli\v cine:
+\begin{equation}
+    \frac{\d}{\d t}\underbrace{\bigg(\der{L}{\dot{\varphi}}\bigg)}_{= p_\varphi} -
+        \underbrace{\der{L}{\varphi}}_{= 0} = 0, \quad p_\varphi = \dot{\varphi}\rho^2,
+    \label{vrtilna}
+\end{equation}
+kar pomeni $\dot{\varphi} = p_\varphi/\rho^2$. Opomba: $\p_* = p_r\ee_r + p_\varphi\ee_\varphi$. Gibalni zakoni za $\rho$ so
+\begin{align}
+    \frac{\d}{\d t}\bigg(\der{L}{\dot{\rho}}\bigg) - \der{L}{\rho} &= 0, \notag \\
+    \ddot{\rho} - \dot{\varphi}^2\rho - \bigg(-\frac{\alpha}{\rho^2}\bigg) &= 0, \notag \\
+    \ddot{\rho} - \dot{\varphi}^2\rho + \frac{\alpha}{\rho^2} &= 0.
+    \label{gibalna}
+\end{align}
+Ena\v cbo~\eqref{vrtilna} uporabimo za da se znebimo $\varphi$,
+\begin{align}
+    \frac{\d}{\d t} &= \dot{\varphi}\der{}{\varphi} = \frac{p_\varphi}{\rho^2}\der{}{\varphi}, \\
+    \frac{\d^2}{\d t^2} &= \frac{p_\varphi}{\rho^4}\bigg(\der[2]{}{\varphi} - \frac{2}{\rho}\der{\rho}{\varphi}
+        \der{}{\varphi}\bigg).
+\end{align}
+Zmenili se bomo $\partial \bullet/\partial \varphi = \bullet'$, da bo manj pisanja. Ko to vstavimo v
+ena\v cbo~\eqref{gibalna} dobimo
+\begin{equation}
+    \frac{p^2_\varphi}{\rho^4}\bigg(\rho'' - \frac{2}{\rho}(\rho')^2 - \rho\bigg) + \frac{\alpha}{\rho^2} = 0.
+    \label{skoraj}
+\end{equation}
+Uvedemo novo spremenljivko $\rho = 1/u$,
+\begin{align}
+    \rho' &= -\frac{1}{u^2}u' \notag \\
+    \rho'' &= 2\frac{1}{u^3}(u')^2 - \frac{1}{u^2}u''.
+\end{align}
+Sedaj to vstavimo v ena\v cbo~\eqref{skoraj}, kar nam da izraz
+\begin{equation*}
+    p^2_\varphi u^4\bigg[2\frac{u'^2}{u^3} - \frac{u''}{u^2} - 2\frac{u'^2}{u^3} - \frac{1}{u}\bigg] + \alpha u^2 = 0,
+\end{equation*}
+ki pa se pokraj\v sa v
+\begin{equation}
+    u'' + u - \frac{\alpha}{p^2_\varphi} = 0.
+\end{equation}
+Re\v sitev te ena\v cbe je seveda elipsa,
+\begin{equation}
+    \rho(\varphi(t)) = \frac{p_\varphi^2/\alpha}{1 + \varepsilon\cos(\varphi(t))},
+\end{equation}
+Parameter $\varepsilon$ je ekscentri\v cnost orbite, ki so zaklju\v cene (vezano gibanje) samo za
+$0 \leq \varepsilon < 1$. Seveda se bomo omejili samo na take.
+Kot $\varphi(t)$ je re\v sitev ena\v cbe
+\begin{equation}
+    \dot{\varphi} = \frac{\alpha^2}{p_\varphi^3}\big(1 + \varepsilon\cos\varphi\big)^2.
+    \label{fi}
+\end{equation}
+Ena\v cbo~\eqref{fi} lahko re\v simo z integralom
+\begin{equation}
+    \int_0^{\varphi}\frac{\d \tilde{\varphi}}{\big(1 + \varepsilon\cos\tilde{\varphi}\big)^2} = \frac{\alpha}{p_\varphi^2}t.
+\end{equation}
+Ta integral je tabeliran v matemati\v cnem priro\v cniku, re\v sitev je
+\begin{align}
+    t\frac{\alpha}{p^2_\varphi} &= \bigg[\frac{\varepsilon\sin\varphi}{(\varepsilon^2 - 1)(1 + \varepsilon\cos\varphi)}
+            +\frac{1}{1 - \varepsilon^2}\frac{2}{\sqrt{1 - \varepsilon^2}}\arctan\bigg(\frac{(1 - \varepsilon)\tan\varphi/2}
+            {\sqrt{1 - \varepsilon^2}}\bigg)\bigg] \notag \\
+        &= F(\varphi; \varepsilon).
+    \label{fi2}
+\end{align}
+Kon\v cno lahko sedaj zapi\v semo $\varphi = F^{-1}(t\alpha/p^2_\varphi; \varepsilon)$. To moramo ra\v cunati numeri\v cno,
+imamo pa to smolo, da je ta funkcija zaradi $\tan\varphi/2$ v funkciji $\arctan(x)$ smiselna samo za $\varphi
+\in [-\pi,\pi)$, sicer pa mo\v cno oscilira. Pravilna je kadar $t \in [-T/2, T/2)$, kjer je $T$ \v cas enega obhoda.
+Tako bomo \v cas pri ra\v cunanju te ena\v cbe z modulom omejili na ta interval. Vendar pa je ta \v casovni interval
+grd -- raje bomo vzeli $t \in [0, T)$, tako da bomo rezultatu pri\v steli $\frac{T\alpha}{2p^2_\varphi}$. Zaradi osebne
+preference bi tudi $\varphi$ radi merili tako, da $\varphi \in [0, 2\pi)$, tako da bomo  v ena\v cbi~\eqref{fi2} krivuljo
+prestavili v desno za kot $\pi$, torej $\varphi \mapsto \varphi - \pi$, tako smo se znebili nezveznosti pri $\pi$. Sedaj lahko
+izra\v cunamo \v cas obhoda (oz. periodo). Veljati mora torej
+\begin{equation}
+    t\frac{\alpha}{p_\varphi^2} = \bigg[\frac{\varepsilon\sin(\varphi-\pi)}{(\varepsilon^2 - 1)\big(1 +
+        \varepsilon\cos(\varphi - \pi)\big)} +\frac{1}{1 - \varepsilon^2}\frac{2}{\sqrt{1 - \varepsilon^2}}
+        \arctan\bigg(\frac{(1 - \varepsilon)\tan\frac{\varphi-\pi}{2}}{\sqrt{1 - \varepsilon^2}}\bigg)\bigg]
+        +\frac{T\alpha}{2p_\varphi^2} 
+\end{equation}
+Obhodni \v cas dolo\v cimo tako, da $t(\varphi = 0) = 0$, oz. $t(\varphi = 2\pi) = T$. To pomeni
+\[
+    \frac{2}{(1 - \varepsilon^2)^{3/2}}\underbrace{\arctan(-\infty)}_{-\pi/2} = -\frac{T\alpha}{2p^2_\varphi},
+\]
+od koder pa z lahkoto poka\v zemo
+\begin{equation}
+    T = \frac{2\pi p^2_\varphi}{\alpha(1 - \varepsilon^2)^{3/2}}.
+\end{equation}
+\subsubsection{Za\v cetni pogoji}
+Da bomo res imeli vezana stanja, mora biti ekscentri\v cnost orbite $\varepsilon \in [0, 1)$. Ta je definirana kot
+\[
+    \varepsilon = \sqrt{1 + \frac{2Ep_\varphi^2}{\alpha^2}},
+\]
+kjer je $E$ energija sistema, ki jo lahko izra\v cunamo iz za\v cetnih pogojev zvezd. Ker je razdalja med zvezdami
+na za\v cetku $1$, je $\rho = 2\mu$ in $\r_*(t = 0) = 2\mu\ee_x$, oz.:
+\begin{equation}
+    E = \frac{1}{2}\big(p_\varphi^2 + p_r^2\big) - 2M_1M_2
+\end{equation}
+od koder lahko slepamo, da mora biti
+\[
+    -\frac{\alpha^2}{2p^2_\varphi} \leq E < 0.
+\]
+Od tu damo lahko smiselne pogoje za za\v cetni izbiri (da bomo dobili vezana stanja) $p_\varphi$ in $p_r$:
+\begin{equation}
+    4M_1M_2 - p_\varphi^2 - \frac{\alpha}{p^2_\varphi} \leq p^2_r < 4M_1M_2 - p^2_\varphi.
+\end{equation}
+Tu dobimo lepe pogje \v se za $p_\varphi^2$, saj mora biti $p_r$ realen,
+\begin{equation*}
+    4M_1M_2 - p_\varphi^2  -\frac{\alpha}{p^2_\varphi} \geq 0,
+\end{equation*}
+kar nam da bikvadratno ena\v cbo
+\begin{equation*}
+    -p_\varphi^4 + p_\varphi^2 \cdot 4M_1M_2 - \alpha \geq 0.
+\end{equation*}
+O\v citno je, da mora biti $p_\varphi^2$ omejena med ni\v clama in da mora biti vseskozi pozitivna, kar je oboje res
+za vse izbire $M_1$ oz. $M_2$:
+\begin{equation}
+    4M_1M_2\Bigg(1 - \sqrt{\frac{M_1^2 + M_2^2}{(M_1 + M_2)^2}}\Bigg) \leq p_\varphi^2 \leq
+        4M_1M_2\Bigg(1 + \sqrt{\frac{M_1^2 + M_2^2}{(M_1 + M_2)^2}}\Bigg),
+\end{equation}
+vendar pa imamo \v se pogoj na zgornji meji $p_r^2$, ki pravi $p_\varphi^2 < 4M_1M_2$, tj. je $p^2_\varphi$ omejen na
+interval
+\begin{equation}
+    4M_1M_2\Bigg(1 - \sqrt{\frac{M_1^2 + M_2^2}{(M_1 + M_2)^2}}\Bigg) \leq p_\varphi^2 < 4M_1M_2.
+\end{equation}
+\v Ce se omejimo samo na pozitivne $p_\varphi$ in $p_r$, dobimo
+\begin{align}
+    p_\varphi &\in \left[\sqrt{4M_1M_2\left(1 - \textstyle{\sqrt{\frac{M_1^2 + M_2^2}{(M_1 + M_2)^2}}}\right)},
+        \sqrt{4M_1M_2}\right) \\
+        p_r &\in \left[\sqrt{4M_1M_2 - p_\varphi^2 - \alpha/p^2_\varphi},\sqrt{4M_1M_2 - p^2_\varphi}\right)
+\end{align}
+
+\subsubsection{Potencial}
+Potencial v katerem se nahaja na\v s planet je torej
+\[
+    V_\odot (\r, t) = -\Bigg[\frac{M_1}{\big|\r - \frac{1}{2M_1}\r_*(t)\big|}
+        + \frac{M_2}{\big|\r + \frac{1}{2M_2}\r_*(t)\big|}\Bigg].
+\]
+Newtonov zakon za planet je
+\[
+    \ddot{\r}_3 = -\nabla_3V_\odot(\r_3, t)
+\]
+
 
 \end{document}
