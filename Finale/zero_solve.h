@@ -1,10 +1,8 @@
 #ifndef ZERO_SOLVE_H
 #define ZERO_SOLVE_H
 // this header includes functions for root solving of our solar system
-
 #include <math.h>
 #include <stdlib.h>
-#include <stdio.h>
 
 // the modulo for doubles -- I took it from Seminarji/DinAna/hed.h
 double mod (double a, double b);

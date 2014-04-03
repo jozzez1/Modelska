@@ -53,7 +53,7 @@ get_phi (double * phi, double epsilon, double t)
         {
             *phi    = phi_1;
             phi_1   = *phi - (tap(epsilon, *phi) - t)/(dtap(epsilon, *phi));
-        } while (fabs(phi_1 - *phi) > 1e-6 && fabs(phi_1 - *phi) != 2*M_PI);
+        } while (fabs(phi_1 - *phi) > 1e-12 && fabs(phi_1 - *phi) != 2*M_PI);
         *phi = phi_1;
     }
     else    // function is odd over T/2, we use this to stabilize the right interval solutions
@@ -63,7 +63,7 @@ get_phi (double * phi, double epsilon, double t)
         {
             *phi    = phi_1;
             phi_1   = *phi - (tap(epsilon, *phi) - t)/(dtap(epsilon, *phi));
-        } while (fabs(phi_1 - *phi) > 1e-6 && fabs(phi_1 - *phi) != 2*M_PI);
+        } while (fabs(phi_1 - *phi) > 1e-12 && fabs(phi_1 - *phi) != 2*M_PI);
         *phi = 2*M_PI - phi_1;
     }
 }

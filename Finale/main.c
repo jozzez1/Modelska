@@ -3,7 +3,7 @@
 
 int main (void)
 {
-    double eps = 0.1,
+    double eps = 0.4,
            t = 0,
            phi = 0;
 
