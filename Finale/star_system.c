@@ -10,8 +10,12 @@ init_system (binary * u, double M1, double M2, double p_phi, double epsilon)
     double Limit_p_phi  = sqrt(4*M1 * M2),
            limit_p_phi  = sqrt(4*M1 * M2 * (1 - sqrt((M1*M1 + M2*M2)/((M1 + M2)*(M1 + M2)))));
     
-    assert (p_phi < Limit_p_phi);
-    assert (p_phi >= limit_p_phi);
+    if (p_phi >= Limit_p_phi || p_phi < limit_p_phi)
+    {
+        fprintf (stderr, "Error! Note that %e <= p_phi < %e\n",
+                limit_p_phi, Limit_p_phi);
+        exit (EXIT_FAILURE);
+    }
 
     // so far so good, all the parameters were accepted
     u->M1       = M1;

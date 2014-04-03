@@ -1,7 +1,7 @@
 #ifndef STAR_SYSTEM_H
 #define STAR_SYSTEM_H
 // we look for different
-#include <assert.h>
+#include <stdio.h>
 #include <math.h>
 #include "zero_solve.h"
 
