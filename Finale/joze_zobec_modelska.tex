@@ -211,6 +211,7 @@ Potem lahko na\v s krajevni vektor prepi\v semo v
     \dot{\r}_* &= \dot{\rho}\ee_\rho + \dot{\varphi}\ee_\varphi, \\
     \ddot{\r}_* &= (\ddot{\rho} - \rho\dot{\varphi}^2)\ee_\rho + \bigg(\ddot{\varphi} + 
         2\frac{\dot{\rho}\dot{\varphi}}{\rho}\bigg)\ee_\varphi.
+    \label{polarne}
 \end{align}
 Baza v tem primeru ni normirana ($|\ee_\varphi| \neq 1$), vendar $|\r_*| = \rho$. Zaradi tega dobimo
 in $\hat{\r}_* = \r_*/\rho = \ee_\rho$. S procesom "`reverse engeneering"'
@@ -225,7 +226,8 @@ Tu $\varphi$ ne nastopa eksplicitno, kar pomeni $\dot{p}_\varphi = 0$ oz. ohrani
         \underbrace{\der{L}{\varphi}}_{= 0} = 0, \quad p_\varphi = \dot{\varphi}\rho^2,
     \label{vrtilna}
 \end{equation}
-kar pomeni $\dot{\varphi} = p_\varphi/\rho^2$. Opomba: $\p_* = p_r\ee_r + p_\varphi\ee_\varphi$. Gibalni zakoni za $\rho$ so
+kar pomeni $\dot{\varphi} = p_\varphi/\rho^2$. Opomba: $\p_* = p_\rho\ee_\rho + p_\varphi\ee_\varphi$. Gibalni zakoni
+za $\rho$ so
 \begin{align}
     \frac{\d}{\d t}\bigg(\der{L}{\dot{\rho}}\bigg) - \der{L}{\rho} &= 0, \notag \\
     \ddot{\rho} - \dot{\varphi}^2\rho - \bigg(-\frac{\alpha}{\rho^2}\bigg) &= 0, \notag \\
@@ -292,6 +294,7 @@ $\pi$. Sedaj lahko izra\v cunamo \v cas obhoda (oz. periodo). Veljati mora torej
     t = \frac{p_\varphi^3}{\alpha^2}\bigg[\frac{\varepsilon\sin(\varphi-\pi)}{(\varepsilon^2 - 1)\big(1 +
         \varepsilon\cos(\varphi - \pi)\big)} +\frac{2}{(1 - \varepsilon^2)^{3/2}}\arctan\bigg(\frac{(1 - \varepsilon)
     \tan\frac{\varphi-\pi}{2}}{\sqrt{1 - \varepsilon^2}}\bigg)\bigg]+\frac{T}{2}
+    \label{casovna}
 \end{equation}
 Obhodni \v cas dolo\v cimo tako, da $t(\varphi = 0) = 0$, oz. $t(\varphi = 2\pi) = T$. To pomeni
 \[
@@ -310,17 +313,17 @@ Da bomo res imeli vezana stanja, mora biti ekscentri\v cnost orbite $\varepsilon
 kjer je $E$ energija sistema, ki jo lahko izra\v cunamo iz za\v cetnih pogojev zvezd. Ker je razdalja med zvezdama
 na za\v cetku $1$, je $\rho = 2\mu$ in $\r_*(t = 0) = 2\mu\ee_x$, oz.:
 \begin{equation}
-    E = \frac{1}{2}\big(p_\varphi^2 + p_r^2\big) - 2M_1M_2
+    E = \frac{1}{2}\big(p_\varphi^2 + p_\rho^2\big) - 2M_1M_2
 \end{equation}
 od koder lahko slepamo, da mora biti
 \[
     -\frac{\alpha^2}{2p^2_\varphi} \leq E < 0.
 \]
-Od tu damo lahko smiselne pogoje za za\v cetni izbiri (da bomo dobili vezana stanja) $p_\varphi$ in $p_r$:
+Od tu damo lahko smiselne pogoje za za\v cetni izbiri (da bomo dobili vezana stanja) $p_\varphi$ in $p_\rho$:
 \begin{equation}
-    4M_1M_2 - p_\varphi^2 - \frac{\alpha}{p^2_\varphi} \leq p^2_r < 4M_1M_2 - p^2_\varphi.
+    4M_1M_2 - p_\varphi^2 - \frac{\alpha}{p^2_\varphi} \leq p^2_\rho < 4M_1M_2 - p^2_\varphi.
 \end{equation}
-Tu dobimo lepe pogje \v se za $p_\varphi^2$, saj mora biti $p_r$ realen,
+Tu dobimo lepe pogje \v se za $p_\varphi^2$, saj mora biti $p_\rho$ realen,
 \begin{equation*}
     4M_1M_2 - p_\varphi^2  -\frac{\alpha}{p^2_\varphi} \geq 0,
 \end{equation*}
@@ -334,19 +337,19 @@ za vse izbire $M_1$ oz. $M_2$:
     4M_1M_2\Bigg(1 - \sqrt{\frac{M_1^2 + M_2^2}{(M_1 + M_2)^2}}\Bigg) \leq p_\varphi^2 \leq
         4M_1M_2\Bigg(1 + \sqrt{\frac{M_1^2 + M_2^2}{(M_1 + M_2)^2}}\Bigg),
 \end{equation}
-vendar pa imamo \v se pogoj na zgornji meji $p_r^2$, ki pravi $p_\varphi^2 < 4M_1M_2$, tj. je $p^2_\varphi$ omejen na
+vendar pa imamo \v se pogoj na zgornji meji $p_\rho^2$, ki pravi $p_\varphi^2 < 4M_1M_2$, tj. je $p^2_\varphi$ omejen na
 interval
 \begin{equation}
     4M_1M_2\Bigg(1 - \sqrt{\frac{M_1^2 + M_2^2}{(M_1 + M_2)^2}}\Bigg) \leq p_\varphi^2 < 4M_1M_2.
 \end{equation}
-Brez izgube splo\v snosti se lahko omejimo samo na pozitivne $p_\varphi$ in $p_r$, pri \v cemer dobimo
+Brez izgube splo\v snosti se lahko omejimo samo na pozitivne $p_\varphi$ in $p_\rho$, pri \v cemer dobimo
 \begin{align}
     p_\varphi &\in \left[\sqrt{4M_1M_2\left(1 - \textstyle{\sqrt{\frac{M_1^2 + M_2^2}{(M_1 + M_2)^2}}}\right)},
         \sqrt{4M_1M_2}\right) \\
-        p_r &\in \left[\sqrt{4M_1M_2 - p_\varphi^2 - \alpha/p^2_\varphi},\sqrt{4M_1M_2 - p^2_\varphi}\right)
+        p_\rho &\in \left[\sqrt{4M_1M_2 - p_\varphi^2 - \alpha/p^2_\varphi},\sqrt{4M_1M_2 - p^2_\varphi}\right)
 \end{align}
-Z masama $M_1$ in $M_2$ tako enoli\v cno dolo\v cimo za\v cetni $\r_*(0)$, z impulzoma $p_r(0)$ in $p_\varphi(0)$ pa
-\v se obliko tira.
+Z masama $M_1$ in $M_2$ tako enoli\v cno dolo\v cimo za\v cetni $\r_*(0)$, z impulzoma $p_\rho(0)$ in $p_\varphi(0)$ pa
+\v se obliko tira, oz. $\p_*(0)$.
 
 \subsubsection{Potencial}
 Sedaj smo izra\v cunali vse, kar potrebujemo za izra\v cun "`zunanjega"' potenciala v kateraga vr\v zemo na\v s planet
@@ -372,9 +375,30 @@ kar vrne
 Sila na planet je v polarnih koordinatah enaka
 \begin{align}
     \dot{\p}_3 &= \frac{\sfrac{1}{2}\rho\ \ee_\rho - M_1\zeta\ \ee_\zeta}{[\zeta^2 + \rho^2/4M_1^2
-        - \zeta\rho\cos(\psi - \varphi)/M_1]^{3/2}} \\
+        - \zeta\rho\cos(\psi - \varphi)/M_1]^{3/2}} \notag \\
         &+ \frac{\sfrac{1}{2}\rho\ \ee_\rho + M_2\zeta\ \ee_\zeta}{[\zeta^2 + \rho^2/4M_2^2
         + \zeta\rho\cos(\psi - \varphi)/M_2]^{3/2}}
+    \label{impulz}
+\end{align}
+V polarnih koordinatah je na\v s vektor spremenljivk enak $\mathbf{x} = (\zeta, \psi, p_\zeta, p_\psi)^T$,
+kjer velja $p_\zeta = \dot{\zeta}$ in $p_\psi = \dot{\psi}$. Odvoda gibalnih koli\v cin pa dobimo lahko
+iz ena\v cb~\eqref{polarne} in hitro ugotovimo
+\begin{align*}
+    \dot{p}_\zeta &= \dot{\p}_3 \cdot \ee_\zeta + \zeta p_\psi^2, \\
+    \dot{p}_\psi  &= \dot{\p}_3 \cdot \ee_\psi/\zeta^2 - 2 \frac{p_\psi p_\zeta}{\zeta}
+\end{align*}
+kjer upo\v stevamo \v se
+\begin{align*}
+    \ee_\rho \cdot \ee_\zeta &= \cos(\varphi - \psi) \\
+    \ee_\rho \cdot \ee_\psi  &= \zeta\sin(\varphi - \psi) \\
+    \ee_\zeta \cdot \ee_\psi &= 0.
+\end{align*}
+Sedaj lahko iz ena\v cbe~\eqref{impulz} izra\v cunamo $\dot{p}_\psi$ in $\dot{p}_\zeta$:
+\begin{align}
+    \dot{p}_\zeta &= \frac{\rho}{2}\bigg(\frac{1}{|\r_{31}|^{3/2}} + \frac{1}{|\r_{32}|^{3/2}}\bigg)\cos(\varphi - \psi) -
+    \zeta\bigg[\bigg(\frac{M_1}{|\r_{31}|^{3/2}} - \frac{M_2}{|\r_{32}|^{3/2}}\bigg) - p_\psi^2\bigg] \\
+    \dot{p}_\psi &= \frac{1}{\zeta}\bigg[\frac{\rho}{2}\bigg(\frac{1}{|\r_{31}|^{3/2}} +
+        \frac{1}{|\r_{32}|^{3/2}}\bigg)\sin(\varphi - \psi) - 2p_\psi p_\zeta\bigg]
 \end{align}
 
 \subsection{Numeri\v cna integracija}
@@ -382,14 +406,35 @@ Ker sta zvezdi bistveno te\v zji od planeta, pri\v cakujemo da bo $T \gg \tau$, 
 \v cas obhoda planeta (tj. vsaj za velikostni red natan\v cen). Vpra\v sanje je, kako velik naj bo \v casovni korak
 za to integracijo?
 
-Precesija zemlje ima periodo $\sim 10^4$ let in to bomo vzeli za merilo $\tau$. Planetarno leto bomo razrezali na
-$\sim 10^2$ kosov, tj. $\delta t \sim 10^{-6} T$. Velikostni red $T$ lahko napovemo iz ena\v cbe~\eqref{leto} in
-iz mej za impulze. Naj bo $\varepsilon \sim 0$ in $p_\varphi^2 = 4M_1M_2$, kar nam da oceno
+Precesija zemlje ima periodo $\sim 10^4$ let in to bomo vzeli za merilo $\tau$: $10^{-4}T \sim \tau$. Planetarno
+leto bomo razrezali na $\sim 10^2$ kosov, tj. $\delta t \sim 10^{-6} T$. Velikostni red $T$ lahko napovemo iz
+ena\v cbe~\eqref{leto} in iz mej za impulze. Naj bo $\varepsilon \sim 0$ in $p_\varphi^2 = 4M_1M_2$, kar nam da
+oceno
 \[
     T \sim 2\pi \frac{(4M_1M_2)^3}{\alpha^2} = 2\pi \frac{64M_1^3M_2^3}{64\mu^4M_1^2M_2^2} =
         2\pi\frac{(M_1 + M_2)^4}{M_1^3 M_2^3} \sim 10^{-6}.
 \]
-Imamo torej dva zanimia procesa, ki se dogajata na dveh zelo druga\v cnih skalah, zato je dobro pose\v ci kar po
-Burlich-Stoerjevem integratorju, \v casovni korak pa naj bo kar $\delta t \sim 10^{-12}$.
+Imamo torej dva zanimia procesa, ki se dogajata na dveh zelo razli\v cnih skalah, zato je dobro pose\v ci kar po
+Bulirsch-Stoerjevem integratorju, \v casovni korak pa naj bo kar $\delta t \sim 10^{-12}$.
+
+Ker bomo obdr\v zali polarne koordinate bomo re\v sevali slede\v ce ena\v cbe:
+\begin{equation}
+    \dot{\mathbf{x}} = \begin{bmatrix} \dot{\zeta} \\ \dot{\psi} \\ \dot{p}_\zeta \\ \dot{p}_\psi \end{bmatrix} =
+        \mathbf{f}(\zeta,\psi,p_\zeta,p_\psi, t).
+\end{equation}
+
+\subsubsection{Ra\v cunanje orbit zvezd}
+Na vsakem \v casovnem koraku bomo morali re\v siti ena\v cbo~\eqref{casovna}, ki je k sre\v ci monotona. Paziti moramo,
+da ne pademo ven iz tega intervala. Ni\v cle lahko u\v cinkovito ra\v cunamo z analiti\v cnim odvodom -- ponujajo se
+nam Newtonova, Halleyeva in Baileyeva metoda. Za slednji potrebujemo \v se drugi odvod. Ker velja $\partial t/\partial
+\varphi = (\partial \varphi/\partial t)^{-1}$ lahko zapi\v semo
+\begin{align}
+    \frac{\alpha^2 t'}{p_\varphi^3} = \frac{\alpha^2}{p_\varphi^3} \der{t}{\varphi} &= \frac{1}{[1 +
+        \varepsilon\cos(\varphi - \pi)]^2} \\
+    \frac{\alpha^2 t''}{p_\varphi^3} = \frac{\alpha^2}{p_\varphi^3} \der[2]{t}{\varphi} &=
+        \frac{2\varepsilon\sin(\varphi - \pi)}{[1 + \varepsilon\cos(\varphi - \pi)]^3}
+\end{align}
+Te lahko izra\v cunamo vnaprej (tj. samo na prvem obhodu zvezd) nato pa vrednosti kli\v cemo z ra\v cunalni\v skega
+spomina.
 
 \end{document}
