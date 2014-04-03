@@ -144,7 +144,7 @@ je
 Ker smo pri spremembi gibalne koli\v cine naredili napako, ki je bila reda $\mathcal{O}(10^3)$, je ta napaka sedaj
 samo $\mathcal{O}(10^{-6})$, torej smo vpliv planeta upravi\v ceno zanemarili.
 \subsubsection{Orbiti zvezd}
-Orbiti zvezd, $\r_1(t)$ in $\r_2(t)$, v pribli\v zku zanemarljive mase planeta lahko, izra\v cunamo analiti\v cno brez
+Orbiti zvezd, $\r_1(t)$ in $\r_2(t)$, v pribli\v zku zanemarljive mase planeta, lahko izra\v cunamo analiti\v cno brez
 uporabe numeri\v cnih orodij. Iz Poissonovih oklepajev dobimo slede\v ce gibalne ena\v cbe:
 \begin{align}
     \dot{\r}_{1,2}(t) &= \frac{\p_{1,2}(t)}{M_{1,2}} \\
@@ -270,44 +270,44 @@ Kot $\varphi(t)$ je re\v sitev ena\v cbe
 \end{equation}
 Ena\v cbo~\eqref{fi} lahko re\v simo z integralom
 \begin{equation}
-    \int_0^{\varphi}\frac{\d \tilde{\varphi}}{\big(1 + \varepsilon\cos\tilde{\varphi}\big)^2} = \frac{\alpha}{p_\varphi^2}t.
+    \int_0^{\varphi}\frac{\d \tilde{\varphi}}{\big(1 + \varepsilon\cos\tilde{\varphi}\big)^2} = \frac{\alpha^2}{p_\varphi^3}t.
 \end{equation}
 Ta integral je tabeliran v matemati\v cnem priro\v cniku, re\v sitev je
 \begin{align}
-    t\frac{\alpha}{p^2_\varphi} &= \bigg[\frac{\varepsilon\sin\varphi}{(\varepsilon^2 - 1)(1 + \varepsilon\cos\varphi)}
+    t\frac{\alpha^2}{p^3_\varphi} &= \bigg[\frac{\varepsilon\sin\varphi}{(\varepsilon^2 - 1)(1 + \varepsilon\cos\varphi)}
             +\frac{1}{1 - \varepsilon^2}\frac{2}{\sqrt{1 - \varepsilon^2}}\arctan\bigg(\frac{(1 - \varepsilon)\tan\varphi/2}
             {\sqrt{1 - \varepsilon^2}}\bigg)\bigg] \notag \\
         &= F(\varphi; \varepsilon).
     \label{fi2}
 \end{align}
-Kon\v cno lahko sedaj zapi\v semo $\varphi = F^{-1}(t\alpha/p^2_\varphi; \varepsilon)$. To moramo ra\v cunati numeri\v cno,
-imamo pa to smolo, da je ta funkcija zaradi $\tan\varphi/2$ v funkciji $\arctan(x)$ smiselna samo za $\varphi
-\in [-\pi,\pi)$, sicer pa mo\v cno oscilira. Pravilna je kadar $t \in [-T/2, T/2)$, kjer je $T$ \v cas enega obhoda.
-Tako bomo \v cas pri ra\v cunanju te ena\v cbe z modulom omejili na ta interval. Vendar pa je ta \v casovni interval
-grd -- raje bomo vzeli $t \in [0, T)$, tako da bomo rezultatu pri\v steli $\frac{T\alpha}{2p^2_\varphi}$. Zaradi osebne
-preference bi tudi $\varphi$ radi merili tako, da $\varphi \in [0, 2\pi)$, tako da bomo  v ena\v cbi~\eqref{fi2} krivuljo
-prestavili v desno za kot $\pi$, torej $\varphi \mapsto \varphi - \pi$, tako smo se znebili nezveznosti pri $\pi$. Sedaj lahko
-izra\v cunamo \v cas obhoda (oz. periodo). Veljati mora torej
+Kon\v cno lahko sedaj zapi\v semo $\varphi = F^{-1}(t\alpha^2/p^3_\varphi; \varepsilon)$. To moramo ra\v cunati
+numeri\v cno, imamo pa to smolo, da je ta funkcija zaradi $\tan\varphi/2$ v funkciji $\arctan(x)$ smiselna samo za
+$\varphi \in [-\pi,\pi)$, sicer pa mo\v cno oscilira. Pravilna je kadar $t \in [-T/2, T/2)$, kjer je $T$ \v cas enega
+obhoda. Tako bomo \v cas pri ra\v cunanju te ena\v cbe z modulom omejili na ta interval. Vendar pa je ta \v casovni
+interval grd -- raje bomo vzeli $t \in [0, T)$, tako da bomo rezultatu pri\v steli $\frac{T\alpha^2}{2p^3_\varphi}$.
+Zaradi osebne preference bi tudi $\varphi$ radi merili tako, da $\varphi \in [0, 2\pi)$, zato bomo v ena\v cbi~\eqref{fi2}
+krivuljo prestavili v desno za fazo $\pi$, torej $\varphi \mapsto \varphi - \pi$. Tako smo se znebili nezveznosti pri
+$\pi$. Sedaj lahko izra\v cunamo \v cas obhoda (oz. periodo). Veljati mora torej
 \begin{equation}
-    t\frac{\alpha}{p_\varphi^2} = \bigg[\frac{\varepsilon\sin(\varphi-\pi)}{(\varepsilon^2 - 1)\big(1 +
-        \varepsilon\cos(\varphi - \pi)\big)} +\frac{1}{1 - \varepsilon^2}\frac{2}{\sqrt{1 - \varepsilon^2}}
-        \arctan\bigg(\frac{(1 - \varepsilon)\tan\frac{\varphi-\pi}{2}}{\sqrt{1 - \varepsilon^2}}\bigg)\bigg]
-        +\frac{T\alpha}{2p_\varphi^2} 
+    t = \frac{p_\varphi^3}{\alpha^2}\bigg[\frac{\varepsilon\sin(\varphi-\pi)}{(\varepsilon^2 - 1)\big(1 +
+        \varepsilon\cos(\varphi - \pi)\big)} +\frac{2}{(1 - \varepsilon^2)^{3/2}}\arctan\bigg(\frac{(1 - \varepsilon)
+    \tan\frac{\varphi-\pi}{2}}{\sqrt{1 - \varepsilon^2}}\bigg)\bigg]+\frac{T}{2}
 \end{equation}
 Obhodni \v cas dolo\v cimo tako, da $t(\varphi = 0) = 0$, oz. $t(\varphi = 2\pi) = T$. To pomeni
 \[
-    \frac{2}{(1 - \varepsilon^2)^{3/2}}\underbrace{\arctan(-\infty)}_{-\pi/2} = -\frac{T\alpha}{2p^2_\varphi},
+    \frac{2}{(1 - \varepsilon^2)^{3/2}}\underbrace{\arctan(-\infty)}_{-\pi/2} = -\frac{T\alpha^2}{2p^3_\varphi},
 \]
 od koder pa z lahkoto poka\v zemo
 \begin{equation}
-    T = \frac{2\pi p^2_\varphi}{\alpha(1 - \varepsilon^2)^{3/2}}.
+    T = \frac{2\pi p^3_\varphi}{\alpha^2(1 - \varepsilon^2)^{3/2}}.
+    \label{leto}
 \end{equation}
 \subsubsection{Za\v cetni pogoji}
 Da bomo res imeli vezana stanja, mora biti ekscentri\v cnost orbite $\varepsilon \in [0, 1)$. Ta je definirana kot
 \[
     \varepsilon = \sqrt{1 + \frac{2Ep_\varphi^2}{\alpha^2}},
 \]
-kjer je $E$ energija sistema, ki jo lahko izra\v cunamo iz za\v cetnih pogojev zvezd. Ker je razdalja med zvezdami
+kjer je $E$ energija sistema, ki jo lahko izra\v cunamo iz za\v cetnih pogojev zvezd. Ker je razdalja med zvezdama
 na za\v cetku $1$, je $\rho = 2\mu$ in $\r_*(t = 0) = 2\mu\ee_x$, oz.:
 \begin{equation}
     E = \frac{1}{2}\big(p_\varphi^2 + p_r^2\big) - 2M_1M_2
@@ -339,23 +339,57 @@ interval
 \begin{equation}
     4M_1M_2\Bigg(1 - \sqrt{\frac{M_1^2 + M_2^2}{(M_1 + M_2)^2}}\Bigg) \leq p_\varphi^2 < 4M_1M_2.
 \end{equation}
-\v Ce se omejimo samo na pozitivne $p_\varphi$ in $p_r$, dobimo
+Brez izgube splo\v snosti se lahko omejimo samo na pozitivne $p_\varphi$ in $p_r$, pri \v cemer dobimo
 \begin{align}
     p_\varphi &\in \left[\sqrt{4M_1M_2\left(1 - \textstyle{\sqrt{\frac{M_1^2 + M_2^2}{(M_1 + M_2)^2}}}\right)},
         \sqrt{4M_1M_2}\right) \\
         p_r &\in \left[\sqrt{4M_1M_2 - p_\varphi^2 - \alpha/p^2_\varphi},\sqrt{4M_1M_2 - p^2_\varphi}\right)
 \end{align}
+Z masama $M_1$ in $M_2$ tako enoli\v cno dolo\v cimo za\v cetni $\r_*(0)$, z impulzoma $p_r(0)$ in $p_\varphi(0)$ pa
+\v se obliko tira.
 
 \subsubsection{Potencial}
-Potencial v katerem se nahaja na\v s planet je torej
-\[
-    V_\odot (\r, t) = -\Bigg[\frac{M_1}{\big|\r - \frac{1}{2M_1}\r_*(t)\big|}
+Sedaj smo izra\v cunali vse, kar potrebujemo za izra\v cun "`zunanjega"' potenciala v kateraga vr\v zemo na\v s planet
+\begin{equation}
+    V_\odot (\r, t) \equiv -\Bigg[\frac{M_1}{\big|\r - \frac{1}{2M_1}\r_*(t)\big|}
         + \frac{M_2}{\big|\r + \frac{1}{2M_2}\r_*(t)\big|}\Bigg].
-\]
-Newtonov zakon za planet je
-\[
-    \ddot{\r}_3 = -\nabla_3V_\odot(\r_3, t)
-\]
+\end{equation}
+Gibalni zakoni za planet so
+\begin{align}
+    \dot{\r}_3 &= \p_3, \\
+    \dot{\p}_3 &= -\nabla_3V_\odot(\r_3, t) = - \frac{M_1}{|\r_{31}(t)|^2}\hat{\r}_{31}(t) -
+        \frac{M_2}{|\r_{32}(t)|^2}\hat{\r}_{32}(t).
+\end{align}
+Nobenega razloga ni, zakaj ne bi obdr\v zali polarnih koordinat \v se za $\r_3$. Naj bo
+\begin{equation*}
+    \r_3 = \zeta\cos\psi\ \ee_x + \zeta\sin\psi\ \ee_y = \zeta\ \ee_\zeta,
+\end{equation*}
+kar vrne
+\begin{align}
+    |\r_{31}|^2 &= \zeta^2 + \frac{1}{4M_1^2}\rho^2 - \frac{1}{M_1}\rho\zeta\cos(\psi - \varphi), \\
+    |\r_{32}|^2 &= \zeta^2 + \frac{1}{4M_2^2}\rho^2 + \frac{1}{M_2}\rho\zeta\cos(\psi - \varphi).
+\end{align}
+Sila na planet je v polarnih koordinatah enaka
+\begin{align}
+    \dot{\p}_3 &= \frac{\sfrac{1}{2}\rho\ \ee_\rho - M_1\zeta\ \ee_\zeta}{[\zeta^2 + \rho^2/4M_1^2
+        - \zeta\rho\cos(\psi - \varphi)/M_1]^{3/2}} \\
+        &+ \frac{\sfrac{1}{2}\rho\ \ee_\rho + M_2\zeta\ \ee_\zeta}{[\zeta^2 + \rho^2/4M_2^2
+        + \zeta\rho\cos(\psi - \varphi)/M_2]^{3/2}}
+\end{align}
 
+\subsection{Numeri\v cna integracija}
+Ker sta zvezdi bistveno te\v zji od planeta, pri\v cakujemo da bo $T \gg \tau$, ker je $\tau$ karakteristi\v cni
+\v cas obhoda planeta (tj. vsaj za velikostni red natan\v cen). Vpra\v sanje je, kako velik naj bo \v casovni korak
+za to integracijo?
+
+Precesija zemlje ima periodo $\sim 10^4$ let in to bomo vzeli za merilo $\tau$. Planetarno leto bomo razrezali na
+$\sim 10^2$ kosov, tj. $\delta t \sim 10^{-6} T$. Velikostni red $T$ lahko napovemo iz ena\v cbe~\eqref{leto} in
+iz mej za impulze. Naj bo $\varepsilon \sim 0$ in $p_\varphi^2 = 4M_1M_2$, kar nam da oceno
+\[
+    T \sim 2\pi \frac{(4M_1M_2)^3}{\alpha^2} = 2\pi \frac{64M_1^3M_2^3}{64\mu^4M_1^2M_2^2} =
+        2\pi\frac{(M_1 + M_2)^4}{M_1^3 M_2^3} \sim 10^{-6}.
+\]
+Imamo torej dva zanimia procesa, ki se dogajata na dveh zelo druga\v cnih skalah, zato je dobro pose\v ci kar po
+Burlich-Stoerjevem integratorju, \v casovni korak pa naj bo kar $\delta t \sim 10^{-12}$.
 
 \end{document}
