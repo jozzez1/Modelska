@@ -214,7 +214,7 @@ Potem lahko na\v s krajevni vektor prepi\v semo v
     \label{polarne}
 \end{align}
 Baza v tem primeru ni normirana ($|\ee_\varphi| \neq 1$), vendar $|\r_*| = \rho$. Zaradi tega dobimo
-in $\hat{\r}_* = \r_*/\rho = \ee_\rho$. S procesom "`reverse engeneering"'
+in $\hat{\r}_* = \r_*/\rho = \ee_\rho$. S procesom "`reverse engineering"'
 ena\v cbe~\eqref{newton} lahko zapi\v semo Lagrangeian
 \begin{equation*}
     L = \frac{1}{2}|\dot{\r}_*|^2 + \frac{\alpha}{\rho} = \frac{1}{2}(\dot{\rho}^2 + \dot{\varphi}^2\rho^2) +
@@ -381,13 +381,13 @@ Sila na planet je v polarnih koordinatah enaka
     \label{impulz}
 \end{align}
 V polarnih koordinatah je na\v s vektor spremenljivk enak $\mathbf{x} = (\zeta, \psi, p_\zeta, p_\psi)^T$,
-kjer velja $p_\zeta = \dot{\zeta}$ in $p_\psi = \dot{\psi}$. Odvoda gibalnih koli\v cin pa dobimo lahko
-iz ena\v cb~\eqref{polarne} in hitro ugotovimo
+kjer velja $p_\zeta = \dot{\zeta}$ in $p_\psi = \dot{\psi}\zeta^2$. Odvoda gibalnih koli\v cin pa dobimo lahko
+iz ena\v cb~\eqref{polarne} in hitro ugotovimo, da moramo ena\v cbo~\eqref{impulz} zgolj projicirati na osi planeta:
 \begin{align*}
-    \dot{p}_\zeta &= \dot{\p}_3 \cdot \ee_\zeta + \zeta p_\psi^2, \\
-    \dot{p}_\psi  &= \dot{\p}_3 \cdot \ee_\psi/\zeta^2 - 2 \frac{p_\psi p_\zeta}{\zeta}
+    \dot{p}_\zeta &= \dot{\p}_3 \cdot \ee_\zeta, \\
+    \dot{p}_\psi  &= \dot{\p}_3 \cdot \ee_\psi,
 \end{align*}
-kjer upo\v stevamo \v se
+kjer moramo upo\v stevati $|\ee_\psi|^2 = \zeta^2$ in
 \begin{align*}
     \ee_\rho \cdot \ee_\zeta &= \cos(\varphi - \psi) \\
     \ee_\rho \cdot \ee_\psi  &= \zeta\sin(\varphi - \psi) \\
@@ -396,9 +396,9 @@ kjer upo\v stevamo \v se
 Sedaj lahko iz ena\v cbe~\eqref{impulz} izra\v cunamo $\dot{p}_\psi$ in $\dot{p}_\zeta$:
 \begin{align}
     \dot{p}_\zeta &= \frac{\rho}{2}\bigg(\frac{1}{|\r_{31}|^{3/2}} + \frac{1}{|\r_{32}|^{3/2}}\bigg)\cos(\varphi - \psi) -
-    \zeta\bigg[\bigg(\frac{M_1}{|\r_{31}|^{3/2}} - \frac{M_2}{|\r_{32}|^{3/2}}\bigg) - p_\psi^2\bigg] \\
-    \dot{p}_\psi &= \frac{1}{\zeta}\bigg[\frac{\rho}{2}\bigg(\frac{1}{|\r_{31}|^{3/2}} +
-        \frac{1}{|\r_{32}|^{3/2}}\bigg)\sin(\varphi - \psi) - 2p_\psi p_\zeta\bigg]
+    \zeta\bigg(\frac{M_1}{|\r_{31}|^{3/2}} - \frac{M_2}{|\r_{32}|^{3/2}}\bigg) \\
+    \dot{p}_\psi &= \frac{\zeta\rho}{2}\bigg(\frac{1}{|\r_{31}|^{3/2}} +
+        \frac{1}{|\r_{32}|^{3/2}}\bigg)\sin(\varphi - \psi)
 \end{align}
 
 \subsection{Numeri\v cna integracija}
@@ -420,6 +420,7 @@ Bulirsch-Stoerjevem integratorju, \v casovni korak pa naj bo kar $\delta t \sim 
 Ker bomo obdr\v zali polarne koordinate bomo re\v sevali slede\v ce ena\v cbe:
 \begin{equation}
     \dot{\mathbf{x}} = \begin{bmatrix} \dot{\zeta} \\ \dot{\psi} \\ \dot{p}_\zeta \\ \dot{p}_\psi \end{bmatrix} =
+        \begin{bmatrix} p_\zeta \\ p_\psi/\zeta^2 \\ \dot{p}_\zeta \\ \dot{p}_\psi \end{bmatrix} =
         \mathbf{f}(\zeta,\psi,p_\zeta,p_\psi, t).
 \end{equation}
 
