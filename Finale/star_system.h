@@ -17,7 +17,7 @@ typedef struct binary
 } binary;
 
 // initialize the system
-void init_system (binary * sys, double M1, double M2, double p_phi, double p_rho);
+void init_system (binary * sys, double M1, double M2, double epsilon);
 
 // calculate stuff from parameters and time, like the trajectory :D
 void trajectory (double * rho, double * phi, binary sys, double t);

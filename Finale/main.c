@@ -8,7 +8,11 @@ int main (int argc, char ** argv)
     double M1   = 2000,
            M2   = 1000,
            pfi  = sqrt(M1*M2)*(1 + sqrt(1 - sqrt((M1*M1 + M2*M2)/(M1*M1 + 2*M2*M1 + M2*M2)))),
-           eps  = 0.4;
+           eps  = 0.4,
+           dt   = 1e-3,
+           top  = 3,
+           t    = 0,
+           T    = 0;
 
     int arg;
 
@@ -33,13 +37,18 @@ int main (int argc, char ** argv)
         }
     }
 
-    double t    = 0,
-           phi  = 0;
-    while (t < 100)
+    binary sys;
+    init_system (&sys, M1, M2, eps);
+    T = solar_year (sys);
+    top *= T;
+    dt  *= T;
+
+    double rho, phi;
+    while (t < top)
     {
-        get_phi (&phi, eps, t);
-        printf ("%lf\t%lf\n", t, phi);
-        t += 0.003;
+        trajectory (&rho, &phi, sys, t);
+        printf ("%lf\t%lf\t%lf\n", t, rho, phi);
+        t += dt;
     }
     return 0;
 }

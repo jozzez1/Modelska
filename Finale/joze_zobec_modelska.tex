@@ -319,37 +319,22 @@ od koder lahko slepamo, da mora biti
 \[
     -\frac{\alpha^2}{2p^2_\varphi} \leq E < 0.
 \]
-Od tu damo lahko smiselne pogoje za za\v cetni izbiri (da bomo dobili vezana stanja) $p_\varphi$ in $p_\rho$:
+\v Ce ho\v cemo $\rho(t = 0) = \rho(\varphi = 0) = 1$, potem mora veljati
 \begin{equation}
-    4M_1M_2 - p_\varphi^2 - \frac{\alpha}{p^2_\varphi} \leq p^2_\rho < 4M_1M_2 - p^2_\varphi.
+    \rho(\varphi = 0) = 2\mu = \frac{p_\varphi^2/\alpha}{1 + \varepsilon\cos(\varphi-\pi)}\bigg|_{\varphi = 0}.
 \end{equation}
-Tu dobimo lepe pogje \v se za $p_\varphi^2$, saj mora biti $p_\rho$ realen,
-\begin{equation*}
-    4M_1M_2 - p_\varphi^2  -\frac{\alpha}{p^2_\varphi} \geq 0,
-\end{equation*}
-kar nam da bikvadratno ena\v cbo
-\begin{equation*}
-    -p_\varphi^4 + p_\varphi^2 \cdot 4M_1M_2 - \alpha \geq 0.
-\end{equation*}
-O\v citno je, da mora biti $p_\varphi^2$ omejena med ni\v clama in da mora biti vseskozi pozitivna, kar je oboje res
-za vse izbire $M_1$ oz. $M_2$:
+To lahko prepakiramo v identiteto
 \begin{equation}
-    4M_1M_2\Bigg(1 - \sqrt{\frac{M_1^2 + M_2^2}{(M_1 + M_2)^2}}\Bigg) \leq p_\varphi^2 \leq
-        4M_1M_2\Bigg(1 + \sqrt{\frac{M_1^2 + M_2^2}{(M_1 + M_2)^2}}\Bigg),
+    p_\varphi = \sqrt{2\mu\alpha(1 - \varepsilon)}.
 \end{equation}
-vendar pa imamo \v se pogoj na zgornji meji $p_\rho^2$, ki pravi $p_\varphi^2 < 4M_1M_2$, tj. je $p^2_\varphi$ omejen na
-interval
-\begin{equation}
-    4M_1M_2\Bigg(1 - \sqrt{\frac{M_1^2 + M_2^2}{(M_1 + M_2)^2}}\Bigg) \leq p_\varphi^2 < 4M_1M_2.
-\end{equation}
-Brez izgube splo\v snosti se lahko omejimo samo na pozitivne $p_\varphi$ in $p_\rho$, pri \v cemer dobimo
+s katero lahko povsod eliminiramo $p_\varphi$:
 \begin{align}
-    p_\varphi &\in \left[\sqrt{4M_1M_2\left(1 - \textstyle{\sqrt{\frac{M_1^2 + M_2^2}{(M_1 + M_2)^2}}}\right)},
-        \sqrt{4M_1M_2}\right) \\
-        p_\rho &\in \left[\sqrt{4M_1M_2 - p_\varphi^2 - \alpha/p^2_\varphi},\sqrt{4M_1M_2 - p^2_\varphi}\right)
+    \rho(\varphi) &= \frac{2\mu(1 - \varepsilon)}{1 + \varepsilon\cos(\varphi - \pi)} \\
+    T &= \frac{2\pi}{\sqrt{M_1 + M_2}}\bigg(\frac{1 - \varepsilon}{1 - \varepsilon^2}\bigg)^{3/2}
 \end{align}
-Z masama $M_1$ in $M_2$ tako enoli\v cno dolo\v cimo za\v cetni $\r_*(0)$, z impulzoma $p_\rho(0)$ in $p_\varphi(0)$ pa
-\v se obliko tira, oz. $\p_*(0)$.
+
+Sedaj smo dvozvezden sistem v celoti re\v sili, prosta parametra sta le $M_1$ in $M_2$, za\v cetni pogoj pa je odvisen
+le od ekscentri\v cnosti orbite, $\varepsilon$.
 
 \subsubsection{Potencial}
 Sedaj smo izra\v cunali vse, kar potrebujemo za izra\v cun "`zunanjega"' potenciala v kateraga vr\v zemo na\v s planet
@@ -408,14 +393,11 @@ za to integracijo?
 
 Precesija zemlje ima periodo $\sim 10^4$ let in to bomo vzeli za merilo $\tau$: $10^{-4}T \sim \tau$. Planetarno
 leto bomo razrezali na $\sim 10^2$ kosov, tj. $\delta t \sim 10^{-6} T$. Velikostni red $T$ lahko napovemo iz
-ena\v cbe~\eqref{leto} in iz mej za impulze. Naj bo $\varepsilon \sim 0$ in $p_\varphi^2 = 4M_1M_2$, kar nam da
-oceno
+ena\v cbe~\eqref{leto} in iz mej za impulze. Naj bo $\varepsilon \sim 0$ oceno za spodnjo mejo $T$
 \[
-    T \sim 2\pi \frac{(4M_1M_2)^3}{\alpha^2} = 2\pi \frac{64M_1^3M_2^3}{64\mu^4M_1^2M_2^2} =
-        2\pi\frac{(M_1 + M_2)^4}{M_1^3 M_2^3} \sim 10^{-6}.
+    T \gtrsim \sqrt{1/10^3} = 10^{-3/2} = 0.032 \sim 10^{-2}.
 \]
-Imamo torej dva zanimia procesa, ki se dogajata na dveh zelo razli\v cnih skalah, zato je dobro pose\v ci kar po
-Bulirsch-Stoerjevem integratorju, \v casovni korak pa naj bo kar $\delta t \sim 10^{-12}$.
+\v Casovni korak bo torej velikostnega reda $\delta t \sim 10^{-8}$.
 
 Ker bomo obdr\v zali polarne koordinate bomo re\v sevali slede\v ce ena\v cbe:
 \begin{equation}
