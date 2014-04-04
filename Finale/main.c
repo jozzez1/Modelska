@@ -12,7 +12,7 @@ int main (int argc, char ** argv)
            dt   = 1e-3,
            top  = 3,
            T    = 0,
-           zeta = 100,
+           zeta = 20,
            psi  = 0,
            p_zeta = 0,
            p_psi  = 100;

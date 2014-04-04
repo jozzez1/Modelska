@@ -52,6 +52,10 @@
     \ensuremath{\tilde{\varphi}}
 }
 
+\newcommand{\Vef}{
+    \ensuremath{V_\mathrm{ef}}
+}
+
 \begin{document}
 
 \section{Navodilo}
@@ -403,8 +407,7 @@ nam dajo stabilnej\v se orbite, poleg tega pa jih je enostavneje naprogramirati,
 adaptivnega koraka.
 
 Za konstrukcijo simplekti\v cnega integratorja potrebujemo $H(t) = A(t) + B(t)$, kjer $\{A(t), B(t)\} \neq 0$.
-Seveda bomo vzeli kar $A(t) = T_3$ in $B(t) = V_\odot$. Potrebujemo \v se vrednosti vse mo\v znih Poissonovih
-oklepajev, ki pa so prikladno nara\v cunani v ena\v cbah~\eqref{oklepaji}. Vektor integracijskih spremenljivk
+Seveda bomo vzeli kar .Vektor integracijskih spremenljivk
 je $\mathbf{x} = (\zeta, \psi, p_\zeta, p_\psi)^T$. Za integracijo bomo uporabili simetrizirano shemo
 \v cetrtega reda, ki je definirana s pomo\v cjo sheme drugega reda:
 \[
@@ -424,7 +427,25 @@ Opomba:
 \[
     \exp(c\delta t\{\bullet, A\})x = x + c\delta t\{x, A\}.
 \]
-
-Sedaj smo lahko gotovi, da bo "`drift"' orbite posledica na\v sih ena\v cb in ne posledica slabega integratorja.
+Izbrati si moramo taka $A(t)$ in $B(t)$, ki delujeta na disjunktna hilbertova prostora. Ker smo v polarnih koordinatah,
+zato ne bomo mogli vzeti kar $T_3$ in $V_\odot$, ampak bomo morali vzeti efektivni potencial $\Vef$ in radialno
+kineti\v cno energijo $T_\zeta$:
+\begin{equation}
+    T_\zeta = \frac{1}{2}p_\zeta^2, \quad \Vef = \frac{1}{2}\frac{p_\psi^2}{\zeta^2} + V_\odot.
+\end{equation}
+Potrebujemo \v se vrednosti vse mo\v znih Poissonovih oklepajev, na sre\v co si lahko pomagamo s tistimi, ki
+smo jih nara\v cunali v ena\v cbah~\eqref{oklepaji}:
+\begin{alignat}{3}
+    \{\zeta, T_\zeta\}        &= p_\zeta, \qquad &
+    \{\zeta, \Vef\}           &= 0, \notag \\
+    \{\psi, T_\zeta\}         &= 0, \qquad &
+    \{\psi, \Vef\}            &= p_\psi/\zeta^2, \notag \\
+    \{p_\zeta, T_\zeta\}      &= 0, \qquad&
+    \{p_\zeta, \Vef\}         &= p^2_\psi - \der{V_\odot}{\zeta}, \notag \\
+    \{p_\psi, T_\zeta\}       &= 0, \qquad &
+    \{p_\psi, \Vef\}          &= -\der{V_\odot}{\psi}.
+\end{alignat}
+Vidimo, da je tak razcep hamiltonke $H_3$ res ustrezen. Sedaj smo lahko gotovi, da bo "`drift"' orbite posledica
+na\v sih ena\v cb in ne posledica slabega integratorja.
 
 \end{document}
