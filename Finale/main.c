@@ -59,7 +59,7 @@ int main (int argc, char ** argv)
         .p_psi  = p_psi,
         .p_zeta = p_zeta };
 
-    solver (&omikron, &sys, dt, T, stdout);
+    solver (&omikron, &sys, dt, top, stdout);
 
     return 0;
 }

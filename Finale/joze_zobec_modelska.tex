@@ -74,8 +74,7 @@ vektorje smo ozna\v cili z mastnim tiskom.
 \subsection{Prosti parametri}
 
 Da preverimo \v stevilo prostih parametrov moramo hamiltonko~\eqref{hamilton} pretvoriti v brezdimenzijsko
-obliko. Energija se bo \v zal ohranjala samo, kadar upo\v stevamo tudi maso planeta, tako da je ne bomo
-zanemarili. Naj bo $m_3$ masa planeta, $m_1$ in $m_2$ pa naj bosta masi zvezde. Definirajmo brezdimenzijski
+obliko. Naj bo $m_3$ masa planeta, $m_1$ in $m_2$ pa naj bosta masi zvezde. Definirajmo brezdimenzijski
 masi
 \begin{equation}
     M_1 \equiv \frac{m_1}{m_3}, \quad M_2 \equiv \frac{m_2}{m_3}.
@@ -135,8 +134,8 @@ spremembo gibalne koli\v cine zvezde,
     \d\p_{1,2} = \dot{\p}_{1,2}\ \d t = \{\p_{1,2}, V\}\ \d t \approx
         \Big\{\p_{1,2}, -\sfrac{M_1M_2}{|\r_1 - \r_2|}\Big\}\ \d t
 \end{equation}
-Prav tako se zvezdi glede na planet premikata zelo po\v casi -- efekt planete bi bil viden \v sele po zelo dolgem
-\v casu (po mnogih planetarnih obhodih), saj je sprememba $\r$ ute\v zena z $1/M_{1,2}$. Sprememba koordinat
+Prav tako se zvezdi glede na planet premikata zelo po\v casi -- efekt planeta bi bil viden \v sele po zelo dolgem
+\v casu (po mnogih planetarnih obhodih), saj je sprememba $\r_{1,2}$ ute\v zena z $1/M_{1,2}$. Sprememba koordinat
 je
 \begin{equation}
     \d \r_{1,2} = \dot{\r}_{1,2}\ \d t = \{\r_{1,2}, T\}\ \d t = \big\{\r_{1,2}, \sfrac{1}{2M_{1,2}}|\p_{1,2}|^2\big\}\ \d t.
@@ -365,18 +364,18 @@ polarne koordinate planeta:
 \[
     \r_3 = \zeta\cos\psi\ \ee_x + \zeta\sin\psi\ \ee_y = \zeta\ \ee_\zeta.
 \]
-Gibalne zakone dobimo iz Poissonovih oklepajev $\{\bullet, T_3\}$ in $\{\bullet, V_\odot\}$
-\begin{align}
-    \{\zeta, T_3\}        &= \der{T_3}{p_\zeta} = p_\zeta, \notag \\
-    \{\zeta, V_\odot\}    &= 0, \notag \\
-    \{\psi, T_3\}         &= \der{T_3}{p_\psi} = p_\psi/\zeta^2, \notag \\
-    \{\psi, V_\odot\}     &= 0, \notag \\
-    \{p_\zeta, T_3\}      &= -\der{T_3}{\zeta} = p^2_\psi/\zeta^3, \notag \\
+Gibalne zakone dobimo iz Poissonovih oklepajev $\{\bullet, T_3\}$ in $\{\bullet, V_\odot\}$:
+\begin{alignat}{3}
+    \{\zeta, T_3\}        &= \der{T_3}{p_\zeta} = p_\zeta, \qquad&
+    \{p_\zeta, T_3\} &= -\der{T_3}{\zeta} = p^2_\psi/\zeta^3, \notag \\
+    \{\zeta, V_\odot\}    &= 0, \qquad&
     \{p_\zeta, V_\odot\}  &= -\der{V_\odot}{\zeta} \notag \\
+    \{\psi, T_3\}         &= \der{T_3}{p_\psi} = p_\psi/\zeta^2, \qquad&
     \{p_\psi, T_3\}       &= 0 \notag \\
+    \{\psi, V_\odot\}     &= 0, \qquad&
     \{p_\psi, V_\odot\}   &= -\der{V_\odot}{\psi}
     \label{oklepaji}
-\end{align}
+\end{alignat}
 Potencial $V_\odot$ se v polarnih koordinatah zapi\v se kot
 \begin{align}
     V_\odot     &= -\frac{M_1}{|\r_{31}|} -\frac{M_2}{|\r_{32}|}, \\
@@ -414,23 +413,18 @@ je $\mathbf{x} = (\zeta, \psi, p_\zeta, p_\psi)^T$. Za integracijo bomo uporabil
 \]
 shema \v cetrtega reda $S_4$ pa je potem
 \begin{equation}
-    S_4(\delta t) = S_2(x_0, \delta t) S_2 (x_1, \delta t) S_2 (x_0, \delta t) + \mathcal{O}(\delta t^5)
+    S_4(\delta t) = S_2(x_0, \delta t) S_2 (x_1, \delta t) S_2 (x_0, \delta t) + \mathcal{O}(\delta t^5), \quad
+        x_0 = \frac{1}{2 - 2^{1/3}},\ x_1 = -\frac{2^{1/3}}{2 - 2^{1/3}},
 \end{equation}
-s \v cimer aproksimiramo Liouvillov propagator. Opomba:
+s \v cimer aproksimiramo Liouvillov propagator. Integracija izgleda tako:
+\[
+    \mathbf{x}(t + \delta t) = S_4(\delta t) \mathbf{x}(t).
+\]
+Opomba:
 \[
     \exp(c\delta t\{\bullet, A\})x = x + c\delta t\{x, A\}.
 \]
-\subsubsection{Ocena \v casovnega koraka}
-Ker sta zvezdi bistveno te\v zji od planeta, pri\v cakujemo da bo $T \gg \tau$, ker je $\tau$ karakteristi\v cni
-\v cas obhoda planeta (tj. vsaj za velikostni red natan\v cen). Vpra\v sanje je, kako velik naj bo \v casovni korak
-za to integracijo?
 
-Precesija zemlje ima periodo $\sim 10^4$ let in to bomo vzeli za merilo $\tau$: $10^{-4}T \sim \tau$. Planetarno
-leto bomo razrezali na $\sim 10^2$ kosov, tj. $\delta t \sim 10^{-6} T$. Velikostni red $T$ lahko napovemo iz
-ena\v cbe~\eqref{leto} in iz mej za impulze. Naj bo $\varepsilon \sim 0$ oceno za spodnjo mejo $T$
-\[
-    T \gtrsim \sqrt{1/10^3} = 10^{-3/2} = 0.032 \sim 10^{-2}.
-\]
-\v Casovni korak bo torej velikostnega reda $\delta t \sim 10^{-8}$.
+Sedaj smo lahko gotovi, da bo "`drift"' orbite posledica na\v sih ena\v cb in ne posledica slabega integratorja.
 
 \end{document}
