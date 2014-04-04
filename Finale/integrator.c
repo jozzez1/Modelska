@@ -4,9 +4,12 @@ void
 A_step (planet * omikron, 
         double dt, double c)
 {
+    double zeta = omikron->zeta;
     omikron->psi    += c * dt * 0.5 * omikron->p_psi/(omikron->zeta * omikron->zeta);
-    omikron->p_zeta += c * dt * 0.5 * omikron->p_psi * omikron->p_psi / (omikron->zeta * omikron->zeta * omikron->zeta);
     omikron->zeta   += c * dt * 0.5 * omikron->p_zeta;
+    omikron->p_zeta += c * dt * 0.5 * omikron->p_psi * omikron->p_psi / (zeta * zeta * zeta);
+
+//    omikron->psi = mod (omikron->psi, 2*M_PI);
 }
 
 void

@@ -5,8 +5,8 @@
 #include "star_system.h"
 
 // we throw in a few constants
-static const double X0 =  1.35120719195966; // X0 = 1.0 / (2 - cbrt(2))
-static const double X1 = -1.70241438391932; // X1 = cbrt(2) / (cbrt(2) - 1)
+static const double X0 =  1.3512071919596577718181151794851757586002349853515625; // X0 = 1.0 / (2 - cbrt(2))
+static const double X1 = -1.7024143839193153215916254339390434324741363525390625; // X1 = cbrt(2) / (cbrt(2) - 1)
 
 // planet parameters go here
 typedef struct planet
