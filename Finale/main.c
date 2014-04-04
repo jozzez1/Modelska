@@ -2,6 +2,7 @@
 #include <unistd.h>
 #include "zero_solve.h"
 #include "star_system.h"
+#include "integrator.h"
 
 int main (int argc, char ** argv)
 {
@@ -44,11 +45,10 @@ int main (int argc, char ** argv)
     top *= T;
     dt  *= T;
 
-    double rho, phi;
     while (t < top)
     {
-        trajectory (&rho, &phi, sys, t);
-        printf ("%lf\t%lf\t%lf\n", t, rho, phi);
+        get_position (&sys, t);
+        printf ("%lf\t%lf\t%lf\n", t, sys.rho, sys.phi);
         t += dt;
     }
     return 0;

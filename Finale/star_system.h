@@ -14,13 +14,16 @@ typedef struct binary
            M1,      // mass of the 1st star
            M2,      // mass of the 2nd star
            p_phi;   // angular momentum
+
+    double rho,     // rho -- the radial star component
+           phi;     // phi -- the angular star component
 } binary;
 
 // initialize the system
 void init_system (binary * sys, double M1, double M2, double epsilon);
 
 // calculate stuff from parameters and time, like the trajectory :D
-void trajectory (double * rho, double * phi, binary sys, double t);
+void get_position (binary * sys, double t);
 
 // return the period of such a binary system
 double solar_year (binary sys);

@@ -16,12 +16,11 @@ init_system (binary * u, double M1, double M2, double epsilon)
 }
 
 void
-trajectory (double * rho, double * phi,
-        binary sys, double t)
+get_position (binary * sys, double t)
 {
-    t *= (sys.alpha * sys.alpha) / (sys.p_phi * sys.p_phi * sys.p_phi);
-    get_phi (phi, sys.epsilon, t);
-    *rho = (2*sys.mu * (1 - sys.epsilon) / (1 + sys.epsilon*cos(*phi - M_PI)));
+    t *= (sys->alpha * sys->alpha) / (sys->p_phi * sys->p_phi * sys->p_phi);
+    get_phi (&sys->phi, sys->epsilon, t);
+    sys->rho = (2*sys->mu * (1 - sys->epsilon) / (1 + sys->epsilon*cos(sys->phi - M_PI)));
 }
 
 double
