@@ -33,6 +33,7 @@ clean:
 	main.o \
 	star_system.o \
 	zero_solve.o \
+	integrator.o \
 	prg.core
 	rm -f ${file}
 .endfor

@@ -15,11 +15,12 @@ int main (int argc, char ** argv)
            zeta = 20,
            psi  = 0,
            p_zeta = 0,
-           p_psi  = 100;
+           p_psi  = 100,
+           old    = 0;
 
     int arg;
 
-    while ((arg = getopt(argc, argv, "M:m:e:T:d:z:l:p:h")) != -1)
+    while ((arg = getopt(argc, argv, "M:m:e:T:d:z:l:p:oh")) != -1)
     {
         switch (arg)
         {
@@ -31,6 +32,7 @@ int main (int argc, char ** argv)
             case 'z':   zeta = atof(optarg); break;
             case 'l':   p_psi   = atof(optarg); break;
             case 'p':   p_zeta  = atof(optarg); break;
+            case 'o':   old     = 1;         break;
             case 'h':
                         fprintf (stdout, "-M:   mass of the 1st star\n");
                         fprintf (stdout, "-m:   mass of the 2nd star\n");
@@ -59,7 +61,8 @@ int main (int argc, char ** argv)
         .p_psi  = p_psi,
         .p_zeta = p_zeta };
 
-    solver (&omikron, &sys, dt, top, stdout);
+    if (!old)   solver_S8 (&omikron, &sys, dt, top, stdout);
+    else        solver (&omikron, &sys, dt, top, stdout);
 
     return 0;
 }

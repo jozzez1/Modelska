@@ -1,13 +1,13 @@
 #include "integrator.h"
 
-void    // Radial kinetic energy
+void
 A_step (planet * omikron, 
         double dt, double c)
 {
-    omikron->zeta   += c * dt * 0.5 * omikron->p_zeta;
+    omikron->zeta   += c * dt * omikron->p_zeta;
 }
 
-void    // effective potential
+void
 B_step (planet * omikron,
         binary sys, double dt, double c)
 {
@@ -29,9 +29,9 @@ void
 S2 (planet * omikron,
         binary sys, double dt, double c)
 {
-    A_step (omikron, dt, c);
+    A_step (omikron, dt, c/2);
     B_step (omikron, sys, dt, c);
-    A_step (omikron, dt, c);
+    A_step (omikron, dt, c/2);
 }
 
 void
@@ -43,6 +43,65 @@ S4 (planet * omikron,
     S2 (omikron, sys, dt, X0);
 }
 
+void init_params (params * p)
+{
+    double w0 = 1 - 2*(w[1] + w[2] + w[3] + w[4] + w[5] + w[6] + w[7]);
+
+    p->d[0] = w[7];     p->d[14] = p->d[0];
+    p->d[1] = w[6];     p->d[13] = p->d[1];
+    p->d[2] = w[5];     p->d[12] = p->d[2];
+    p->d[3] = w[4];     p->d[11] = p->d[3];
+    p->d[4] = w[3];     p->d[10] = p->d[4];
+    p->d[5] = w[2];     p->d[9]  = p->d[5];
+    p->d[6] = w[1];     p->d[8]  = p->d[6];
+    p->d[7] = w0;
+
+    p->c[0] = 0.5 * (w[0] + w[7]);  p->c[15] = p->c[0];
+    p->c[1] = 0.5 * (w[7] + w[6]);  p->c[14] = p->c[1];
+    p->c[2] = 0.5 * (w[6] + w[5]);  p->c[13] = p->c[2];
+    p->c[3] = 0.5 * (w[5] + w[4]);  p->c[12] = p->c[3];
+    p->c[4] = 0.5 * (w[4] + w[3]);  p->c[11] = p->c[4];
+    p->c[5] = 0.5 * (w[3] + w[2]);  p->c[10] = p->c[5];
+    p->c[6] = 0.5 * (w[2] + w[1]);  p->c[9]  = p->c[6];
+    p->c[7] = 0.5 * (w[1] +   w0);  p->c[8]  = p->c[7];
+}
+
+void
+S8 (planet * omikron, binary sys, params p, double dt)
+{
+    A_step (omikron, dt, p.c[0]);
+    B_step (omikron, sys, dt, p.d[0]);
+    A_step (omikron, dt, p.c[1]);
+    B_step (omikron, sys, dt, p.d[1]);
+    A_step (omikron, dt, p.c[2]);
+    B_step (omikron, sys, dt, p.d[2]);
+    A_step (omikron, dt, p.c[3]);
+    B_step (omikron, sys, dt, p.d[3]);
+    A_step (omikron, dt, p.c[4]);
+    B_step (omikron, sys, dt, p.d[4]);
+    A_step (omikron, dt, p.c[5]);
+    B_step (omikron, sys, dt, p.d[5]);
+    A_step (omikron, dt, p.c[6]);
+    B_step (omikron, sys, dt, p.d[6]);
+    A_step (omikron, dt, p.c[7]);
+    B_step (omikron, sys, dt, p.d[7]);
+    A_step (omikron, dt, p.c[8]);
+    B_step (omikron, sys, dt, p.d[8]);
+    A_step (omikron, dt, p.c[9]);
+    B_step (omikron, sys, dt, p.d[9]);
+    A_step (omikron, dt, p.c[10]);
+    B_step (omikron, sys, dt, p.d[10]);
+    A_step (omikron, dt, p.c[11]);
+    B_step (omikron, sys, dt, p.d[11]);
+    A_step (omikron, dt, p.c[12]);
+    B_step (omikron, sys, dt, p.d[12]);
+    A_step (omikron, dt, p.c[13]);
+    B_step (omikron, sys, dt, p.d[13]);
+    A_step (omikron, dt, p.c[14]);
+    B_step (omikron, sys, dt, p.d[14]);
+    A_step (omikron, dt, p.c[15]);
+}
+
 void
 solver (planet * omikron, binary * sys,
         double dt, double T, FILE * fout)
@@ -52,6 +111,25 @@ solver (planet * omikron, binary * sys,
     {
         get_position (sys, t);
         S4 (omikron, *sys, dt);
+        fprintf (fout, "%.12lf \t%.12lf \t%.12lf \t%.12lf \t%.18lf\n",
+                t, sys->rho, sys->phi,
+                omikron->zeta, omikron->psi);
+        t += dt;
+    }
+}
+
+void
+solver_S8 (planet * omikron, binary * sys,
+        double dt, double T, FILE * fout)
+{
+    params p;
+    init_params (&p);
+
+    double t = 0;
+    while (t < T)
+    {
+        get_position (sys, t);
+        S8 (omikron, *sys, p, dt);
         fprintf (fout, "%.12lf \t%.12lf \t%.12lf \t%.12lf \t%.18lf\n",
                 t, sys->rho, sys->phi,
                 omikron->zeta, omikron->psi);
