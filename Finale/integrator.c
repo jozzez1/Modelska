@@ -1,8 +1,5 @@
 #include "integrator.h"
 
-//const double X0 =  1.35120719195966; // X0 = 1.0 / (2 - cbrt(2))
-//const double X1 = -1.70241438391932; // X1 = cbrt(2) / (cbrt(2) - 1)
-
 void
 A_step (planet * omikron, 
         double dt, double c)
@@ -45,3 +42,18 @@ S4 (planet * omikron,
     S2 (omikron, sys, dt, X0);
 }
 
+void
+solver (planet * omikron, binary * sys,
+        double dt, double T, FILE * fout)
+{
+    double t = 0;   // of course
+    while (t < T)
+    {
+        get_position (sys, t);
+        S4 (omikron, *sys, dt);
+        fprintf (fout, "%.12lf \t%.12lf \t%.12lf \t%.12lf \t%.18lf\n",
+                t, sys->rho, sys->phi,
+                omikron->zeta, omikron->psi);
+        t += dt;
+    }
+}

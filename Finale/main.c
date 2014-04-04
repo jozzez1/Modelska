@@ -11,12 +11,15 @@ int main (int argc, char ** argv)
            eps  = 0.4,
            dt   = 1e-3,
            top  = 3,
-           t    = 0,
-           T    = 0;
+           T    = 0,
+           zeta = 100,
+           psi  = 0,
+           p_zeta = 0,
+           p_psi  = 100;
 
     int arg;
 
-    while ((arg = getopt(argc, argv, "M:m:e:T:d:h")) != -1)
+    while ((arg = getopt(argc, argv, "M:m:e:T:d:z:l:p:h")) != -1)
     {
         switch (arg)
         {
@@ -25,12 +28,18 @@ int main (int argc, char ** argv)
             case 'e':   eps  = atof(optarg); break;
             case 'T':   top  = atof(optarg); break;
             case 'd':   dt   = atof(optarg); break;
+            case 'z':   zeta = atof(optarg); break;
+            case 'l':   p_psi   = atof(optarg); break;
+            case 'p':   p_zeta  = atof(optarg); break;
             case 'h':
                         fprintf (stdout, "-M:   mass of the 1st star\n");
                         fprintf (stdout, "-m:   mass of the 2nd star\n");
                         fprintf (stdout, "-e:   eccentricity of the star orbits\n");
                         fprintf (stdout, "-T:   how many star cycles we will compute\n");
                         fprintf (stdout, "-d:   time step duration\n");
+                        fprintf (stdout, "-z:   zeta of the planet\n");
+                        fprintf (stdout, "-l:   starting angular momentum of the planet\n");
+                        fprintf (stdout, "-p:   starting radial momentum of the planet\n");
                         fprintf (stdout, "-h:   print this list\n");
                         exit (EXIT_SUCCESS);
             default:
@@ -45,11 +54,12 @@ int main (int argc, char ** argv)
     top *= T;
     dt  *= T;
 
-    while (t < top)
-    {
-        get_position (&sys, t);
-        printf ("%lf\t%lf\t%lf\n", t, sys.rho, sys.phi);
-        t += dt;
-    }
+    planet omikron = { .zeta = zeta,
+        .psi    = psi,
+        .p_psi  = p_psi,
+        .p_zeta = p_zeta };
+
+    solver (&omikron, &sys, dt, T, stdout);
+
     return 0;
 }
