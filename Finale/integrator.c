@@ -43,6 +43,13 @@ S4 (planet * omikron,
     S2 (omikron, sys, dt, X0);
 }
 
+void
+S4a (planet * omikron,
+        binary sys, params p, double dt)
+{
+    S4 (omikron, sys, dt);
+}
+
 void init_params (params * p)
 {
     double w0 = 1 - 2*(w[1] + w[2] + w[3] + w[4] + w[5] + w[6] + w[7]);
