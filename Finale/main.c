@@ -16,11 +16,12 @@ int main (int argc, char ** argv)
            psi  = 0,
            p_zeta = 0,
            p_psi  = 100,
-           old    = 0;
+           prec   = 1e-3;
 
-    int arg;
+    int option = 0,
+        arg;
 
-    while ((arg = getopt(argc, argv, "M:m:e:T:d:z:l:p:oh")) != -1)
+    while ((arg = getopt(argc, argv, "M:m:e:T:d:z:l:p:r:O:h")) != -1)
     {
         switch (arg)
         {
@@ -30,9 +31,10 @@ int main (int argc, char ** argv)
             case 'T':   top  = atof(optarg); break;
             case 'd':   dt   = atof(optarg); break;
             case 'z':   zeta = atof(optarg); break;
+            case 'r':   prec = atof(optarg); break;
             case 'l':   p_psi   = atof(optarg); break;
             case 'p':   p_zeta  = atof(optarg); break;
-            case 'o':   old     = 1;         break;
+            case 'O':   option  = atoi(optarg); break;
             case 'h':
                         fprintf (stdout, "-M:   mass of the 1st star\n");
                         fprintf (stdout, "-m:   mass of the 2nd star\n");
@@ -42,6 +44,8 @@ int main (int argc, char ** argv)
                         fprintf (stdout, "-z:   zeta of the planet\n");
                         fprintf (stdout, "-l:   starting angular momentum of the planet\n");
                         fprintf (stdout, "-p:   starting radial momentum of the planet\n");
+                        fprintf (stdout, "-r:   precision for the adaptive step\n");
+                        fprintf (stdout, "-o:   option -- which integrator to choose\n");
                         fprintf (stdout, "-h:   print this list\n");
                         exit (EXIT_SUCCESS);
             default:
@@ -56,13 +60,23 @@ int main (int argc, char ** argv)
     top *= T;
     dt  *= T;
 
-    planet omikron = { .zeta = zeta,
+    planet omikron =
+    {
+        .zeta = zeta,
         .psi    = psi,
         .p_psi  = p_psi,
-        .p_zeta = p_zeta };
+        .p_zeta = p_zeta
+    };
 
-    if (!old)   solver_S8 (&omikron, &sys, dt, top, stdout);
-    else        solver (&omikron, &sys, dt, top, stdout);
+    switch (option)
+    {
+        case 0: solver (&omikron, &sys, dt, top, stdout);    break;
+        case 1: solver_S8 (&omikron, &sys, dt, top, stdout); break;
+        case 2: adaptive_solver (&S8, &omikron, &sys, dt, top, prec, stdout); break;
+        default:
+                fprintf (stderr, "Unknown option\n");
+                exit (EXIT_FAILURE);
+    }
 
     return 0;
 }

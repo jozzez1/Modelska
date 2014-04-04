@@ -54,6 +54,9 @@ void S4 (planet * omikron, binary sys, double dt);
 // I'll use this one, since S4 isn't precise enough for long times
 void S8 (planet * omikron, binary sys, params p, double dt);
 
+// adaptive step control for either method, based on Richardson's extrapolation
+void adaptive_step (void (* scheme) (planet *, binary, params, double), planet * omikron, binary * sys, params p, double dt, double * t, double precision);
+
 // we read wA and put initialize parameters for S8
 void init_params (params * p);
 
@@ -62,5 +65,8 @@ void solver (planet * omikron, binary * sys, double dt, double T, FILE * fout);
 
 // improved S8 solver
 void solver_S8 (planet * omikron, binary * sys, double dt, double T, FILE * fout);
+
+// adaptive solver
+void adaptive_solver (void (* scheme) (planet *, binary, params, double), planet * omikron, binary * sys, double dt, double T, double precision, FILE * fout);
 
 #endif

@@ -67,7 +67,8 @@ void init_params (params * p)
 }
 
 void
-S8 (planet * omikron, binary sys, params p, double dt)
+S8 (planet * omikron,
+        binary sys, params p, double dt)
 {
     A_step (omikron, dt, p.c[0]);
     B_step (omikron, sys, dt, p.d[0]);
@@ -103,6 +104,47 @@ S8 (planet * omikron, binary sys, params p, double dt)
 }
 
 void
+adaptive_step (void (* scheme) (planet*, binary, params, double),
+        planet * omikron, binary * sys, params p, double dt,
+        double * t, double precision)
+{
+    double t_old = *t,
+           error = 0;
+
+    planet omikron_old = *omikron,
+           omikron_prev= *omikron;
+
+    // we have to make the 1st step here before we do anything else
+    get_position (sys, *t);
+    scheme (omikron, *sys, p, dt);
+
+    unsigned int i = 1,
+                 k = 2;
+    do
+    {
+        *t = t_old;
+        omikron_prev = *omikron;
+        *omikron = omikron_old;
+
+        for (i = k; i--;)
+        {
+            get_position (sys, *t);
+            scheme (omikron, *sys, p, dt/k);
+            *t = t_old + dt/k;
+        }
+
+        error = (omikron->zeta - omikron_prev.zeta) * (omikron->zeta - omikron_prev.zeta)
+              + (omikron->psi - omikron_prev.psi) * (omikron->psi - omikron_prev.psi)
+              + (omikron->p_psi - omikron_prev.p_psi) * (omikron->p_psi - omikron_prev.p_psi)
+              + (omikron->p_zeta - omikron_prev.p_zeta) * (omikron->p_zeta - omikron_prev.p_zeta);
+        error = sqrt (error);
+        k++;
+    } while (fabs(error) > precision);
+    *t = t_old + dt;
+    get_position (sys, *t);
+}
+
+void
 solver (planet * omikron, binary * sys,
         double dt, double T, FILE * fout)
 {
@@ -111,10 +153,9 @@ solver (planet * omikron, binary * sys,
     {
         get_position (sys, t);
         S4 (omikron, *sys, dt);
-        fprintf (fout, "%.12lf \t%.12lf \t%.12lf \t%.12lf \t%.18lf\n",
-                t, sys->rho, sys->phi,
-                omikron->zeta, omikron->psi);
         t += dt;
+        fprintf (fout, "%.12lf \t%.12lf \t%.12lf \t%.12lf \t%.18lf\n",
+                t, sys->rho, sys->phi, omikron->zeta, omikron->psi);
     }
 }
 
@@ -130,9 +171,25 @@ solver_S8 (planet * omikron, binary * sys,
     {
         get_position (sys, t);
         S8 (omikron, *sys, p, dt);
-        fprintf (fout, "%.12lf \t%.12lf \t%.12lf \t%.12lf \t%.18lf\n",
-                t, sys->rho, sys->phi,
-                omikron->zeta, omikron->psi);
         t += dt;
+        fprintf (fout, "%.12lf \t%.12lf \t%.12lf \t%.12lf \t%.18lf\n",
+                t, sys->rho, sys->phi, omikron->zeta, omikron->psi);
+    }
+}
+
+void
+adaptive_solver (void (*scheme) (planet *, binary, params, double),
+        planet * omikron, binary * sys, double dt,
+        double T, double precision, FILE * fout)
+{
+    params p;
+    init_params (&p);
+
+    double t = 0;
+    while (t < T)
+    {
+        adaptive_step (scheme, omikron, sys, p, dt, &t, precision);
+        fprintf (fout, "%.12lf \t%.12lf \t%.12lf \t%.12lf \t%.18lf\n",
+                t, sys->rho, sys->phi, omikron->zeta, omikron->psi);
     }
 }
