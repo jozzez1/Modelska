@@ -8,7 +8,7 @@ WARN=		-Wall
 LIBFLAGS=	-L/usr/local/lib \
 	       	-lm
 CFLAGS=		-I/usr/local/include \
-		${WARN} ${OPTFLAGS} -g -pg
+		${WARN} ${OPTFLAGS} -pipe -g -pg
 
 all: main.o
 	${CC} ${CFLAGS} ${LIBFLAGS} main.o zero_solve.o star_system.o -o ${PRGNAM}

@@ -151,7 +151,7 @@ uporabe numeri\v cnih orodij. Iz Poissonovih oklepajev dobimo slede\v ce gibalne
     \dot{\p}_{1,2}(t) &= \nabla_{1,2} \frac{M_1 M_2}{|\r_1 - \r_2|} = \pm \frac{M_1 M_2}{|\r_1 - \r_2|^3}(\r_2 - \r_1)
     \label{predgibalni}
 \end{align}
-Da bomo to ena\v cbo lahko re\v sili, bomo uvedli spremenljivki
+Da bomo to ena\v cbo lahko re\v sili, uvedemo spremenljivki
 \begin{align*}
     \r_c &= M_1\r_1 + M_2\r_2, \\
     \r_* &= M_1\r_1 - M_2\r_2,
@@ -310,16 +310,16 @@ Da bomo res imeli vezana stanja, mora biti ekscentri\v cnost orbite $\varepsilon
 \[
     \varepsilon = \sqrt{1 + \frac{2Ep_\varphi^2}{\alpha^2}},
 \]
-kjer je $E$ energija sistema, ki jo lahko izra\v cunamo iz za\v cetnih pogojev zvezd. Ker je razdalja med zvezdama
-na za\v cetku $1$, je $\rho = 2\mu$ in $\r_*(t = 0) = 2\mu\ee_x$, oz.:
-\begin{equation}
-    E = \frac{1}{2}\big(p_\varphi^2 + p_\rho^2\big) - 2M_1M_2
-\end{equation}
 od koder lahko slepamo, da mora biti
 \[
     -\frac{\alpha^2}{2p^2_\varphi} \leq E < 0.
 \]
-\v Ce ho\v cemo $\rho(t = 0) = \rho(\varphi = 0) = 1$, potem mora veljati
+$E$ je energija sistema, ki jo lahko izra\v cunamo iz za\v cetnih pogojev zvezd:
+\begin{equation}
+    E = \frac{1}{2}\big(p_\rho^2 + p_\varphi^2/\rho^2\big) - \frac{\alpha}{\rho}
+\end{equation}
+Ker je razdalja med zvezdama na za\v cetku $1$, je $\rho = 2\mu$ in $\r_*(t = 0) = 2\mu\ee_x$,
+torej mora veljati
 \begin{equation}
     \rho(\varphi = 0) = 2\mu = \frac{p_\varphi^2/\alpha}{1 + \varepsilon\cos(\varphi-\pi)}\bigg|_{\varphi = 0}.
 \end{equation}
@@ -336,76 +336,6 @@ s katero lahko povsod eliminiramo $p_\varphi$:
 Sedaj smo dvozvezden sistem v celoti re\v sili, prosta parametra sta le $M_1$ in $M_2$, za\v cetni pogoj pa je odvisen
 le od ekscentri\v cnosti orbite, $\varepsilon$.
 
-\subsubsection{Potencial}
-Sedaj smo izra\v cunali vse, kar potrebujemo za izra\v cun "`zunanjega"' potenciala v kateraga vr\v zemo na\v s planet
-\begin{equation}
-    V_\odot (\r, t) \equiv -\Bigg[\frac{M_1}{\big|\r - \frac{1}{2M_1}\r_*(t)\big|}
-        + \frac{M_2}{\big|\r + \frac{1}{2M_2}\r_*(t)\big|}\Bigg].
-\end{equation}
-Gibalni zakoni za planet so
-\begin{align}
-    \dot{\r}_3 &= \p_3, \\
-    \dot{\p}_3 &= -\nabla_3V_\odot(\r_3, t) = - \frac{M_1}{|\r_{31}(t)|^2}\hat{\r}_{31}(t) -
-        \frac{M_2}{|\r_{32}(t)|^2}\hat{\r}_{32}(t).
-\end{align}
-Nobenega razloga ni, zakaj ne bi obdr\v zali polarnih koordinat \v se za $\r_3$. Naj bo
-\begin{equation*}
-    \r_3 = \zeta\cos\psi\ \ee_x + \zeta\sin\psi\ \ee_y = \zeta\ \ee_\zeta,
-\end{equation*}
-kar vrne
-\begin{align}
-    |\r_{31}|^2 &= \zeta^2 + \frac{1}{4M_1^2}\rho^2 - \frac{1}{M_1}\rho\zeta\cos(\psi - \varphi), \\
-    |\r_{32}|^2 &= \zeta^2 + \frac{1}{4M_2^2}\rho^2 + \frac{1}{M_2}\rho\zeta\cos(\psi - \varphi).
-\end{align}
-Sila na planet je v polarnih koordinatah enaka
-\begin{align}
-    \dot{\p}_3 &= \frac{\sfrac{1}{2}\rho\ \ee_\rho - M_1\zeta\ \ee_\zeta}{[\zeta^2 + \rho^2/4M_1^2
-        - \zeta\rho\cos(\psi - \varphi)/M_1]^{3/2}} \notag \\
-        &+ \frac{\sfrac{1}{2}\rho\ \ee_\rho + M_2\zeta\ \ee_\zeta}{[\zeta^2 + \rho^2/4M_2^2
-        + \zeta\rho\cos(\psi - \varphi)/M_2]^{3/2}}
-    \label{impulz}
-\end{align}
-V polarnih koordinatah je na\v s vektor spremenljivk enak $\mathbf{x} = (\zeta, \psi, p_\zeta, p_\psi)^T$,
-kjer velja $p_\zeta = \dot{\zeta}$ in $p_\psi = \dot{\psi}\zeta^2$. Odvoda gibalnih koli\v cin pa dobimo lahko
-iz ena\v cb~\eqref{polarne} in hitro ugotovimo, da moramo ena\v cbo~\eqref{impulz} zgolj projicirati na osi planeta:
-\begin{align*}
-    \dot{p}_\zeta &= \dot{\p}_3 \cdot \ee_\zeta, \\
-    \dot{p}_\psi  &= \dot{\p}_3 \cdot \ee_\psi,
-\end{align*}
-kjer moramo upo\v stevati $|\ee_\psi|^2 = \zeta^2$ in
-\begin{align*}
-    \ee_\rho \cdot \ee_\zeta &= \cos(\varphi - \psi) \\
-    \ee_\rho \cdot \ee_\psi  &= \zeta\sin(\varphi - \psi) \\
-    \ee_\zeta \cdot \ee_\psi &= 0.
-\end{align*}
-Sedaj lahko iz ena\v cbe~\eqref{impulz} izra\v cunamo $\dot{p}_\psi$ in $\dot{p}_\zeta$:
-\begin{align}
-    \dot{p}_\zeta &= \frac{\rho}{2}\bigg(\frac{1}{|\r_{31}|^{3/2}} + \frac{1}{|\r_{32}|^{3/2}}\bigg)\cos(\varphi - \psi) -
-    \zeta\bigg(\frac{M_1}{|\r_{31}|^{3/2}} - \frac{M_2}{|\r_{32}|^{3/2}}\bigg) \\
-    \dot{p}_\psi &= \frac{\zeta\rho}{2}\bigg(\frac{1}{|\r_{31}|^{3/2}} +
-        \frac{1}{|\r_{32}|^{3/2}}\bigg)\sin(\varphi - \psi)
-\end{align}
-
-\subsection{Numeri\v cna integracija}
-Ker sta zvezdi bistveno te\v zji od planeta, pri\v cakujemo da bo $T \gg \tau$, ker je $\tau$ karakteristi\v cni
-\v cas obhoda planeta (tj. vsaj za velikostni red natan\v cen). Vpra\v sanje je, kako velik naj bo \v casovni korak
-za to integracijo?
-
-Precesija zemlje ima periodo $\sim 10^4$ let in to bomo vzeli za merilo $\tau$: $10^{-4}T \sim \tau$. Planetarno
-leto bomo razrezali na $\sim 10^2$ kosov, tj. $\delta t \sim 10^{-6} T$. Velikostni red $T$ lahko napovemo iz
-ena\v cbe~\eqref{leto} in iz mej za impulze. Naj bo $\varepsilon \sim 0$ oceno za spodnjo mejo $T$
-\[
-    T \gtrsim \sqrt{1/10^3} = 10^{-3/2} = 0.032 \sim 10^{-2}.
-\]
-\v Casovni korak bo torej velikostnega reda $\delta t \sim 10^{-8}$.
-
-Ker bomo obdr\v zali polarne koordinate bomo re\v sevali slede\v ce ena\v cbe:
-\begin{equation}
-    \dot{\mathbf{x}} = \begin{bmatrix} \dot{\zeta} \\ \dot{\psi} \\ \dot{p}_\zeta \\ \dot{p}_\psi \end{bmatrix} =
-        \begin{bmatrix} p_\zeta \\ p_\psi/\zeta^2 \\ \dot{p}_\zeta \\ \dot{p}_\psi \end{bmatrix} =
-        \mathbf{f}(\zeta,\psi,p_\zeta,p_\psi, t).
-\end{equation}
-
 \subsubsection{Ra\v cunanje orbit zvezd}
 Na vsakem \v casovnem koraku bomo morali re\v siti ena\v cbo~\eqref{casovna}, ki je k sre\v ci monotona. Paziti moramo,
 da ne pademo ven iz tega intervala. Ni\v cle lahko u\v cinkovito ra\v cunamo z analiti\v cnim odvodom -- ponujajo se
@@ -417,7 +347,90 @@ nam Newtonova, Halleyeva in Baileyeva metoda. Za slednji potrebujemo \v se drugi
     \frac{\alpha^2 t''}{p_\varphi^3} = \frac{\alpha^2}{p_\varphi^3} \der[2]{t}{\varphi} &=
         \frac{2\varepsilon\sin(\varphi - \pi)}{[1 + \varepsilon\cos(\varphi - \pi)]^3}
 \end{align}
-Te lahko izra\v cunamo vnaprej (tj. samo na prvem obhodu zvezd) nato pa vrednosti kli\v cemo z ra\v cunalni\v skega
-spomina.
+Uporabili bomo kar Newtonovo metodo, ki bo verjetno hitrej\v sa. 
+
+\subsubsection{Dinamika planeta}
+Sedaj smo izra\v cunali vse, kar potrebujemo za izra\v cun "`zunanjega"' potenciala v kateraga vr\v zemo na\v s planet.
+Hamiltonka se glasi
+\begin{equation}
+    H_3 = \frac{1}{2}\big(p_\zeta^2 + p_\psi^2/\zeta^2\big) + V_\odot(\r_3,t),
+\end{equation}
+kjer je potencial $V_\odot = V_\odot(\r, t)$ enak
+\begin{equation}
+    V_\odot (\r, t) \equiv -\Bigg[\frac{M_1}{\big|\r - \frac{1}{2M_1}\r_*(t)\big|}
+        + \frac{M_2}{\big|\r + \frac{1}{2M_2}\r_*(t)\big|}\Bigg].
+\end{equation}
+Kljub temu, da \v cas eksplicitno nastopa v hamiltonki, se Poissonov oklepaj pri tem ne spremeni. Uvedli smo \v se
+polarne koordinate planeta:
+\[
+    \r_3 = \zeta\cos\psi\ \ee_x + \zeta\sin\psi\ \ee_y = \zeta\ \ee_\zeta.
+\]
+Gibalne zakone dobimo iz Poissonovih oklepajev $\{\bullet, T_3\}$ in $\{\bullet, V_\odot\}$
+\begin{align}
+    \{\zeta, T_3\}        &= \der{T_3}{p_\zeta} = p_\zeta, \notag \\
+    \{\zeta, V_\odot\}    &= 0, \notag \\
+    \{\psi, T_3\}         &= \der{T_3}{p_\psi} = p_\psi/\zeta^2, \notag \\
+    \{\psi, V_\odot\}     &= 0, \notag \\
+    \{p_\zeta, T_3\}      &= -\der{T_3}{\zeta} = p^2_\psi/\zeta^3, \notag \\
+    \{p_\zeta, V_\odot\}  &= -\der{V_\odot}{\zeta} \notag \\
+    \{p_\psi, T_3\}       &= 0 \notag \\
+    \{p_\psi, V_\odot\}   &= -\der{V_\odot}{\psi}
+    \label{oklepaji}
+\end{align}
+Potencial $V_\odot$ se v polarnih koordinatah zapi\v se kot
+\begin{align}
+    V_\odot     &= -\frac{M_1}{|\r_{31}|} -\frac{M_2}{|\r_{32}|}, \\
+    |\r_{31}|^2 &= \zeta^2 + \frac{1}{4M_1^2}\rho^2 - \frac{1}{M_1}\rho\zeta\cos(\psi - \varphi), \\
+    |\r_{32}|^2 &= \zeta^2 + \frac{1}{4M_2^2}\rho^2 + \frac{1}{M_2}\rho\zeta\cos(\psi - \varphi).
+\end{align}
+Od tod sledi
+\begin{align}
+    -\der{V_\odot}{\zeta} &= (-1)\cdot\bigg[+\frac{1}{2}\frac{M_1}{|\r_{31}|^3}\bigg(2\zeta -
+        \frac{\rho}{M_1}\cos(\varphi - \psi)\bigg) + \frac{1}{2}\frac{M_2}{|\r_{32}|^3}
+        \bigg(2\zeta + \frac{\rho}{M_2}\cos(\varphi - \psi)\bigg)\bigg] \notag \\
+    &= \frac{\rho}{2}\bigg(\frac{1}{|\r_{31}|^3} - \frac{1}{|\r_{32}|^3}\bigg)\cos(\varphi - \psi) -
+        \zeta\bigg(\frac{M_1}{|\r_{31}|^3} + \frac{M_2}{|\r_{32}|^3}\bigg) \\
+        -\der{V_\odot}{\psi} &= (-1)\cdot\bigg[-\frac{1}{2}\frac{M_1}{|\r_{31}|^3}\frac{\rho\zeta}{M_1}\sin(\varphi - \psi)
+        + \frac{1}{2}\frac{M_2}{|\r_{32}|^3}\frac{\rho\zeta}{M_2}\sin(\varphi - \psi) \bigg] \notag \\
+    &= \frac{\rho\zeta}{2}\bigg(\frac{1}{|\r_{31}|^3} - \frac{1}{|\r_{32}|^3}\bigg)\sin(\varphi - \psi)
+\end{align}
+
+\subsection{Numeri\v cni izra\v cun}
+Ker imamo na planet vpliv zunanjega \v casovno odvisnega potenciala energija planeta ne bo konstantna. Vendar pa
+tudi za tretma \v casovno odvisnih hamiltonk uporabimo simplekti\v cne integratorje, saj pojem simplekti\v cnosti
+ni omejen na ohranitev energije, ampak na ohranjanje hamiltonske forme (tj. Poissonovega oklepaja), ki se ne
+spremeni tudi \v ce \v cas eksplicitno nastopa v Hamiltonianu. Prednost simplekti\v cnih integratorjev je ta, da
+nam dajo stabilnej\v se orbite, poleg tega pa jih je enostavneje naprogramirati, pri tem pa ne potrebujemo
+adaptivnega koraka.
+
+Za konstrukcijo simplekti\v cnega integratorja potrebujemo $H(t) = A(t) + B(t)$, kjer $\{A(t), B(t)\} \neq 0$.
+Seveda bomo vzeli kar $A(t) = T_3$ in $B(t) = V_\odot$. Potrebujemo \v se vrednosti vse mo\v znih Poissonovih
+oklepajev, ki pa so prikladno nara\v cunani v ena\v cbah~\eqref{oklepaji}. Vektor integracijskih spremenljivk
+je $\mathbf{x} = (\zeta, \psi, p_\zeta, p_\psi)^T$. Za integracijo bomo uporabili simetrizirano shemo
+\v cetrtega reda, ki je definirana s pomo\v cjo sheme drugega reda:
+\[
+    S_2(c,\delta t) \equiv \exp(c\sfrac{\delta t}{2}\{\bullet, A\})\exp(c\delta t\{\bullet, B\})
+    \exp(c\sfrac{\delta t}{2}\{\bullet, A\}) + \mathcal{O}(\delta t^3),
+\]
+shema \v cetrtega reda $S_4$ pa je potem
+\begin{equation}
+    S_4(\delta t) = S_2(x_0, \delta t) S_2 (x_1, \delta t) S_2 (x_0, \delta t) + \mathcal{O}(\delta t^5)
+\end{equation}
+s \v cimer aproksimiramo Liouvillov propagator. Opomba:
+\[
+    \exp(c\delta t\{\bullet, A\})x = x + c\delta t\{x, A\}.
+\]
+\subsubsection{Ocena \v casovnega koraka}
+Ker sta zvezdi bistveno te\v zji od planeta, pri\v cakujemo da bo $T \gg \tau$, ker je $\tau$ karakteristi\v cni
+\v cas obhoda planeta (tj. vsaj za velikostni red natan\v cen). Vpra\v sanje je, kako velik naj bo \v casovni korak
+za to integracijo?
+
+Precesija zemlje ima periodo $\sim 10^4$ let in to bomo vzeli za merilo $\tau$: $10^{-4}T \sim \tau$. Planetarno
+leto bomo razrezali na $\sim 10^2$ kosov, tj. $\delta t \sim 10^{-6} T$. Velikostni red $T$ lahko napovemo iz
+ena\v cbe~\eqref{leto} in iz mej za impulze. Naj bo $\varepsilon \sim 0$ oceno za spodnjo mejo $T$
+\[
+    T \gtrsim \sqrt{1/10^3} = 10^{-3/2} = 0.032 \sim 10^{-2}.
+\]
+\v Casovni korak bo torej velikostnega reda $\delta t \sim 10^{-8}$.
 
 \end{document}
