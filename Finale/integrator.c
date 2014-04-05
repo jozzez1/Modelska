@@ -137,7 +137,7 @@ adaptive_step (void (* scheme) (planet*, binary, params, double),
         {
             get_position (sys, *t);
             scheme (omikron, *sys, p, dt/k);
-            *t = t_old + dt/k;
+            *t += dt/k;
         }
 
         error = (omikron->zeta - omikron_prev.zeta) * (omikron->zeta - omikron_prev.zeta)
@@ -148,7 +148,7 @@ adaptive_step (void (* scheme) (planet*, binary, params, double),
         k++;
     } while (fabs(error) > precision);
     *t = t_old + dt;
-    get_position (sys, *t);
+    get_position (sys, t_old);
 }
 
 void
