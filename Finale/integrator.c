@@ -47,7 +47,7 @@ S4 (planet * omikron,
 
 void
 S4a (planet * omikron,
-        binary sys, params p, double dt)
+        binary sys, void * p, double dt)
 {
     S4 (omikron, sys, dt);
 }
@@ -77,39 +77,39 @@ void init_params (params * p)
 
 void
 S8 (planet * omikron,
-        binary sys, params p, double dt)
+        binary sys, void * p, double dt)
 {
-    A_step (omikron, dt, p.c[0]);
-    B_step (omikron, sys, dt, p.d[0]);
-    A_step (omikron, dt, p.c[1]);
-    B_step (omikron, sys, dt, p.d[1]);
-    A_step (omikron, dt, p.c[2]);
-    B_step (omikron, sys, dt, p.d[2]);
-    A_step (omikron, dt, p.c[3]);
-    B_step (omikron, sys, dt, p.d[3]);
-    A_step (omikron, dt, p.c[4]);
-    B_step (omikron, sys, dt, p.d[4]);
-    A_step (omikron, dt, p.c[5]);
-    B_step (omikron, sys, dt, p.d[5]);
-    A_step (omikron, dt, p.c[6]);
-    B_step (omikron, sys, dt, p.d[6]);
-    A_step (omikron, dt, p.c[7]);
-    B_step (omikron, sys, dt, p.d[7]);
-    A_step (omikron, dt, p.c[8]);
-    B_step (omikron, sys, dt, p.d[8]);
-    A_step (omikron, dt, p.c[9]);
-    B_step (omikron, sys, dt, p.d[9]);
-    A_step (omikron, dt, p.c[10]);
-    B_step (omikron, sys, dt, p.d[10]);
-    A_step (omikron, dt, p.c[11]);
-    B_step (omikron, sys, dt, p.d[11]);
-    A_step (omikron, dt, p.c[12]);
-    B_step (omikron, sys, dt, p.d[12]);
-    A_step (omikron, dt, p.c[13]);
-    B_step (omikron, sys, dt, p.d[13]);
-    A_step (omikron, dt, p.c[14]);
-    B_step (omikron, sys, dt, p.d[14]);
-    A_step (omikron, dt, p.c[15]);
+    A_step (omikron, dt, ((params *) p)->c[0]);
+    B_step (omikron, sys, dt, ((params *) p)->d[0]);
+    A_step (omikron, dt, ((params *) p)->c[1]);
+    B_step (omikron, sys, dt, ((params *) p)->d[1]);
+    A_step (omikron, dt, ((params *) p)->c[2]);
+    B_step (omikron, sys, dt, ((params *) p)->d[2]);
+    A_step (omikron, dt, ((params *) p)->c[3]);
+    B_step (omikron, sys, dt, ((params *) p)->d[3]);
+    A_step (omikron, dt, ((params *) p)->c[4]);
+    B_step (omikron, sys, dt, ((params *) p)->d[4]);
+    A_step (omikron, dt, ((params *) p)->c[5]);
+    B_step (omikron, sys, dt, ((params *) p)->d[5]);
+    A_step (omikron, dt, ((params *) p)->c[6]);
+    B_step (omikron, sys, dt, ((params *) p)->d[6]);
+    A_step (omikron, dt, ((params *) p)->c[7]);
+    B_step (omikron, sys, dt, ((params *) p)->d[7]);
+    A_step (omikron, dt, ((params *) p)->c[8]);
+    B_step (omikron, sys, dt, ((params *) p)->d[8]);
+    A_step (omikron, dt, ((params *) p)->c[9]);
+    B_step (omikron, sys, dt, ((params *) p)->d[9]);
+    A_step (omikron, dt, ((params *) p)->c[10]);
+    B_step (omikron, sys, dt, ((params *) p)->d[10]);
+    A_step (omikron, dt, ((params *) p)->c[11]);
+    B_step (omikron, sys, dt, ((params *) p)->d[11]);
+    A_step (omikron, dt, ((params *) p)->c[12]);
+    B_step (omikron, sys, dt, ((params *) p)->d[12]);
+    A_step (omikron, dt, ((params *) p)->c[13]);
+    B_step (omikron, sys, dt, ((params *) p)->d[13]);
+    A_step (omikron, dt, ((params *) p)->c[14]);
+    B_step (omikron, sys, dt, ((params *) p)->d[14]);
+    A_step (omikron, dt, ((params *) p)->c[15]);
 }
 
 void
@@ -141,8 +141,9 @@ sum_planets (planet * omikron, planet * pluto, double c)
 
 void
 RK4 (planet * omikron,
-        binary sys, double t, double dt)
+        binary sys, void * p, double dt)
 {
+    double t = *((double *) p);
     planet k1, k2, k3, k4, y;
     y = *omikron;
 
@@ -166,11 +167,14 @@ RK4 (planet * omikron,
     sum_planets (omikron, &k2, dt/3);
     sum_planets (omikron, &k3, dt/3);
     sum_planets (omikron, &k4, dt/6);
+
+    t += dt;
+    p = &t;
 }
 
 void
-adaptive_step (void (* scheme) (planet*, binary, params, double),
-        planet * omikron, binary * sys, params p, double dt,
+adaptive_step (void (* scheme) (planet*, binary, void *, double),
+        planet * omikron, binary * sys, void * p, double dt,
         double * t, double precision)
 {
     double t_old = *t,
@@ -236,7 +240,7 @@ solver_S8 (planet * omikron, binary * sys,
     while (t < T)
     {
         get_position (sys, t);
-        S8 (omikron, *sys, p, dt);
+        S8 (omikron, *sys, (void *) &p, dt);
         t += dt;
         fprintf (fout, "%.12lf \t%.12lf \t%.12lf \t%.12lf \t%.18lf\n",
                 t, sys->rho, sys->phi, omikron->zeta, omikron->psi);
@@ -244,14 +248,25 @@ solver_S8 (planet * omikron, binary * sys,
 }
 
 void
-adaptive_solver (void (*scheme) (planet *, binary, params, double),
+adaptive_solver (void (*scheme) (planet *, binary, void *, double),
         planet * omikron, binary * sys, double dt,
         double T, double precision, FILE * fout)
 {
-    params p;
-    init_params (&p);
+    void * p = NULL;
+    params P;   // for S8
+    double t = 0;   // for RK4
+    if (*scheme == S8)
+    {
+        init_params (&P);
+        p = (void *) &P;
+    }
+    else
+    {
+        p = (void *) &t;
+    }
 
-    double t = 0;
+    if (scheme == &S8) fprintf (stderr, "c[0] = %lf\n", ((params *) p)->c[0]);
+
     while (t < T)
     {
         adaptive_step (scheme, omikron, sys, p, dt, &t, precision);

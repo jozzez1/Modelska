@@ -52,10 +52,11 @@ void S2 (planet * omikron, binary sys, double dt, double c);
 // and finally, the S4 scheme
 void S4 (planet * omikron, binary sys, double dt);
 
-void S4a (planet * omikron, binary sys, params p, double dt);
+// added this for the sake of using it with adaptive steps
+void S4a (planet * omikron, binary sys, void * p, double dt);
 
 // I'll use this one, since S4 isn't precise enough for long times
-void S8 (planet * omikron, binary sys, params p, double dt);
+void S8 (planet * omikron, binary sys, void * p, double dt);
 
 // derivatives from Poisson brackets for the planet
 void Poisson (planet * deriv, planet * omikron, binary sys);
@@ -64,11 +65,11 @@ void Poisson (planet * deriv, planet * omikron, binary sys);
 void sum_planets (planet * omikron, planet * pluto, double c);
 
 // and here is the RK4 method, ladies and gentlemen ;)
-void RK4 (planet * omikron, binary sys, double t, double dt);
+void RK4 (planet * omikron, binary sys, void * p, double dt);
 
 // adaptive step control for either method, based on Richardson's extrapolation
-void adaptive_step (void (* scheme) (planet *, binary, params, double),
-        planet * omikron, binary * sys, params p, double dt, double * t, double precision);
+void adaptive_step (void (* scheme) (planet *, binary, void *, double),
+        planet * omikron, binary * sys, void * p, double dt, double * t, double precision);
 
 // we read wA and put initialize parameters for S8
 void init_params (params * p);
@@ -80,7 +81,7 @@ void solver (planet * omikron, binary * sys, double dt, double T, FILE * fout);
 void solver_S8 (planet * omikron, binary * sys, double dt, double T, FILE * fout);
 
 // adaptive solver
-void adaptive_solver (void (* scheme) (planet *, binary, params, double),
+void adaptive_solver (void (* scheme) (planet *, binary, void *, double),
         planet * omikron, binary * sys, double dt, double T, double precision, FILE * fout);
 
 #endif
