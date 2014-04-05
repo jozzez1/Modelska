@@ -145,7 +145,7 @@ RK4 (planet * omikron,
 {
     double t = *((double *) p);
     planet k1, k2, k3, k4, y;
-    y = *omikron;
+    sum_planets (&y, omikron, 1);
 
     get_position (&sys, t);
     Poisson (&k1, &y, sys);
@@ -169,7 +169,8 @@ RK4 (planet * omikron,
     sum_planets (omikron, &k4, dt/6);
 
     t += dt;
-    p = &t;
+    fprintf (stderr, "t = %lf\n", t);
+//    p = &t;
 }
 
 void
@@ -179,6 +180,7 @@ adaptive_step (void (* scheme) (planet*, binary, void *, double),
 {
     double t_old = *t,
            error = 0;
+
 
     planet omikron_old = *omikron,
            omikron_prev= *omikron;
@@ -212,6 +214,7 @@ adaptive_step (void (* scheme) (planet*, binary, void *, double),
     } while (fabs(error) > precision);
     *t = t_old + dt;
     get_position (sys, t_old);
+    if (scheme == &RK4) p = (void *) t;
 }
 
 void
