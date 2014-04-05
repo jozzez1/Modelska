@@ -45,7 +45,7 @@ int main (int argc, char ** argv)
                         fprintf (stdout, "-l:   starting angular momentum of the planet\n");
                         fprintf (stdout, "-p:   starting radial momentum of the planet\n");
                         fprintf (stdout, "-r:   precision for the adaptive step\n");
-                        fprintf (stdout, "-o:   option -- which integrator to choose\n");
+                        fprintf (stdout, "-O:   option -- which integrator to choose\n");
                         fprintf (stdout, "-h:   print this list\n");
                         exit (EXIT_SUCCESS);
             default:
