@@ -2,6 +2,7 @@
 #define INTEGRATOR_H
 #include <math.h>
 #include <stdio.h>
+#include "zero_solve.h"
 #include "star_system.h"
 
 // we throw in a few constants
@@ -55,6 +56,15 @@ void S4a (planet * omikron, binary sys, params p, double dt);
 
 // I'll use this one, since S4 isn't precise enough for long times
 void S8 (planet * omikron, binary sys, params p, double dt);
+
+// derivatives from Poisson brackets for the planet
+void Poisson (planet * deriv, planet * omikron, binary sys);
+
+// sum of "two planets" A = A + c*B
+void sum_planets (planet * omikron, planet * pluto, double c);
+
+// and here is the RK4 method, ladies and gentlemen ;)
+void RK4 (planet * omikron, binary sys, double t, double dt);
 
 // adaptive step control for either method, based on Richardson's extrapolation
 void adaptive_step (void (* scheme) (planet *, binary, params, double),

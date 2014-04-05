@@ -23,6 +23,8 @@ B_step (planet * omikron,
     omikron->p_zeta += c * dt * (0.5*sys.rho*cos(sys.phi - psi)*dR - omikron->zeta*MR
                         + omikron->p_psi * omikron->p_psi / (omikron->zeta * omikron->zeta * omikron->zeta));
     omikron->p_psi  += c * dt * 0.5*sys.rho*omikron->zeta*dR*sin(sys.phi - psi);
+
+    omikron->psi = mod (omikron->psi, 2*M_PI);
 }
 
 void
@@ -111,6 +113,62 @@ S8 (planet * omikron,
 }
 
 void
+Poisson (planet * deriv,
+        planet * omikron, binary sys)
+{
+    double r31 = omikron->zeta * omikron->zeta + 0.25 * sys.rho * sys.rho / (sys.M1 * sys.M1)
+                    - sys.rho * omikron->zeta * cos (omikron->psi - sys.phi)/sys.M1,
+           r32 = omikron->zeta * omikron->zeta + 0.25 * sys.rho * sys.rho / (sys.M2 * sys.M2)
+                    + sys.rho * omikron->zeta * cos (omikron->psi - sys.phi)/sys.M2,
+           dR  = 1.0/pow(r31, 1.5) - 1.0/pow(r32, 1.5),
+           MR  = sys.M1/pow(r31, 1.5) + sys.M2/pow(r32, 1.5);
+
+    deriv->zeta     = omikron->p_zeta;
+    deriv->psi      = omikron->p_psi / (omikron->p_psi * omikron->p_psi);
+    deriv->p_zeta   = omikron->p_psi * omikron->p_psi / (omikron->p_zeta * omikron->p_zeta * omikron->p_zeta)
+                        + 0.5*sys.rho * cos(sys.phi - omikron->psi)*dR - omikron->zeta*MR;
+    deriv->p_psi    = 0.5*sys.rho * omikron->zeta * dR * sin(sys.phi - omikron->psi);
+}
+
+void
+sum_planets (planet * omikron, planet * pluto, double c)
+{
+    omikron->zeta   += c * pluto->zeta;
+    omikron->psi    += c * pluto->psi;
+    omikron->p_zeta += c * pluto->p_zeta;
+    omikron->p_psi  += c * pluto->p_psi;
+}
+
+void
+RK4 (planet * omikron,
+        binary sys, double t, double dt)
+{
+    planet k1, k2, k3, k4, y;
+    y = *omikron;
+
+    get_position (&sys, t);
+    Poisson (&k1, &y, sys);
+
+    get_position (&sys, t + 0.5*dt);
+    sum_planets (&y, &k1, dt*0.5);
+    Poisson (&k2, &y, sys);
+
+    y = *omikron;
+    sum_planets (&y, &k2, dt*0.5);
+    Poisson (&k3, &y, sys);
+
+    y = *omikron;
+    get_position (&sys, t + dt);
+    sum_planets (&y, &k3, dt);
+    Poisson (&k4, &y, sys);
+
+    sum_planets (omikron, &k1, dt/6);
+    sum_planets (omikron, &k2, dt/3);
+    sum_planets (omikron, &k3, dt/3);
+    sum_planets (omikron, &k4, dt/6);
+}
+
+void
 adaptive_step (void (* scheme) (planet*, binary, params, double),
         planet * omikron, binary * sys, params p, double dt,
         double * t, double precision)
@@ -145,7 +203,8 @@ adaptive_step (void (* scheme) (planet*, binary, params, double),
               + (omikron->p_psi - omikron_prev.p_psi) * (omikron->p_psi - omikron_prev.p_psi)
               + (omikron->p_zeta - omikron_prev.p_zeta) * (omikron->p_zeta - omikron_prev.p_zeta);
         error = sqrt (error);
-        k++;
+//        k++;
+        k *= 2; // we have to use Romberg sequence, or symplectic integrator will fail
     } while (fabs(error) > precision);
     *t = t_old + dt;
     get_position (sys, t_old);

@@ -277,7 +277,8 @@ Ena\v cbo~\eqref{fi} lahko re\v simo z integralom
 \begin{equation}
     \int_0^{\varphi}\frac{\d \tilde{\varphi}}{\big(1 + \varepsilon\cos\tilde{\varphi}\big)^2} = \frac{\alpha^2}{p_\varphi^3}t.
 \end{equation}
-Ta integral je tabeliran v matemati\v cnem priro\v cniku, re\v sitev je
+Ta integral je k sre\v ci analiti\v cen in tabeliran v matemati\v cnem priro\v cniku. Za $0 \leq \varepsilon < 1$ je
+re\v sitev
 \begin{align}
     t\frac{\alpha^2}{p^3_\varphi} &= \bigg[\frac{\varepsilon\sin\varphi}{(\varepsilon^2 - 1)(1 + \varepsilon\cos\varphi)}
             +\frac{1}{1 - \varepsilon^2}\frac{2}{\sqrt{1 - \varepsilon^2}}\arctan\bigg(\frac{(1 - \varepsilon)\tan\varphi/2}
@@ -350,7 +351,8 @@ nam Newtonova, Halleyeva in Baileyeva metoda. Za slednji potrebujemo \v se drugi
     \frac{\alpha^2 t''}{p_\varphi^3} = \frac{\alpha^2}{p_\varphi^3} \der[2]{t}{\varphi} &=
         \frac{2\varepsilon\sin(\varphi - \pi)}{[1 + \varepsilon\cos(\varphi - \pi)]^3}
 \end{align}
-Uporabili bomo kar Newtonovo metodo, ki bo verjetno hitrej\v sa. 
+
+Na koncu smo uporabili kar Newtonovo metodo, preciznost je $10^{-12}$.
 
 \subsubsection{Dinamika planeta}
 Sedaj smo izra\v cunali vse, kar potrebujemo za izra\v cun "`zunanjega"' potenciala v kateraga vr\v zemo na\v s planet.
@@ -401,27 +403,28 @@ Od tod sledi
 \subsection{Numeri\v cni izra\v cun}
 Ker imamo na planet vpliv zunanjega \v casovno odvisnega potenciala energija planeta ne bo konstantna. Vendar pa
 tudi za tretma \v casovno odvisnih hamiltonk uporabimo simplekti\v cne integratorje, saj pojem simplekti\v cnosti
-ni omejen na ohranitev energije, ampak na ohranjanje hamiltonske forme (tj. Poissonovega oklepaja), ki se ne
-spremeni tudi \v ce \v cas eksplicitno nastopa v Hamiltonianu. Prednost simplekti\v cnih integratorjev je ta, da
-nam dajo stabilnej\v se orbite, poleg tega pa jih je enostavneje naprogramirati, pri tem pa ne potrebujemo
-adaptivnega koraka.
+ni omejen na ohranitev energije\footnote{V tem primeru se zelo natan\v cno ra\v cuna $\partial H/\partial t$.}, ampak
+na ohranjanje hamiltonske forme~\cite{sirca} (tj. Poissonovega oklepaja), ki se ne spremeni tudi \v ce \v cas
+eksplicitno nastopa v Hamiltonianu. Prednost simplekti\v cnih integratorjev je ta, da nam dajo stabilnej\v se
+orbite, poleg tega pa jih je enostavneje naprogramirati
 
 Za konstrukcijo simplekti\v cnega integratorja potrebujemo $H(t) = A(t) + B(t)$, kjer $\{A(t), B(t)\} \neq 0$.
-Seveda bomo vzeli kar .Vektor integracijskih spremenljivk
-je $\mathbf{x} = (\zeta, \psi, p_\zeta, p_\psi)^T$. Za integracijo bomo uporabili simetrizirano shemo
-\v cetrtega reda, ki je definirana s pomo\v cjo sheme drugega reda:
+Vektor integracijskih spremenljivk je $\mathbf{x} = (\zeta, \psi, p_\zeta, p_\psi)^T$. Za integracijo bomo
+uporabili simetrizirane sheme drugega reda\footnote{Napaka za red $m$ je reda $\mathcal{O}(\delta t^{m+1})$.},
+$S_2$, \v cetrtega reda, $S_4$ in osmega reda, $S_8$:
 \[
     S_2(c,\delta t) \equiv \exp(c\sfrac{\delta t}{2}\{\bullet, A\})\exp(c\delta t\{\bullet, B\})
-    \exp(c\sfrac{\delta t}{2}\{\bullet, A\}) + \mathcal{O}(\delta t^3),
+    \exp(c\sfrac{\delta t}{2}\{\bullet, A\}),
 \]
-shema \v cetrtega reda $S_4$ pa je potem
+shema \v cetrtega reda $S_4$ je
 \begin{equation}
-    S_4(\delta t) = S_2(x_0, \delta t) S_2 (x_1, \delta t) S_2 (x_0, \delta t) + \mathcal{O}(\delta t^5), \quad
+    S_4(\delta t) = S_2(x_0, \delta t) S_2 (x_1, \delta t) S_2 (x_0, \delta t), \quad
         x_0 = \frac{1}{2 - 2^{1/3}},\ x_1 = -\frac{2^{1/3}}{2 - 2^{1/3}},
 \end{equation}
+za shemo osmega reda pa bomo vzeli koeficiente $w_1$, re\v sitev `$\mathrm{A}$' iz \v clanka~\cite{yoshida}
 s \v cimer aproksimiramo Liouvillov propagator. Integracija izgleda tako:
 \[
-    \mathbf{x}(t + \delta t) = S_4(\delta t) \mathbf{x}(t).
+    \mathbf{x}(t + \delta t) = S_m(\delta t) \mathbf{x}(t).
 \]
 Opomba:
 \[
@@ -433,7 +436,7 @@ kineti\v cno energijo $T_\zeta$:
 \begin{equation}
     T_\zeta = \frac{1}{2}p_\zeta^2, \quad \Vef = \frac{1}{2}\frac{p_\psi^2}{\zeta^2} + V_\odot.
 \end{equation}
-Potrebujemo \v se vrednosti vse mo\v znih Poissonovih oklepajev, na sre\v co si lahko pomagamo s tistimi, ki
+Potrebujemo \v se vrednosti vse mo\v znih Poissonovih oklepajev. Na sre\v co si lahko pomagamo s tistimi, ki
 smo jih nara\v cunali v ena\v cbah~\eqref{oklepaji}:
 \begin{alignat}{3}
     \{\zeta, T_\zeta\}        &= p_\zeta, \qquad &
@@ -441,11 +444,40 @@ smo jih nara\v cunali v ena\v cbah~\eqref{oklepaji}:
     \{\psi, T_\zeta\}         &= 0, \qquad &
     \{\psi, \Vef\}            &= p_\psi/\zeta^2, \notag \\
     \{p_\zeta, T_\zeta\}      &= 0, \qquad&
-    \{p_\zeta, \Vef\}         &= p^2_\psi - \der{V_\odot}{\zeta}, \notag \\
+    \{p_\zeta, \Vef\}         &= p^2_\psi/\zeta^3 - \der{V_\odot}{\zeta}, \notag \\
     \{p_\psi, T_\zeta\}       &= 0, \qquad &
     \{p_\psi, \Vef\}          &= -\der{V_\odot}{\psi}.
 \end{alignat}
 Vidimo, da je tak razcep hamiltonke $H_3$ res ustrezen. Sedaj smo lahko gotovi, da bo "`drift"' orbite posledica
-na\v sih ena\v cb in ne posledica slabega integratorja.
+$\partial H_3 / \partial t \neq 0$ in ne posledica slabega integratorja.
+
+Vseeno pa obstaja mo\v znost, da se bo po dolgem \v casu planet mo\v cno pribli\v zal eni izmed
+zvezd, zaradi \v cesar bo planet vrglo oson\v cja po ti. "`slingshot"' efektu. Da se to ne zgodi prekmalu, moramo
+imeti \v se dodatno zagotovilo stabilnosti orbit -- adaptiven korak. \v Ce smo preblizu zvezde, ima najmanj\v sa
+napaka v kotu/radiju daljnose\v zne posledice na evolucijo. Pri izbiri adaptivnega koraka koramo biti pozorni,
+da med drobljenjem koraka na manj\v se ne smemo zadeti ob frekvenco, ki je lastna dvozvezdju~\cite{richardson}.
+Zato bomo na za\v cetku vzeli \v casovni korak, ki je v iracionalnem razmerju z obhodnim \v casom zvezde, korake
+pa bomo drobili po Rombergovem zaporedju (potence \v stevila $2$).
+
+\begin{thebibliography}{9}
+    \bibitem{yoshida}
+        H. Yoshida,
+        \emph{Construction of higher order symplectic integrators},
+        Phys. Lett. A,
+        Vol. 150, no. 5,6,7, str. 262,
+        (1990)
+
+    \bibitem{richardson}
+        A. S. Richardson and J. M. Finn,
+        \emph{Symplectic integrators with adaptive time steps},
+        {\tt arXiv:1108.0322v1 [physics.comp-ph]},
+        (2011)
+
+    \bibitem{sirca}
+        S. \v Sirca in M. Horvat,
+        {\em Ra\v cunske metode za fizike},
+        DMFA Zalo\v zni\v stvo,
+        (2010)
+\end{thebibliography}
 
 \end{document}

@@ -58,7 +58,7 @@ int main (int argc, char ** argv)
     init_system (&sys, M1, M2, eps);
     T = solar_year (sys);
     top *= T;
-    dt  *= T;
+    dt  *= T/sqrt(2);   // for stability of the symplectic integrator
 
     planet omikron =
     {
