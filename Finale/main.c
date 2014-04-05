@@ -74,6 +74,7 @@ int main (int argc, char ** argv)
         case 1: solver_S8 (&omikron, &sys, dt, top, stdout); break;
         case 2: adaptive_solver (&S4a, &omikron, &sys, dt, top, prec, stdout); break;
         case 3: adaptive_solver (&S8, &omikron, &sys, dt, top, prec, stdout); break;
+        case 4: solver_RK4 (&omikron, &sys, dt, top, stdout);  break;
         default:
                 fprintf (stderr, "Unknown option\n");
                 exit (EXIT_FAILURE);

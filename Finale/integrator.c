@@ -124,48 +124,48 @@ Poisson (planet * deriv,
            MR  = sys.M1/pow(r31, 1.5) + sys.M2/pow(r32, 1.5);
 
     deriv->zeta     = omikron->p_zeta;
-    deriv->psi      = omikron->p_psi / (omikron->p_psi * omikron->p_psi);
-    deriv->p_zeta   = omikron->p_psi * omikron->p_psi / (omikron->p_zeta * omikron->p_zeta * omikron->p_zeta)
+    deriv->psi      = omikron->p_psi / (omikron->zeta * omikron->zeta);
+    deriv->p_zeta   = omikron->p_psi * omikron->p_psi / (omikron->zeta * omikron->zeta * omikron->zeta)
                         + 0.5*sys.rho * cos(sys.phi - omikron->psi)*dR - omikron->zeta*MR;
     deriv->p_psi    = 0.5*sys.rho * omikron->zeta * dR * sin(sys.phi - omikron->psi);
 }
 
 void
-sum_planets (planet * omikron, planet * pluto, double c)
+sum_planets (planet * omikron, planet pluto, double c)
 {
-    omikron->zeta   += c * pluto->zeta;
-    omikron->psi    += c * pluto->psi;
-    omikron->p_zeta += c * pluto->p_zeta;
-    omikron->p_psi  += c * pluto->p_psi;
+    omikron->zeta   += c * pluto.zeta;
+    omikron->psi    += c * pluto.psi;
+    omikron->p_zeta += c * pluto.p_zeta;
+    omikron->p_psi  += c * pluto.p_psi;
 }
 
 void
 RK4 (planet * omikron,
-        binary sys, double t, double dt)
+        binary * sys, double t, double dt)
 {
     planet k1, k2, k3, k4, y;
-    y = *omikron;
+    sum_planets (&y, *omikron, 1);
 
-    get_position (&sys, t);
-    Poisson (&k1, &y, sys);
+    get_position (sys, t);
+    Poisson (&k1, &y, *sys);
 
-    get_position (&sys, t + 0.5*dt);
-    sum_planets (&y, &k1, dt*0.5);
-    Poisson (&k2, &y, sys);
+    get_position (sys, t + 0.5*dt);
+    sum_planets (&y, k1, dt*0.5);
+    Poisson (&k2, &y, *sys);
 
-    y = *omikron;
-    sum_planets (&y, &k2, dt*0.5);
-    Poisson (&k3, &y, sys);
+    sum_planets (&y, *omikron, 1);
+    sum_planets (&y, k2, dt*0.5);
+    Poisson (&k3, &y, *sys);
 
-    y = *omikron;
-    get_position (&sys, t + dt);
-    sum_planets (&y, &k3, dt);
-    Poisson (&k4, &y, sys);
+    sum_planets (&y, *omikron, 1);
+    get_position (sys, t + dt);
+    sum_planets (&y, k3, dt);
+    Poisson (&k4, &y, *sys);
 
-    sum_planets (omikron, &k1, dt/6);
-    sum_planets (omikron, &k2, dt/3);
-    sum_planets (omikron, &k3, dt/3);
-    sum_planets (omikron, &k4, dt/6);
+    sum_planets (omikron, k1, dt*1.0/6);
+    sum_planets (omikron, k2, dt*1.0/3);
+    sum_planets (omikron, k3, dt*1.0/3);
+    sum_planets (omikron, k4, dt*1.0/6);
 }
 
 void
@@ -240,6 +240,20 @@ solver_S8 (planet * omikron, binary * sys,
         t += dt;
         fprintf (fout, "%.12lf \t%.12lf \t%.12lf \t%.12lf \t%.18lf\n",
                 t, sys->rho, sys->phi, omikron->zeta, omikron->psi);
+    }
+}
+
+void
+solver_RK4 (planet * omikron, binary * sys,
+        double dt, double T, FILE * fout)
+{
+    double t = 0;
+    while (t < T)
+    {
+        RK4 (omikron, sys, t, dt);
+        t += dt;
+//        fprintf (fout, "%.12lf \t%.12lf \t%.12lf \t%.12lf \t%.18lf\n",
+//                t, sys->rho, sys->phi, omikron->zeta, omikron->psi);
     }
 }
 

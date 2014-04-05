@@ -61,10 +61,10 @@ void S8 (planet * omikron, binary sys, params p, double dt);
 void Poisson (planet * deriv, planet * omikron, binary sys);
 
 // sum of "two planets" A = A + c*B
-void sum_planets (planet * omikron, planet * pluto, double c);
+void sum_planets (planet * omikron, planet pluto, double c);
 
 // and here is the RK4 method, ladies and gentlemen ;)
-void RK4 (planet * omikron, binary sys, double t, double dt);
+void RK4 (planet * omikron, binary * sys, double t, double dt);
 
 // adaptive step control for either method, based on Richardson's extrapolation
 void adaptive_step (void (* scheme) (planet *, binary, params, double),
@@ -75,6 +75,9 @@ void init_params (params * p);
 
 // solver for the orbits
 void solver (planet * omikron, binary * sys, double dt, double T, FILE * fout);
+
+// classic RK4 solver
+void solver_RK4 (planet * omikron, binary * sys, double dt, double T, FILE * fout);
 
 // improved S8 solver
 void solver_S8 (planet * omikron, binary * sys, double dt, double T, FILE * fout);
