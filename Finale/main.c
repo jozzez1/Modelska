@@ -3,6 +3,7 @@
 #include "zero_solve.h"
 #include "star_system.h"
 #include "integrator.h"
+#include "poincare.h"
 
 int main (int argc, char ** argv)
 {
@@ -19,9 +20,12 @@ int main (int argc, char ** argv)
            prec   = 1e-3;
 
     int option = 0,
+        out    = 0,
         arg;
 
-    while ((arg = getopt(argc, argv, "M:m:e:T:d:z:l:p:r:O:h")) != -1)
+    FILE * fout;
+    char * filename = NULL;
+    while ((arg = getopt(argc, argv, "M:m:e:T:d:z:l:p:r:O:o:h")) != -1)
     {
         switch (arg)
         {
@@ -35,6 +39,9 @@ int main (int argc, char ** argv)
             case 'l':   p_psi   = atof(optarg); break;
             case 'p':   p_zeta  = atof(optarg); break;
             case 'O':   option  = atoi(optarg); break;
+            case 'o':   
+                        filename = optarg;
+                        out      = 1;           break;
             case 'h':
                         fprintf (stdout, "-M:   mass of the 1st star\n");
                         fprintf (stdout, "-m:   mass of the 2nd star\n");
@@ -54,6 +61,8 @@ int main (int argc, char ** argv)
         }
     }
 
+    fout = (filename) ? fopen (filename, "w") : stdout;
+
     binary sys;
     init_system (&sys, M1, M2, eps);
     T = solar_year (sys);
@@ -70,15 +79,17 @@ int main (int argc, char ** argv)
 
     switch (option)
     {
-        case 0: solver (&omikron, &sys, dt, top, stdout);    break;
-        case 1: solver_S8 (&omikron, &sys, dt, top, stdout); break;
-        case 2: adaptive_solver (&S4a, &omikron, &sys, dt, top, prec, stdout); break;
-        case 3: adaptive_solver (&S8, &omikron, &sys, dt, top, prec, stdout); break;
-        case 4: solver_RK4 (&omikron, &sys, dt, top, stdout);  break;
+        case 0: solver (&omikron, &sys, dt, top, fout);    break;
+        case 1: solver_S8 (&omikron, &sys, dt, top, fout); break;
+        case 2: adaptive_solver (&S4a, &omikron, &sys, dt, top, prec, fout); break;
+        case 3: adaptive_solver (&S8, &omikron, &sys, dt, top, prec, fout); break;
+        case 4: poincare (&S4a, &omikron, &sys, dt, prec, fout); break;
         default:
                 fprintf (stderr, "Unknown option\n");
                 exit (EXIT_FAILURE);
     }
+
+    if (out) fclose (fout);
 
     return 0;
 }

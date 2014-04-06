@@ -252,8 +252,8 @@ solver_RK4 (planet * omikron, binary * sys,
     {
         RK4 (omikron, sys, t, dt);
         t += dt;
-//        fprintf (fout, "%.12lf \t%.12lf \t%.12lf \t%.12lf \t%.18lf\n",
-//                t, sys->rho, sys->phi, omikron->zeta, omikron->psi);
+        fprintf (fout, "%.12lf \t%.12lf \t%.12lf \t%.12lf \t%.18lf\n",
+                t, sys->rho, sys->phi, omikron->zeta, omikron->psi);
     }
 }
 

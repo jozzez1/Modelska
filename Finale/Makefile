@@ -11,10 +11,13 @@ CFLAGS=		-I/usr/local/include \
 		${WARN} ${OPTFLAGS} -pipe -g -pg
 
 all: main.o
-	${CC} ${CFLAGS} ${LIBFLAGS} main.o zero_solve.o star_system.o integrator.o -o ${PRGNAM}
+	${CC} ${CFLAGS} ${LIBFLAGS} main.o zero_solve.o star_system.o integrator.o poincare.o -o ${PRGNAM}
 
-main.o: integrator.o
+main.o: integrator.o poincare.o
 	${CC} ${CFLAGS} -c main.c
+
+poincare.o: integrator.o
+	${CC} ${CFLAGS} -c poincare.c
 
 integrator.o: star_system.o zero_solve.o
 	${CC} ${CFLAGS} -c integrator.c
@@ -34,6 +37,7 @@ clean:
 	star_system.o \
 	zero_solve.o \
 	integrator.o \
+	poincare.o \
 	prg.core
 	rm -f ${file}
 .endfor
