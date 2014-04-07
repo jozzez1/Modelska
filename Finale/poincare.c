@@ -1,7 +1,7 @@
 #include "poincare.h"
 
 void poincare (void (*scheme) (planet *, binary, params, double),
-        planet * omikron, binary * sys, double dt, double precision, FILE * fout)
+        planet * omikron, binary * sys, double dt, double precision, size_t Limit, FILE * fout)
 {
     params p;
     init_params (&p);

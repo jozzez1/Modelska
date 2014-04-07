@@ -23,13 +23,16 @@ int main (int argc, char ** argv)
         out    = 0,
         arg;
 
+    size_t N = 100;
+
     FILE * fout;
     char * filename = NULL;
-    while ((arg = getopt(argc, argv, "M:m:e:T:d:z:l:p:r:O:o:h")) != -1)
+    while ((arg = getopt(argc, argv, "M:N:m:e:T:d:z:l:p:r:O:o:h")) != -1)
     {
         switch (arg)
         {
             case 'M':   M1   = atof(optarg); break;
+            case 'N':   N    = atoi(optarg); break;
             case 'm':   M2   = atof(optarg); break;
             case 'e':   eps  = atof(optarg); break;
             case 'T':   top  = atof(optarg); break;
@@ -44,6 +47,7 @@ int main (int argc, char ** argv)
                         out      = 1;           break;
             case 'h':
                         fprintf (stdout, "-M:   mass of the 1st star\n");
+                        fprintf (stdout, "-N:   number of points for Poincare\n");
                         fprintf (stdout, "-m:   mass of the 2nd star\n");
                         fprintf (stdout, "-e:   eccentricity of the star orbits\n");
                         fprintf (stdout, "-T:   how many star cycles we will compute\n");
@@ -53,6 +57,7 @@ int main (int argc, char ** argv)
                         fprintf (stdout, "-p:   starting radial momentum of the planet\n");
                         fprintf (stdout, "-r:   precision for the adaptive step\n");
                         fprintf (stdout, "-O:   option -- which integrator to choose\n");
+                        fprintf (stdout, "-o:   write output into a file, instead of stdout\n");
                         fprintf (stdout, "-h:   print this list\n");
                         exit (EXIT_SUCCESS);
             default:
@@ -82,8 +87,8 @@ int main (int argc, char ** argv)
         case 0: solver (&omikron, &sys, dt, top, fout);    break;
         case 1: solver_S8 (&omikron, &sys, dt, top, fout); break;
         case 2: adaptive_solver (&S4a, &omikron, &sys, dt, top, prec, fout); break;
-        case 3: adaptive_solver (&S8, &omikron, &sys, dt, top, prec, fout); break;
-        case 4: poincare (&S4a, &omikron, &sys, dt, prec, fout); break;
+        case 3: adaptive_solver (&S8,  &omikron, &sys, dt, top, prec, fout); break;
+        case 4: poincare (&S4a, &omikron, &sys, dt, prec, N, fout); break;
         default:
                 fprintf (stderr, "Unknown option\n");
                 exit (EXIT_FAILURE);

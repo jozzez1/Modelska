@@ -6,6 +6,7 @@ mod (double a, double b)    // works only for positive a,b > 0
     double n = 0,
            r = (b == 0) ? b : b * modf (a / b, &n);
 
+    if (r < 0) r += b;
     return r;
 }
 
