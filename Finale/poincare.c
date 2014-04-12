@@ -60,6 +60,7 @@ Continue (scheme_fp scheme,
         planet * omikron, binary * sys, double dt, double precision, size_t Limit, FILE * fio)
 {
     size_t N = linecount (fio);
+    Limit -= N;
     double t = 0;
 
     fprintf (stderr, "N = %lu\n", N);
