@@ -6,6 +6,7 @@
 // poincare section
 void poincare (scheme_fp scheme, planet * omikron, binary * sys, double * t_start, double dt, double precision, size_t Limit, FILE * fout);
 
+// count the number of lines in a file
 size_t linecount (FILE * fin);
 
 // keep going from where we left off
