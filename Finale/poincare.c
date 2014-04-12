@@ -67,10 +67,8 @@ Continue (scheme_fp scheme,
     if (N)
     {
         for (size_t i = N; i--;)
-        {
             fscanf (fio, "%lf %lf %lf %lf %lf\n",
                     &t, &omikron->zeta, &omikron->psi, &omikron->p_zeta, &omikron->p_psi);
-        }
     }
 
     // file MUST be open to append stuff, or it will of course fail big time!
