@@ -103,13 +103,13 @@ int main (int argc, char ** argv)
         case 3: adaptive_solver (&S8,  &omikron, &sys, dt, top, prec, fout); break;
         case 4: 
                 if (cont == 0)
-                    poincare (&S4a, &omikron, &sys, dt, prec, N, fout);
+                    poincare (&S4a, &omikron, &sys, NULL, dt, prec, N, fout);
                 else
                     Continue (&S4a, &omikron, &sys, dt, prec, N, fout);
                 break;
         case 5: 
                 if (cont == 0)
-                    poincare (&S8, &omikron, &sys, dt, prec, N, fout);
+                    poincare (&S8, &omikron, &sys, NULL, dt, prec, N, fout);
                 else
                     Continue (&S8, &omikron, &sys, dt, prec, N, fout);
                 break;

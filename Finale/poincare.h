@@ -4,13 +4,11 @@
 #include <stdio.h>
 
 // poincare section
-void poincare (void (*scheme) (planet *, binary, params, double),
-        planet * omikron, binary * sys, double dt, double precision, size_t Limit, FILE * fout);
+void poincare (scheme_fp scheme, planet * omikron, binary * sys, double * t_start, double dt, double precision, size_t Limit, FILE * fout);
 
 size_t linecount (FILE * fin);
 
 // keep going from where we left off
-void Continue (void (*scheme) (planet *, binary, params, double),
-        planet * omikron, binary * sys, double dt, double precision, size_t Limit, FILE * fio);
+void Continue (scheme_fp scheme, planet * omikron, binary * sys, double dt, double precision, size_t Limit, FILE * fio);
 
 #endif

@@ -1,13 +1,13 @@
 #include "poincare.h"
 
 void
-poincare (void (*scheme) (planet *, binary, params, double),
-        planet * omikron, binary * sys, double dt, double precision, size_t Limit, FILE * fout)
+poincare (scheme_fp scheme,
+        planet * omikron, binary * sys, double * t_start, double dt, double precision, size_t Limit, FILE * fout)
 {
     params p;
     init_params (&p);
 
-    double t = 0,
+    double t = (t_start == NULL) ? 0 : *t_start,
            z = omikron->zeta;
     size_t i = Limit;
 
@@ -56,7 +56,7 @@ linecount (FILE * fin)
 }
 
 void
-Continue (void (*scheme) (planet *, binary, params, double),
+Continue (scheme_fp scheme,
         planet * omikron, binary * sys, double dt, double precision, size_t Limit, FILE * fio)
 {
     size_t N = linecount (fio);
@@ -73,6 +73,6 @@ Continue (void (*scheme) (planet *, binary, params, double),
     }
 
     // file MUST be open to append stuff, or it will of course fail big time!
-    poincare (scheme, omikron, sys, dt, precision, Limit, fio);
+    poincare (scheme, omikron, sys, &t, dt, precision, Limit, fio);
 }
 

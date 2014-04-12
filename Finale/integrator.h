@@ -39,6 +39,8 @@ typedef struct planet
            p_zeta;
 } planet;
 
+typedef void (*scheme_fp) (planet *, binary, params, double);
+
 // I'll call the planet omikron, pun intended :P
 // A_step is: x + c*dt*{x, T_zeta}/2 = ...
 void A_step (planet * omikron, double dt, double c);
@@ -67,8 +69,7 @@ void sum_planets (planet * omikron, planet pluto, double c);
 void RK4 (planet * omikron, binary * sys, double t, double dt);
 
 // adaptive step control for either method, based on Richardson's extrapolation
-void adaptive_step (void (* scheme) (planet *, binary, params, double),
-        planet * omikron, binary * sys, params p, double dt, double * t, double precision);
+void adaptive_step (scheme_fp scheme, planet * omikron, binary * sys, params p, double dt, double * t, double precision);
 
 // we read wA and put initialize parameters for S8
 void init_params (params * p);
@@ -83,8 +84,7 @@ void solver_RK4 (planet * omikron, binary * sys, double dt, double T, FILE * fou
 void solver_S8 (planet * omikron, binary * sys, double dt, double T, FILE * fout);
 
 // adaptive solver
-void adaptive_solver (void (* scheme) (planet *, binary, params, double),
-        planet * omikron, binary * sys, double dt, double T, double precision, FILE * fout);
+void adaptive_solver (scheme_fp scheme, planet * omikron, binary * sys, double dt, double T, double precision, FILE * fout);
 
 #endif
 

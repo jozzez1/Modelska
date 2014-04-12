@@ -169,8 +169,7 @@ RK4 (planet * omikron,
 }
 
 void
-adaptive_step (void (* scheme) (planet*, binary, params, double),
-        planet * omikron, binary * sys, params p, double dt,
+adaptive_step (scheme_fp scheme, planet * omikron, binary * sys, params p, double dt,
         double * t, double precision)
 {
     double t_old = *t,
@@ -258,8 +257,7 @@ solver_RK4 (planet * omikron, binary * sys,
 }
 
 void
-adaptive_solver (void (*scheme) (planet *, binary, params, double),
-        planet * omikron, binary * sys, double dt,
+adaptive_solver (scheme_fp scheme, planet * omikron, binary * sys, double dt,
         double T, double precision, FILE * fout)
 {
     params p;
