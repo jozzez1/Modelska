@@ -421,10 +421,10 @@ shema \v cetrtega reda $S_4$ je
     S_4(\delta t) = S_2(x_0, \delta t) S_2 (x_1, \delta t) S_2 (x_0, \delta t), \quad
         x_0 = \frac{1}{2 - 2^{1/3}},\ x_1 = -\frac{2^{1/3}}{2 - 2^{1/3}},
 \end{equation}
-za shemo osmega reda pa bomo vzeli koeficiente $w_1$, re\v sitev `$\mathrm{A}$' iz \v clanka~\cite{yoshida}
-s \v cimer aproksimiramo Liouvillov propagator. Integracija izgleda tako:
+za shemo osmega reda, $S_8$, pa bomo vzeli koeficiente $w_1$, re\v sitev `$\mathrm{A}$' iz \v clanka~\cite{yoshida}
+s \v cimer aproksimiramo Liouvillov propagator. Integracija zatorej izgleda tako:
 \[
-    \mathbf{x}(t + \delta t) = S_m(\delta t) \mathbf{x}(t).
+	\mathbf{x}(t + \delta t) = S_m(\delta t) \mathbf{x}(t) + \mathcal{O}(\delta t^{m+1}).
 \]
 Opomba:
 \[
@@ -457,8 +457,29 @@ imeti \v se dodatno zagotovilo stabilnosti orbit -- adaptiven korak. \v Ce smo p
 napaka v kotu/radiju daljnose\v zne posledice na evolucijo. Pri izbiri adaptivnega koraka koramo biti pozorni,
 da med drobljenjem koraka na manj\v se ne smemo zadeti ob frekvenco, ki je lastna dvozvezdju~\cite{richardson}.
 Zato bomo na za\v cetku vzeli \v casovni korak, ki je v iracionalnem razmerju z obhodnim \v casom zvezde, korake
-pa bomo drobili po Rombergovem zaporedju (potence \v stevila $2$). Za primerjavo sem preizkusil \v se
-integrator $RK4$, ki pa se ni obnesel najbolje.
+pa bomo drobili po Rombergovem zaporedju (potence \v stevila $2$). Za primerjavo sem za integrator preizkusil
+\v se Runge-Kutta reda 4, ki pa se ni obnesel najbolje.
+
+Orbite planeta niso ve\v c preproste elipse, zato Laplance-Runge-Lenzov vektor ni ve\v c invarianta in ga bomo
+tudi spremljali. Z na\v simi opazljivkami $\zeta$, $\psi$, $p_\zeta$ in $p_\psi$ ga v kartezi\v cnih koordinatah
+na se\v cni ploskvi $\psi = 0$ zapi\v semo kot
+\begin{equation}
+	\ee = \left\{\left[p_\zeta^2 + \Big(\frac{p_\psi}{\zeta}\Big)^2\right]\zeta - \zeta p_\zeta^2 - 1\right\}
+		\ee_x - p_\zeta p_\psi \ee_y.
+\end{equation}
+To je v resnici vektor ekscentri\v cnosti, vendar pa se od Laplance-Runge-Lenz-ovega vektorja razlikuje le
+za multiplikativno konstanto. Glavna motivacija za ra\v cunanje tega Laplace-Runge-Lenz-ovega vektorja nam
+je bila izra\v cun smeri in ekscentri\v cnosti orbite, zato je ra\v cunanje vektorja ekscentri\v cnoti
+ustreznenj\v se.
+
+\section{Rezultati}
+
+Nalogo sem re\v seval s programskim jezikom {\tt C}, da bi dosegel \v cim vi\v sjo preciznost za \v cim
+kraj\v si \v cas ra\v cunanja sem preizku\v sal prej omenjene integratorje. Kot sem \v ze povedal prej,
+se Runge-Kutta reda 4 vede precej slabo, zato sem se posvetil le simplekti\v cnim integratorjem. Drugi
+red ni bil zadosten, orbita planeta ni bila dovolj stabilna. Integratorski shemi $S_8$ in $S_4$ sta bili
+dokaj primerljivi, vendar je v bli\v zini zvezde shema $S_8$ dajala bolj gladke tirnice, zato sem pristal
+kar na $S_8$, ki je najnatan\v cnej\v sa, vendar tudi najpo\v casnej\v sa.
 
 \begin{thebibliography}{9}
     \bibitem{yoshida}
