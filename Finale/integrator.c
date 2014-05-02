@@ -140,6 +140,15 @@ sum_planets (planet * omikron, planet pluto, double c)
 }
 
 void
+cpy_planets (planet * omikron, planet pluto, double c)
+{
+    omikron->zeta   = c * pluto.zeta;
+    omikron->psi    = c * pluto.psi;
+    omikron->p_zeta = c * pluto.p_zeta;
+    omikron->p_psi  = c * pluto.p_psi;
+}
+
+void
 RK4 (planet * omikron,
         binary * sys, double t, double dt)
 {

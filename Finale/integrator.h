@@ -65,6 +65,9 @@ void Poisson (planet * deriv, planet * omikron, binary sys);
 // sum of "two planets" A = A + c*B
 void sum_planets (planet * omikron, planet pluto, double c);
 
+// copy one planet struct into the other
+void cpy_planets (planet * omikron, planet pluto, double c);
+
 // and here is the RK4 method, ladies and gentlemen ;)
 void RK4 (planet * omikron, binary * sys, double t, double dt);
 

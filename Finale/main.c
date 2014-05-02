@@ -17,6 +17,7 @@ int main (int argc, char ** argv)
            psi  = 0,
            p_zeta = 0,
            p_psi  = 100,
+           L      = 400,
            prec   = 1e-3;
 
     int option = 0,
@@ -32,7 +33,7 @@ int main (int argc, char ** argv)
     FILE * fout;
     filename = NULL;
     mode = "w";
-    while ((arg = getopt(argc, argv, "M:N:m:e:T:d:z:l:p:r:O:o:c:h")) != -1)
+    while ((arg = getopt(argc, argv, "M:N:m:e:T:d:z:l:L:p:r:O:o:c:h")) != -1)
     {
         switch (arg)
         {
@@ -44,6 +45,7 @@ int main (int argc, char ** argv)
             case 'd':   dt   = atof(optarg); break;
             case 'z':   zeta = atof(optarg); break;
             case 'r':   prec = atof(optarg); break;
+            case 'L':   L    = atof(optarg); break;
             case 'l':   p_psi   = atof(optarg); break;
             case 'p':   p_zeta  = atof(optarg); break;
             case 'O':   option  = atoi(optarg); break;
@@ -65,9 +67,17 @@ int main (int argc, char ** argv)
                         fprintf (stdout, "-d:   time step duration\n");
                         fprintf (stdout, "-z:   zeta of the planet\n");
                         fprintf (stdout, "-l:   starting angular momentum of the planet\n");
+                        fprintf (stdout, "-L:   maximum angular momentum when scanning for equilibrium points\n");
                         fprintf (stdout, "-p:   starting radial momentum of the planet\n");
                         fprintf (stdout, "-r:   precision for the adaptive step\n");
-                        fprintf (stdout, "-O:   option -- which integrator to choose\n");
+                        fprintf (stdout, "-O:   option -- various program modes\n");
+                        fprintf (stdout, "   0   -> non-adaptive S4 solver\n");
+                        fprintf (stdout, "   1   -> non-adaptive S8 solver\n");
+                        fprintf (stdout, "   2   -> adaptive S4 solver\n");
+                        fprintf (stdout, "   3   -> adaptive S8 solver\n");
+                        fprintf (stdout, "   4   -> adaptive S4 solver on Poincare cross-section\n");
+                        fprintf (stdout, "   5   -> adaptive S8 solver on Poincare cross-section\n");
+                        fprintf (stdout, "   6   -> use bisection and adaptive S8 to find points for various L\n");
                         fprintf (stdout, "-o:   write output into a file, instead of stdout\n");
                         fprintf (stdout, "-c:   open the file to continue from where we left off\n");
                         fprintf (stdout, "-h:   print this list\n");
@@ -112,6 +122,9 @@ int main (int argc, char ** argv)
                     poincare (&S8, &omikron, &sys, NULL, dt, prec, N, fout);
                 else
                     Continue (&S8, &omikron, &sys, dt, prec, N, fout);
+                break;
+        case 6:
+                equilibrium (&S8, &omikron, &sys, L, dt, prec, fout);
                 break;
         default:
                 fprintf (stderr, "Unknown option\n");
