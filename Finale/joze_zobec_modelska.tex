@@ -56,6 +56,14 @@
     \ensuremath{V_\mathrm{ef}}
 }
 
+\newcommand{\avgt}[1]{
+	\ensuremath{\left\langle #1 \right\rangle_t}
+}
+
+\newcommand{\then}{
+	\ensuremath{\Rightarrow}
+}
+
 \begin{document}
 
 \section{Navodilo}
@@ -178,7 +186,7 @@ izrazimo kot
     \p_2 &= \sfrac{1}{2}(\p_c - \p_*).
 \end{align}
 To lahko vstavimo v ena\v cbi~\eqref{predgibalni}, vendar moramo za to vedeti \v se kako se zapi\v se $\r_1 - \r_2$
-z $\r_c$ in $\r_*$. Velja
+z $\r_c$ in $\r_*$. V te\v zi\v s\v cnem sistemu $\r_c = 0$ velja
 \[
     \r_1 - \r_2 = \sfrac{1}{2}\big(\sfrac{1}{M_1} + \sfrac{1}{M_2}\big)\r_* = \r_*/2\mu.
 \]
@@ -203,7 +211,7 @@ tudi $\p_c = 0$. Za opis gibanja $\r_1$ in $\r_2$ sedaj zado\v s\v ca le $\r_*$,
     \label{newton}
 \end{equation}
 Ta problem je dvo-dimenzionalen (ker je potencial centralen), zaradi simetrije problema se nam ponujajo polarne
-koordinate $\r_*(t) = \r_* (r(t), \varphi(t))$. Pri\v celi bomo s prehodom v polarne koordinate:
+koordinate $\r_*(t) = \r_* (\rho(t), \varphi(t))$. Pri\v celi bomo s prehodom v polarne koordinate:
 \begin{equation}
     \ee_\rho = \cos\varphi\ \ee_x + \sin\varphi\ \ee_y, \quad \ee_\varphi = -\rho\sin\varphi\ \ee_x + \rho\cos\varphi\ \ee_y.
 \end{equation}
@@ -240,7 +248,7 @@ za $\rho$ so
 Ena\v cbo~\eqref{vrtilna} uporabimo za da se znebimo $\varphi$,
 \begin{align}
     \frac{\d}{\d t} &= \dot{\varphi}\der{}{\varphi} = \frac{p_\varphi}{\rho^2}\der{}{\varphi}, \\
-    \frac{\d^2}{\d t^2} &= \frac{p_\varphi}{\rho^4}\bigg(\der[2]{}{\varphi} - \frac{2}{\rho}\der{\rho}{\varphi}
+    \frac{\d^2}{\d t^2} &= \frac{p^2_\varphi}{\rho^4}\bigg(\der[2]{}{\varphi} - \frac{2}{\rho}\der{\rho}{\varphi}
         \der{}{\varphi}\bigg).
 \end{align}
 Zmenili se bomo $\partial \bullet/\partial \varphi = \bullet'$, da bo manj pisanja. Ko to vstavimo v
@@ -277,8 +285,8 @@ Ena\v cbo~\eqref{fi} lahko re\v simo z integralom
 \begin{equation}
     \int_0^{\varphi}\frac{\d \tilde{\varphi}}{\big(1 + \varepsilon\cos\tilde{\varphi}\big)^2} = \frac{\alpha^2}{p_\varphi^3}t.
 \end{equation}
-Ta integral je k sre\v ci analiti\v cen in tabeliran v matemati\v cnem priro\v cniku. Za $0 \leq \varepsilon < 1$ je
-re\v sitev
+Ta integral je k sre\v ci analiti\v cen in tabeliran v matemati\v cnem priro\v cniku~\cite{bronstejn}. Za
+$0 \leq \varepsilon < 1$ je re\v sitev
 \begin{align}
     t\frac{\alpha^2}{p^3_\varphi} &= \bigg[\frac{\varepsilon\sin\varphi}{(\varepsilon^2 - 1)(1 + \varepsilon\cos\varphi)}
             +\frac{1}{1 - \varepsilon^2}\frac{2}{\sqrt{1 - \varepsilon^2}}\arctan\bigg(\frac{(1 - \varepsilon)\tan\varphi/2}
@@ -335,6 +343,7 @@ s katero lahko povsod eliminiramo $p_\varphi$:
 \begin{align}
     \rho(\varphi) &= \frac{2\mu(1 - \varepsilon)}{1 + \varepsilon\cos(\varphi - \pi)} \\
     T &= \frac{2\pi}{\sqrt{M_1 + M_2}}\bigg(\frac{1 - \varepsilon}{1 - \varepsilon^2}\bigg)^{3/2}
+	\label{obhodni}
 \end{align}
 
 Sedaj smo dvozvezden sistem v celoti re\v sili, prosta parametra sta le $M_1$ in $M_2$, za\v cetni pogoj pa je odvisen
@@ -347,7 +356,8 @@ nam Newtonova, Halleyeva in Baileyeva metoda. Za slednji potrebujemo \v se drugi
 \varphi = (\partial \varphi/\partial t)^{-1}$ lahko zapi\v semo
 \begin{align}
     \frac{\alpha^2 t'}{p_\varphi^3} = \frac{\alpha^2}{p_\varphi^3} \der{t}{\varphi} &= \frac{1}{[1 +
-        \varepsilon\cos(\varphi - \pi)]^2} \\
+        \varepsilon\cos(\varphi - \pi)]^2}
+	\label{odvodcasa} \\
     \frac{\alpha^2 t''}{p_\varphi^3} = \frac{\alpha^2}{p_\varphi^3} \der[2]{t}{\varphi} &=
         \frac{2\varepsilon\sin(\varphi - \pi)}{[1 + \varepsilon\cos(\varphi - \pi)]^3}
 \end{align}
@@ -373,20 +383,22 @@ polarne koordinate planeta:
 Gibalne zakone dobimo iz Poissonovih oklepajev $\{\bullet, T_3\}$ in $\{\bullet, V_\odot\}$:
 \begin{alignat}{3}
     \{\zeta, T_3\}        &= \der{T_3}{p_\zeta} = p_\zeta, \qquad&
-    \{p_\zeta, T_3\} &= -\der{T_3}{\zeta} = p^2_\psi/\zeta^3, \notag \\
-    \{\zeta, V_\odot\}    &= 0, \qquad&
-    \{p_\zeta, V_\odot\}  &= -\der{V_\odot}{\zeta} \notag \\
+    \{\zeta, V_\odot\}    &= 0, \qquad \notag \\
     \{\psi, T_3\}         &= \der{T_3}{p_\psi} = p_\psi/\zeta^2, \qquad&
-    \{p_\psi, T_3\}       &= 0 \notag \\
-    \{\psi, V_\odot\}     &= 0, \qquad&
-    \{p_\psi, V_\odot\}   &= -\der{V_\odot}{\psi}
+    \{\psi, V_\odot\}     &= 0, \notag \\
+	\{p_\zeta, T_3\} &= -\der{T_3}{\zeta} = p^2_\psi/\zeta^3, \qquad&
+    \{p_\zeta, V_\odot\}  &= -\der{V_\odot}{\zeta}, \notag \\
+	\{p_\psi, T_3\}       &= 0, \qquad&
+    \{p_\psi, V_\odot\}   &= -\der{V_\odot}{\psi},
     \label{oklepaji}
 \end{alignat}
 Potencial $V_\odot$ se v polarnih koordinatah zapi\v se kot
 \begin{align}
     V_\odot     &= -\frac{M_1}{|\r_{31}|} -\frac{M_2}{|\r_{32}|}, \\
-    |\r_{31}|^2 &= \zeta^2 + \frac{1}{4M_1^2}\rho^2 - \frac{1}{M_1}\rho\zeta\cos(\psi - \varphi), \\
+    |\r_{31}|^2 &= \zeta^2 + \frac{1}{4M_1^2}\rho^2 - \frac{1}{M_1}\rho\zeta\cos(\psi - \varphi),
+	\label{r31} \\
     |\r_{32}|^2 &= \zeta^2 + \frac{1}{4M_2^2}\rho^2 + \frac{1}{M_2}\rho\zeta\cos(\psi - \varphi).
+	\label{r32}
 \end{align}
 Od tod sledi
 \begin{align}
@@ -399,6 +411,184 @@ Od tod sledi
         + \frac{1}{2}\frac{M_2}{|\r_{32}|^3}\frac{\rho\zeta}{M_2}\sin(\varphi - \psi) \bigg] \notag \\
     &= \frac{\rho\zeta}{2}\bigg(\frac{1}{|\r_{31}|^3} - \frac{1}{|\r_{32}|^3}\bigg)\sin(\varphi - \psi)
 \end{align}
+
+\subsection{Pribli\v zek povpre\v cnega polja}
+
+Za $M_1 = 2000$ in $M_2 = 1000$ dobimo $p_\varphi \sim 10^4$. Ocenimo maksimalno dovoljeno energijo
+planeta kot
+\begin{equation}
+	E_3 = \frac{1}{2}(p^2_\zeta + p_\psi^2/\zeta^2) - \mu/\zeta
+\end{equation}
+Energija mora biti negativna za vezan sistem, tj. $T_3 < V_\odot$. Za za\v cetne pogoje si brez izgube
+splo\v snosti izberemo $p_\zeta = 0$, od koder dobimo oceno za $p_\psi(t = 0)$.
+\[
+	p_\psi^2 < 2\zeta^2 \mu/\zeta = 2\mu\zeta
+\]
+oziroma malce druga\v ce
+\begin{equation}
+	-\sqrt{2\mu\zeta} \lesssim p_\psi \lesssim \sqrt{2\mu\zeta}.
+\end{equation}
+Oddaljenost planeta od dvozvezdja ne sme biti prevelika, tj. $\zeta \sim 10^2$, reducirana masa zvezd pa je
+reda $\mu \sim 10^3$. Odtod dobimo oceno za maksimalno dovoljeno vrtilno koli\v cino $p_\psi^\text{max}
+\sim 10^{5/2} \approx 300$. Vidimo, da je $p_\psi^\text{max} \sim 10^2 \ll p_\varphi \sim 10^4$. To pomeni,
+da bo planet gotovo spreminjajo\v ce se polje \v cutil kot \v casovno povpre\v cno polje, torej lahko
+\v casovno odvisnost izintegriramo. Ozna\v cimo $\langle \bullet \rangle_t$ za operator \v casovnega povpre\v cja.
+\v Casovno povpre\v cno polje bomo definirali kot
+\begin{equation}
+	\langle V_\odot(\r)\rangle_t \equiv \frac{1}{T}\int_0^T \d t\ V_\odot (\r,t) = \frac{1}{T}\int_0^{2\pi}\d \varphi\
+		\bigg|\der{\varphi}{t}\bigg|^{-1} V_\odot(\r, \varphi(t)),
+	\label{polje}
+\end{equation}
+saj je v eni periodi vsa informacija, ki jo potrebujemo. S pomo\v cjo ena\v cb~\eqref{obhodni} in~\eqref{odvodcasa}
+lahko ena\v cbo~\eqref{polje} prepi\v semo v
+\begin{equation}
+	\langle V_\odot(\r)\rangle_t = (1 - \varepsilon)^{3/2} \frac{1}{2\pi}\int_0^{2\pi} \d \varphi\
+		\frac{V_\odot(\r,\varphi)}{[1 + \varepsilon\cos(\varphi - \pi)]^2}.
+\end{equation}
+Tekom tega poro\v cila smo izra\v cunali vse, kar potrebujemo, da ta integral eksplicitno zapi\v semo, vendar
+pa je grd. Tudi \v ce analiti\v cna re\v sitev obstaja, je neprakti\v cna za uporabo (program {\tt Mathematica},
+ga ni uspel izra\v cunati po dveh celih urah), zato bi ga morali ra\v cunali kar numeri\v cno. Tudi v Poissonovih
+oklepajih ga lahko \v se vedno uporabimo:
+\begin{equation}
+	\big\{A,\langle V_\odot\rangle_t\big\} = \frac{(1 - \varepsilon)^{3/2}}{2\pi}\int_0^{2\pi}\d \varphi\
+		\frac{1}{[1 + \varepsilon\cos(\varphi - \pi)]^2}\{A, V_\odot(\r,\varphi)\},
+\end{equation}
+kjer je $A$ neka kanoni\v cna spremenljivka. 
+
+\subsubsection{Kro\v zne orbite zvezd}
+Kljub temu pa obstaja relativno lepa analiti\v cna re\v sitev za kro\v zne orbite zvezdnega sistema ($\varepsilon = 0$).
+\v Ce je planet dale\v c pro\v c od zvezd, ekscentri\v cnost zvezdnih orbit nima nobenega vpliva, tako da je ta
+pribli\v zek v na\v sem primeru upravi\v cen, za $\zeta \gtrsim 10$. Takrat vzamemo limito $\varepsilon \to 0$ za na\v se
+koli\v cine:
+\begin{align}
+	\lim_{\varepsilon \to 0} \rho (\varphi) &= 2\mu = \text{konst.} \\
+	\lim_{\varepsilon \to 0} \langle V_\odot \rangle_t &= \frac{1}{2\pi}\int_0^{2\pi} \d \varphi\ \lim_{\varepsilon \to 0}
+		V_\odot
+	\label{povprecni:potencial}
+\end{align}
+Za izra\v cun $\lim_{\varepsilon \to 0} V_\odot$ potrebujemo limiti $|\r_{31}|^2$ in $|\r_{32}|^2$ iz ena\v cb~\eqref{r31}
+in~\eqref{r32}:
+\begin{align}
+	\lim_{\varepsilon \to 0} |\r_{31}|^2 &= \zeta^2 + \frac{\mu^2}{M_1^2} - 2\frac{\mu}{M_1}\zeta
+			\cos(\varphi - \psi) \notag \\
+		&= \Big(\zeta - \frac{\mu}{M_1}\Big)^2 + 4\frac{\mu}{M_1}\zeta\sin^2\frac{\varphi - \psi}{2}, \\
+	\lim_{\varepsilon \to 0} |\r_{32}|^2 &= \zeta^2 + \frac{\mu^2}{M_2^2} + 2\frac{\mu}{M_2}\zeta
+			\cos(\varphi - \psi) \notag \\
+		&= \Big(\zeta + \frac{\mu}{M_2}\Big)^2 - 4\frac{\mu}{M_2}\zeta\sin^2\frac{\varphi - \psi}{2}.
+	\label{r32:2mu}
+\end{align}
+Integral~\eqref{povprecni:potencial} lahko sedaj s pomo\v cjo integrala ki je spet tabeliran v
+priro\v cniku~\cite{bronstejn}
+\begin{align}
+	\frac{1}{a_k}\int_0^\theta \frac{\d x}{\sqrt{1 \mp b_k\sin^2 c_kx}} = \frac{1}{a_kc_k} F(c_k \theta; \pm b_k),
+	\qquad  |b_k| < 1
+	\label{elipticni}
+\end{align}
+kjer je $F(x;k)$ nepopolni elipti\v cni integral prve vrste. \v Ce privzamemo
+\begin{alignat}{3}
+	x &= \varphi - \psi, &\quad c_{1,2} &= 1/2, \notag \\
+	a_1 &= 2\pi(\zeta - \mu/M_1), &\quad  a_2 &= 2\pi(\zeta + \mu/M_2), \notag \\
+	b_1 &= 4\frac{\mu\zeta/M_1}{(\zeta - \mu/M_1)^2}, &\quad  b_2 &= 4\frac{\mu\zeta/M_2}{(\zeta + \mu/M_2)^2},
+	\label{konstante}
+\end{alignat}
+potem lahko integral~\eqref{povprecni:potencial} s pomo\v cjo ena\v cbe~\eqref{elipticni} re\v simo
+\begin{align}
+	\lim_{\varepsilon \to 0} \langle V_\odot \rangle_t = &- \frac{2M_1}{a_1}\Big[F(\psi/2; -b_1) +
+			F(\pi - \psi/2; -b_1)\Big] \notag \\
+		&- \frac{2M_2}{a_2}\Big[F(\psi/2; b_2) + F(\pi - \psi/2; b_2)\Big],
+	\label{naivno}
+\end{align}
+pri tem dobimo \v se pogoj $\zeta \neq \pm \mu/M_1$ oz. $\zeta \neq \pm \mu/M_2$, ki pride iz $|b_k| < 1$ in
+iz tega, da je deljenje z ni\v c tabu. Ta pogoj je avtomati\v cno izpolnjen za $\zeta \gg 1$, saj je
+$\mu/M_{1,2} \sim 1$.
+
+\paragraph{Gibalne ena\v cbe:}
+Sam elipti\v cni integral je transcendentna funkcija. Za gibalne ena\v cbe potrebujemo \v se odvode
+\begin{equation}
+	\{p_\psi, \avgt{V_\odot}\} = -\der{}{\psi}\avgt{V_\odot}, \qquad 
+	\{p_\zeta, \avgt{V_\odot}\} = -\der{}{\zeta}\avgt{V_\odot}.
+\end{equation}
+Da re\v simo ti dve ena\v cbi pa potrebujemo odvode elipti\v cnih integralov. Velja
+\begin{align}
+	\der{F(x;k)}{x} &= \frac{1}{\sqrt{1 - k\sin^2x}}, \\
+	\der{F(x;k)}{k} &= \frac{\sin 2x}{4(k - 1)\sqrt{1 - k\sin^2x}} - \frac{1}{2k}\bigg[F(x;k)
+		+ \frac{1}{k-1}E(x;k)\bigg], \\
+		\der{F(x;-k)}{k} &= \frac{\sin 2x}{4(k+ 1)\sqrt{1 + k\sin^2x}} - \frac{1}{2k}\bigg[F(x;-k)
+		- \frac{1}{{k+1}}E(x;-k)\bigg], \\
+	\der{a_{1,2}}{\zeta} &= 2\pi, \\
+	\der{b_{1,2}}{\zeta} &= \frac{4\frac{\mu}{M_{1,2}}(\zeta \mp \mu/M_{1,2})^2 - 4\zeta\frac{\mu}{M_{1,2}} \cdot
+	2(\zeta \mp \mu/M_{1,2})}{(\zeta \mp \mu/M_{1,2})^4} \notag \\
+	&= b_{1,2}\bigg(\frac{1}{\zeta} - \frac{2}{\zeta \mp \mu/M_{1,2}}\bigg) \notag \\
+	&= b_{1,2}(1/\zeta - 4\pi/a_{1,2}),
+\end{align}
+kjer je $E(x;k)$ nepopoln elipti\v cni integral druge vrste. Odvode potem lahko zapi\v semo kot
+\begin{align}
+	\der{}{\psi}\lim_{\varepsilon \to 0}\avgt{V_\odot} = &-\frac{2M_1}{a_1}\bigg[\der{F(\psi/2;-b_1)}{\psi/2}
+		\der{\psi/2}{\psi} + \der{F(\pi - \psi/2;-b_1)}{(\pi - \psi/2)}\der{(\pi - \psi/2)}{\psi}\bigg] \notag \\
+	&- \frac{2M_2}{a_2}\bigg[\der{F(\psi/2;b_2)}{\psi/2}\der{\psi/2}{\psi} +
+		\der{F(\pi - \psi/2;b_2)}{(\pi - \psi/2)}\der{(\pi - \psi/2)}{\psi}\bigg] \notag \\
+	= &+ \frac{M_1}{a_1}\der{F(x;-b_1)}{x}\bigg|_{x = \psi/2}^{x = \pi - \psi/2} + \frac{M_2}{a_2}
+		\der{F(x;b_2)}{x}\bigg|_{x = \psi/2}^{x = \pi - \psi/2} \notag \\
+	= &- \frac{2M_1/a_1}{\sqrt{1 + b_1\sin^2(\psi/2)}} - \frac{2M_2/a_2}{\sqrt{1 - b_2\sin^2(\psi/2)}}, \\
+	\der{}{\zeta}\lim_{\varepsilon \to 0} \avgt{V_\odot} = &+\frac{2M_1}{a_1^2}\der{a_1}{\zeta}\bigg[F(\psi/2; -b_1)
+		+ F(\pi - \psi/2; -b_1)\bigg] \notag \\
+	&+ \frac{2M_2}{a_2^2} \der{a_2}{\zeta}\bigg[F(\psi/2;b_2) + F(\pi - \psi/2;b_2)\bigg] \notag \\
+	&- \frac{2M_1}{a_1}\bigg[\der{F(\psi/2;-b_1)}{b_1} +
+		\der{F(\pi - \psi/2;-b_1)}{b_1}\bigg]\der{b_1}{\zeta} \notag \\
+	&-\frac{2M_2}{a_2}\bigg[\der{F(\psi/2;b_2)}{b_2} +
+		\der{F(\pi - \psi/2;b_2)}{b_2}\bigg]\der{b_2}{\zeta}
+\end{align}
+Vidimo, da kjub pribli\v zku kro\v znih zvezdnih orbit, kon\v cne re\v sitve niso trivialne.
+
+\paragraph{Popravek:}
+\v Casovno povpre\v cen potencial~\eqref{naivno} ima eno hibo. Vsa informacija o tem, kje se zvezde
+nahajajo (v povpre\v cju) je podana z ni\v clami $a_{1,2}$. Vidimo, da ima $a_1$ ni\v clo za $\zeta > 0$, vendar
+pa ima $a_2$ ni\v clo za $\zeta < 0$, kar pa ni prav. Po tistem, ko izintegriramo kot $\varphi$, so elipti\v cni
+integrali na celotnem na\v sem definicijskem kon\v cni.
+
+K sre\v ci je $\r_3$ (in posledi\v cno tudi $|\r_{32}|$ in $V_\odot(\r,t)$) invarianten\footnote{Povpre\v ceni
+potencial $\avgt{V_\odot}$ pa nima te simetrije, ker jo integriranje zlomi, zaradi \v cesar ga moramo znova
+izra\v cunati.} na transformacijo
+\begin{align*}
+	(\zeta, \psi) \mapsto (-\zeta, \psi - \pi).
+\end{align*}
+Pri tem vektor $\r$ \v se vedno ka\v ze v isto to\v cko, vendar pa dobimo pravilno divergenco za drugo zvezdo.
+To pomeni, da moramo popraviti ena\v cbo~\eqref{r32:2mu}
+\begin{equation}
+	|\r_{32}|^2 = \Big(\zeta - \frac{\mu}{M_2}\Big)^2 + 4\frac{\mu}{M_2}\sin^2\frac{\varphi - \psi + \pi}{2}
+\end{equation}
+in temu primerno spremeniti ena\v cbe~\eqref{konstante}:
+\begin{alignat}{3}
+	x_1 &= \varphi - \psi, \qquad& x_2 &= \varphi - \psi + \pi, \notag \\
+	a_1 &= 2\pi(\zeta - \mu/M_1), \qquad& a_2 &= 2\pi(\zeta - \mu/M_2), \notag \\
+	b_1 &= 4\frac{\mu\zeta/M_1}{(\zeta - \mu/M_1)^2}, \qquad& b_2 &= 4\frac{\mu\zeta/M_2}{(\zeta - \mu/M_2)^2},
+\end{alignat}
+$c_{1,2}$ pa je \v se vedno enak $c_{1,2} = c = 1/2$. Od tod dobimo popravljen potencial
+\begin{align}
+	\lim_{\varepsilon \to 0} \avgt{V_\odot} = &- \frac{2M_1}{a_1}\left[F\left(\frac{\psi}{2}; -b_1\right)
+		+ F\left(\frac{2\pi - \psi}{2}; -b_1\right)\right] \notag \\
+	&- \frac{2 M_2}{a_2}\left[F\left(\frac{\psi - \pi}{2}; -b_2\right)
+		+ F\left(\frac{3\pi - \psi}{2}; -b_2\right)\right],
+\end{align}
+ki je pravilno definiran na $\zeta > 0$ in $\psi \in [0, 2\pi)$. Definirajmo
+\begin{align}
+	\Lambda_k (\zeta, \psi) \equiv &\frac{2\pi}{a_k}F(\psi/2;b_k) - \der{b_k}{\zeta}\der{F(\psi/2;-b_k)}{b_k} \notag \\
+	= &\frac{1}{b_k + 1}\Bigg[\frac{\sin\psi}{4\sqrt{1 + b_k\sin^2(\psi/2)}}
+		\bigg(1 - \frac{b_k}{\zeta}\bigg) + E(\psi/2; -b_k)\bigg(1 - \frac{1}{2\zeta}\bigg)\Bigg] \notag \\
+	&+\frac{1}{2b_k}F(\psi/2; -b_k)
+\end{align}
+Popraviti je treba \v se nekatere odvode:
+\begin{align}
+	\der{}{\psi}\lim_{\varepsilon \to 0} \avgt{V_\odot} = &- \frac{2M_1/a_1}{\sqrt{1 + b_1\sin^2(\psi/2)}}
+		- \frac{2M_2/a_2}{\sqrt{1 + b_2\sin^2\big((\psi - \pi)/2\big)}} \\
+	\der{}{\zeta}\lim_{\varepsilon \to 0} \avgt{V_\odot} = &+ \frac{2M_1}{a_1}\Big[\Lambda_1(\zeta, \psi)
+	+ \Lambda_1(\zeta, 2\pi - \psi)\Big] \notag \\
+	&+ \frac{2M_2}{a_2}\Big[\Lambda_2(\zeta, \psi - \pi) + \Lambda_2(\zeta, 3\pi - \psi)\Big]
+\end{align}
+
+Rezultate za $V_\odot(\r,t)$ bi bilo zanimivo primerjati z rezultati v povpre\v cnem polju, $\avgt{V_\odot}(\r)$ ob
+$\varepsilon \to 0$. Gibalni zakoni so isti, le $\partial V_\odot/\partial x$ zamenjamo z odvodi povpre\v cnega polja
+$\partial \avgt{V_\odot}/\partial x$.
 
 \subsection{Numeri\v cni izra\v cun}
 Ker imamo na planet vpliv zunanjega \v casovno odvisnega potenciala energija planeta ne bo konstantna. Vendar pa
@@ -502,6 +692,19 @@ kar na $S_8$, ki je najnatan\v cnej\v sa, vendar tudi najpo\v casnej\v sa.
 \end{figure}
 
 \begin{thebibliography}{9}
+	\bibitem{bronstejn}
+		J. N. Bron\v stejn in K. A. Semendjejev,
+		{\em Matemati\v cni priro\v cnik},
+		Tehni\v ska zalo\v zba Slovenije v Ljubljani,
+		deseti ponatis,
+		(1988)
+
+    \bibitem{sirca}
+        S. \v Sirca in M. Horvat,
+        {\em Ra\v cunske metode za fizike},
+        DMFA Zalo\v zni\v stvo,
+        (2010)
+
     \bibitem{yoshida}
         H. Yoshida,
         \emph{Construction of higher order symplectic integrators},
@@ -514,12 +717,6 @@ kar na $S_8$, ki je najnatan\v cnej\v sa, vendar tudi najpo\v casnej\v sa.
         \emph{Symplectic integrators with adaptive time steps},
         {\tt arXiv:1108.0322v1 [physics.comp-ph]},
         (2011)
-
-    \bibitem{sirca}
-        S. \v Sirca in M. Horvat,
-        {\em Ra\v cunske metode za fizike},
-        DMFA Zalo\v zni\v stvo,
-        (2010)
 \end{thebibliography}
 
 \end{document}
