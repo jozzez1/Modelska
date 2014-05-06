@@ -165,7 +165,7 @@ equilibrium (scheme_fp scheme,
         planet * omikron, binary * sys, double Lmax, double dt, double precision, FILE * fout)
 {
     double dL   = 20,
-           Z    = 40,
+           Z    = omikron->zeta + 30,
            z0;
 
     planet omikron_save =
