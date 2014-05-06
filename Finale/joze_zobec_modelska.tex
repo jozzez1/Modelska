@@ -2,7 +2,24 @@
 \usepackage[slovene]{babel}
 \usepackage[utf8]{inputenc}
 \usepackage[T1]{fontenc}
-\usepackage{amsmath, amssymb, fullpage, graphicx, float}
+\usepackage[usenames, dvipsnames]{xcolor}
+\usepackage{amsmath, amssymb, fullpage, graphicx, float, hyperref, caption}
+
+\captionsetup{
+	font=small,
+	margin=10pt,
+	labelfont=it,
+	labelsep=endash,
+	format=hang,
+	width=0.7\textwidth
+}
+
+\hypersetup{
+	colorlinks=true,
+	linkcolor=black!60!red,
+	citecolor=black!60!green,
+	urlcolor=black!60!cyan
+}
 
 \renewcommand{\r}{
     \ensuremath{\mathbf{r}}
@@ -671,25 +688,116 @@ red ni bil zadosten, orbita planeta ni bila dovolj stabilna. Integratorski shemi
 dokaj primerljivi, vendar je v bli\v zini zvezde shema $S_8$ dajala bolj gladke tirnice, zato sem pristal
 kar na $S_8$, ki je najnatan\v cnej\v sa, vendar tudi najpo\v casnej\v sa.
 
+Grafi~\ref{fig:L160},~\ref{fig:L180},~\ref{fig:L200} in~\ref{fig:L220} prikazujejo stabilne orbite v takem sistemu
+na se\v cni ploskvi $\psi = 0$ in $\varepsilon = 0.4$, $M_1 = 2000$ in $M_2 = 1000$. Pri tem je $p_\psi$ konstanten
+(na se\v cni ploskvi), zaradi \v cesar imamo tu samo dve neodvisni spremenljivki: $\zeta$ in $p_\zeta$. Re\v sitve
+so nekak\v sne elipse, ki se vrtijo okrog te\v zi\v s\v ca zvezd. 
+
 \begin{figure}[H]\centering
-	\includegraphics{graf160}
-	\caption{}
+	\input{graf160.tex}
+	\caption{Zaradi zaokro\v zitvenih napak se zadnji graf ne sklene, vendar je ostalo v redu.}
+	\label{fig:L160}
 \end{figure}
 
 \begin{figure}[H]\centering
-	\includegraphics{graf180}
-	\caption{}
+	\input{graf180.tex}
+	\caption{Graf je sklenjen in ne tako stisnjen proti te\v zi\v s\v cu zvezd.}
+	\label{fig:L180}
 \end{figure}
 
 \begin{figure}[H]\centering
-	\includegraphics{graf200}
-	\caption{}
+	\input{graf200.tex}
+	\caption{Graf je tu \v se bolj splo\v s\v cen.}
+	\label{fig:L200}
 \end{figure}
 
 \begin{figure}[H]\centering
-	\includegraphics{graf220}
-	\caption{}
+	\input{graf220.tex}
+	\caption{Graf je tu \v se bolj spro\v s\v cen.}
+	\label{fig:L220}
 \end{figure}
+
+Grafi~\ref{fig:L160},~\ref{fig:L180},~\ref{fig:L200} in~\ref{fig:L220} napovedujejo, da bomo za stabilne orbite
+dobili podobne diagrame, ne glede nato, s kak\v snim $\zeta$ oz. $p_\zeta$ pri\v cnemo. Tudi \v ce je $p_\zeta$
+na za\v cetku ni\v c, bomo zaradi precesije enkrat pri\v sli v to\v cko, kjer bo $p_\zeta = 0$.
+
+Nekje znotraj grafa je zastojna to\v cka, okrog katere se vse ostale trajektorije vrtijo. V tem primeru nimamo
+precesije.
+
+Predpostavljamo, da imamo tudi prepovedano obmo\v cje: \v ce smo preblizu zvezd nas bodo slednje izvrgle iz
+oson\v cja. Prav tako ne moremo biti predale\v c ali imeti prevelikih hitrosti, ker potem namesto potencialne
+prevlada kineti\v cna energija in planet sam od sebe uide.
+
+\subsection{Stabilne orbite}
+
+Poglejmo si, kako se fazni diagram spremeni, \v ce spremenimo maso zvezd. Graf~\ref{fig:M4000} prikazuje
+situacijo, ko $\varepsilon = 0.4$, $M_1 = 4000$, $M_2 = 1000$.
+\begin{figure}[H]\centering
+	\input{graf4000.tex}
+	\caption{Graf mo\v cno spominja na prej\v snje grafe. Kljub temu, da smo spremenili razmerje mas, so
+		ti grafi na te spremembe skoraj neob\v cutljivi. Pozna se le ta vpliv, da je skupna masa zvezd ve\v cja,
+		zaradi \v cesar potrebujemo vi\v sjo vrtilno koli\v cino, da planet ne pade notri. Zato je $p_\psi = 280$.}
+	\label{fig:M4000}
+\end{figure}
+Da bi imeli \v cim bolj\v si opis teh faznih diagramov si poglejmo pod drobnogled zastojne to\v cke in orbite
+planeta, kadar je na zastojni to\v cki.
+
+Z $\zeta_0$ ozna\v cimo zastojno to\v cko (radij). Graf~\ref{fig:zastoj1} prikazuje zastoj za $M_2 = 1000$ in
+$\varepsilon = 0.4$ pri razli\v cnih $M_1$. Graf~\ref{fig:zastoj2} prikazuje isto, le za $\varepsilon = 0$.
+\begin{figure}[H]\centering
+	\input{zastoj-e04.tex}
+	\caption{Vidimo, da imamo odvisnost $\zeta_0 \propto p_\psi^2$, smerni koeficient pa je ob\v cutljiv na maso.}
+	\label{fig:zastoj1}
+\end{figure}
+
+\begin{figure}[H]\centering
+	\input{zastoj-e0.tex}
+	\caption{Vidimo, da imamo odvisnost $\zeta_0 \propto p_\psi^2$, smerni koeficient pa je ob\v cutljiv na maso.
+		Ob\v cutljivost na $\varepsilon$ je prakti\v cno zanemarljiva.}
+	\label{fig:zastoj2}
+\end{figure}
+Vidimo, da je graf neob\v cutljiv na $\varepsilon$. Modelsko krivuljo sem ugotovil s pomo\v cjo prilagajanlja poten\v cne
+funkcije, kjer sem hitro ugotovil $\zeta_0 \propto p_\psi^2$. Modelsko krivuljo sem parametriziral kot
+\begin{equation}
+	kp_\psi^2 = \zeta_0.
+\end{equation}
+Vrednosti $k$ po prilagajanju so tabelirane v tabeli~\ref{tab:fit1}
+\begin{table}[H]\centering
+	\caption{Vrednosti $k$ in $\delta_k$ (relativna napaka $k$) za prilagajanje razli\v cnih grafov. Rezultati
+		so res prakti\v cno neodvisni od $\varepsilon$.}
+	\begin{tabular}{l|c|c}
+		& $k$ & $\delta_k$ \\
+		\hline \hline
+		$M_1 = 2000$, $\varepsilon = 0.4$ & $3.3\cdot10^{-4}$ & $2.2\cdot10^{-4}$ \\
+		$M_1 = 2000$, $\varepsilon = 0$   & $3.3\cdot10^{-4}$ & $1.0\cdot10^{-4}$ \\
+		\hline
+		$M_1 = 4000$, $\varepsilon = 0.4$ & $2.0\cdot10^{-4}$ & $1.5\cdot10^{-2}$ \\
+		$M_1 = 4000$, $\varepsilon = 0$   & $1.9\cdot10^{-4}$ & $1.3\cdot10^{-4}$
+	\end{tabular}
+	\label{tab:fit1}
+\end{table}
+Izka\v ze se, da je v obeh primerih $k \approx \frac{1}{M_1 + M_2}$. Kako bi lahko tako obna\v sanje pojasnili? Napi\v simo
+nov hamiltonian za planet, kjer bomo vzeli limito $\varepsilon \to 0$, tj. obe zvezdi nadomestimo z eno zvezdo, ki
+ima maso $M_1 + M_2$. Tj.
+\begin{equation}
+	H_3 \approx \frac{1}{2}(p_\zeta^2 + p_\psi^2/\zeta^2) - \frac{M_1 + M_2}{\zeta}.
+\end{equation}
+Ugibamo, da je zastojni radij ravno tisti radij, kjer ima energija minimum. Zato moramo $H_3$ odvajati po $\zeta$:
+\begin{equation}
+	\der{H_3}{\zeta} \approx -\frac{p_\psi^2}{\zeta^3} + \frac{M_1 + M_2}{\zeta^2}.
+\end{equation}
+Pri $\zeta = \zeta_0$ ima odvod ekstrem, tj.
+\begin{align}
+	\frac{p_\psi^2}{\zeta_0^3} &\approx \frac{M_1 + M_2}{\zeta_0^2}, \notag \\
+	p_\psi^2 &\approx (M_1 + M_2)\zeta_0, \notag \\
+	\frac{p_\psi^2}{M_1 + M_2} &\approx \zeta_0.
+\end{align}
+To pa tudi pomeni, da morajo biti tirnice planeta v zastojni to\v cki kro\v znice (oz. skoraj kro\v znice) in da v
+celotni stabilni regiji $\varepsilon$ lahko mirne volje postavimo na 0, s \v cimer dodatno utemeljimo pribli\v zek
+kro\v znih orbit v pribli\v zku povpre\v cnega polja.
+
+\v Ce bi hoteli eksaktno re\v sitev bi morali namesto $(M_1 + M_2)/\zeta$ vzeti potencial $V_\odot$, vendar pa dobimo
+transcendentno ena\v cbo.
 
 \begin{thebibliography}{9}
 	\bibitem{bronstejn}
