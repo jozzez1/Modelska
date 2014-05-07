@@ -5,7 +5,6 @@ set radii = {20,40,60,80,100}
 gnuplot -p << EOF
 
 set term epslatex color solid size 12cm,10cm
-#set term pngcairo size 12cm,10cm
 set out "$2.tex"
 
 set xrange [0:110]

@@ -688,11 +688,23 @@ red ni bil zadosten, orbita planeta ni bila dovolj stabilna. Integratorski shemi
 dokaj primerljivi, vendar je v bli\v zini zvezde shema $S_8$ dajala bolj gladke tirnice, zato sem pristal
 kar na $S_8$, ki je najnatan\v cnej\v sa, vendar tudi najpo\v casnej\v sa.
 
-Grafi~\ref{fig:L160},~\ref{fig:L180},~\ref{fig:L200} in~\ref{fig:L220} prikazujejo stabilne orbite v takem sistemu
-na se\v cni ploskvi $\psi = 0$ in $\varepsilon = 0.4$, $M_1 = 2000$ in $M_2 = 1000$. Pri tem je $p_\psi$ konstanten
-(na se\v cni ploskvi), zaradi \v cesar imamo tu samo dve neodvisni spremenljivki: $\zeta$ in $p_\zeta$. Re\v sitve
-so nekak\v sne elipse, ki se vrtijo okrog te\v zi\v s\v ca zvezd. 
+Za se\v cno ploskev bi lahko vzeli primer, ko $\varphi = \psi$, kar pomeni, da so vsa tri telesa kolinearna.
+Na \v zalost se zvezdi okrog te\v zi\v s\v ca vrtita tako hitro (vsaj 100-krat hitreje), da bi bilo
+to\v ck preve\v c za eno periodo.
 
+Re\v sitve so nekak\v sne elipse, ki se vrtijo okrog te\v zi\v s\v ca zvezd (beri: pentlje), kar prikazuje
+graf~\ref{fig:pentlja}. 
+\begin{figure}[H]\centering
+	\input{pentlja.tex}
+	\caption{Orbite planeta okrog dvozvezdja so pentlje. Zaradi ve\v cje nazornosti graf ne prikazuj
+		celotne periode ampak samo prvih nekaj zavojev.}
+	\label{fig:pentlja}
+\end{figure}
+
+Grafi~\ref{fig:L160},~\ref{fig:L180},~\ref{fig:L200} in~\ref{fig:L220} prikazujejo se\v cne ploskve stabilnih
+orbit v takem sistemu. Se\v cna ploskev je $\psi = 0$ in $\varepsilon = 0.4$, $M_1 = 2000$ in $M_2 = 1000$.
+Pri tem je $p_\psi$ konstanten (na se\v cni ploskvi), zaradi \v cesar imamo tu samo dve neodvisni
+spremenljivki: $\zeta$ in $p_\zeta$.
 \begin{figure}[H]\centering
 	\input{graf160.tex}
 	\caption{Zaradi zaokro\v zitvenih napak se zadnji graf ne sklene, vendar je ostalo v redu.}
@@ -730,7 +742,7 @@ prevlada kineti\v cna energija in planet sam od sebe uide.
 
 \subsection{Stabilne orbite}
 
-Poglejmo si, kako se fazni diagram spremeni, \v ce spremenimo maso zvezd. Graf~\ref{fig:M4000} prikazuje
+Poglejmo si, kako se fazni portret spremeni, \v ce spremenimo maso zvezd. Graf~\ref{fig:M4000} prikazuje
 situacijo, ko $\varepsilon = 0.4$, $M_1 = 4000$, $M_2 = 1000$.
 \begin{figure}[H]\centering
 	\input{graf4000.tex}
@@ -742,8 +754,11 @@ situacijo, ko $\varepsilon = 0.4$, $M_1 = 4000$, $M_2 = 1000$.
 Da bi imeli \v cim bolj\v si opis teh faznih diagramov si poglejmo pod drobnogled zastojne to\v cke in orbite
 planeta, kadar je na zastojni to\v cki.
 
+\subsubsection{Zastojne to\v cke}
 Z $\zeta_0$ ozna\v cimo zastojno to\v cko (radij). Graf~\ref{fig:zastoj1} prikazuje zastoj za $M_2 = 1000$ in
 $\varepsilon = 0.4$ pri razli\v cnih $M_1$. Graf~\ref{fig:zastoj2} prikazuje isto, le za $\varepsilon = 0$.
+
+Iskal sem jih z bisekcijo, tako da sem iskal ni\v clo $p_\zeta$ po enem obhodu planeta.
 \begin{figure}[H]\centering
 	\input{zastoj-e04.tex}
 	\caption{Vidimo, da imamo odvisnost $\zeta_0 \propto p_\psi^2$, smerni koeficient pa je ob\v cutljiv na maso.}
@@ -777,7 +792,7 @@ Vrednosti $k$ po prilagajanju so tabelirane v tabeli~\ref{tab:fit1}
 	\label{tab:fit1}
 \end{table}
 Izka\v ze se, da je v obeh primerih $k \approx \frac{1}{M_1 + M_2}$. Kako bi lahko tako obna\v sanje pojasnili? Napi\v simo
-nov hamiltonian za planet, kjer bomo vzeli limito $\varepsilon \to 0$, tj. obe zvezdi nadomestimo z eno zvezdo, ki
+nov hamiltonian za planet, kjer bomo vzeli limito $\zeta \gg 1$, tj. obe zvezdi nadomestimo z eno zvezdo, ki
 ima maso $M_1 + M_2$. Tj.
 \begin{equation}
 	H_3 \approx \frac{1}{2}(p_\zeta^2 + p_\psi^2/\zeta^2) - \frac{M_1 + M_2}{\zeta}.
@@ -792,12 +807,70 @@ Pri $\zeta = \zeta_0$ ima odvod ekstrem, tj.
 	p_\psi^2 &\approx (M_1 + M_2)\zeta_0, \notag \\
 	\frac{p_\psi^2}{M_1 + M_2} &\approx \zeta_0.
 \end{align}
-To pa tudi pomeni, da morajo biti tirnice planeta v zastojni to\v cki kro\v znice (oz. skoraj kro\v znice) in da v
-celotni stabilni regiji $\varepsilon$ lahko mirne volje postavimo na 0, s \v cimer dodatno utemeljimo pribli\v zek
-kro\v znih orbit v pribli\v zku povpre\v cnega polja.
+To pa tudi pomeni, da morajo biti tirnice planeta v zastojni to\v cki kro\v znice (oz. skoraj kro\v znice,
+glej sliko~\ref{krog}) in da v celotni stabilni regiji $\varepsilon$ lahko mirne volje postavimo na 0, s \v cimer
+dodatno utemeljimo pribli\v zek kro\v znih orbit v pribli\v zku povpre\v cnega polja.
 
-\v Ce bi hoteli eksaktno re\v sitev bi morali namesto $(M_1 + M_2)/\zeta$ vzeti potencial $V_\odot$, vendar pa dobimo
-transcendentno ena\v cbo.
+\v Ce bi hoteli eksaktno re\v sitev bi morali namesto $(M_1 + M_2)/\zeta$ vzeti potencial $V_\odot$,
+vendar pa dobimo transcendentno ena\v cbo, zato se bomo zadovoljili kar s tem izrazom.
+\begin{figure}[H]\centering
+	\input{orbite.tex}
+	\caption{Vidimo, da sta orbiti v zastojni to\v cki v obeh primerih skoraj kro\v znici. \v Ce bi mo\v cno
+		pobli\v zali, bi videli, da v resnici to nista elipsi, zaradi efekta binarne zvezde.}
+	\label{krog}
+\end{figure}
+Po izpeljavi zakona za $\zeta_0$ ugotovimo, kako je treba interpretirati dogajanje na se\v cni ploskvi:
+osnovno stanje je nejbolj preprosto in je na zastojni to\v cki. Stanje z vi\v sjo energijo je od
+zastojne to\v cke bolj oddaljeno, zato se tirnice razli\v cnih stanj na se\v cni ploskvi ne sekajo.
+
+\subsubsection{Maksimalen radialni impulz}
+
+Opazimo, da tirnice za $\zeta \neq 0$ na se\v cni ploskvi polagoma dobivajo vi\v sji in vi\v sji radialni
+impulz. Pri $\zeta \approx \zeta_0$ je $p_\zeta$ maksimalen. Da bomo bolje razumeli obliko obmo\v cja
+vezanih orbit, naredimo oceno mejnega impulza $p_\zeta$.
+
+Vzeli bomo $\zeta = \zeta_0$, $p_\zeta^\text{max}$ pa tak, da bo $H_3 = 0$, tj.
+\begin{equation}
+	p_\zeta^\text{max} \approx \sqrt{\frac{M_1 + M_2}{\zeta_0}} = \pm \frac{M_1 + M_2}{p_\psi}
+\end{equation}
+
+Sedaj lahko ocenimo, kolik\v sen del dovoljenega prostora prikazujejo slike~\ref{fig:L160},~\ref{fig:L180},
+\ref{fig:L200},~\ref{fig:L220} in~\ref{fig:M4000}. Tabela~\ref{tab2} pri\v ca, da je to prakti\v cno cel
+fazni prostor vezanih orbit.
+\begin{table}[H]\centering
+	\caption{Supremum $p_\zeta$, za stabilne (vezane) orbite planeta.}
+	\begin{tabular}{c|c|c}
+		$p_\psi(0)$ & $M_1 + M_2$ & $|p_\zeta^\text{max}|$ \\
+		\hline
+		160 & $3\cdot 10^3$ & 18.75 \\
+		180 & $3\cdot 10^3$ & 16.67 \\
+		200 & $3\cdot 10^3$ & 15.00 \\
+		220 & $3\cdot 10^3$ & 13.64 \\
+		280 & $5\cdot 10^3$ & 17.86
+	\end{tabular}
+	\label{tab2}
+\end{table}
+
+\subsection{Nestabilne orbite}
+
+S pridevnikom nestiblne bi rad ozna\v cil orbite, ki so preblizu te\v si\v ca zvezd, zaradi \v cesar
+lahko planet ena izmed zvezd izstreli iz oson\v cja. Planet se zvezdama preve\v c pribli\v za tudi, \v ce
+ima premajhno vrtilno koli\v cino. To vidimo na sliki~\ref{fig:fail}. Radij $\zeta$ opleta, pripadajo\v ci
+impulz pa se pove\v cuje, dokler kineti\v cna energije ne prese\v ze potencialne in dvozvezdje planet izvr\v ze.
+
+\begin{figure}[H]\centering
+	\input{epic-fail.tex}
+	\caption{Vidimo, da se planetu zlagoma pove\v cuje radialni impulz, dokler ga ne izvr\v ze. Radij
+		mo\v cno opleta.}
+	\label{fig:fail}
+\end{figure}
+
+V tem re\v zimu prikaz s se\v cnimi ploskvami ni ve\v c primeren, zato bomo risali kar cele orbite. Ta
+re\v zim nastopi za $M_1 = 2000$ in $M_2 = 1000$ pri $p_\psi \lesssim 140$, ne glede na to s kak\v snim
+$\zeta$ pri\v cnemo. Vse orbite so nestabilne in planet po nekaj obhodih frcne iz oson\v cja po
+"`slingshot"' efektu, saj zvezdi v pribli\v zku zanemarljive mase planeta predstavljata "`rezervoar"'
+z neskon\v cno energije.
+
 
 \begin{thebibliography}{9}
 	\bibitem{bronstejn}
