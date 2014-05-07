@@ -81,12 +81,61 @@
 	\ensuremath{\Rightarrow}
 }
 
+\newenvironment{navodilo}[1][1.0]
+{
+	\begin{center}
+		{\bf Navodilo}\\[12pt]
+		\begin{minipage}{#1\textwidth}
+}
+{
+		\end{minipage}
+	\end{center}
+}
+
+
+
 \begin{document}
 
-\section{Navodilo}
+% titlepage
+\begin{titlepage}
+	\begin{figure}[H]
+		\centering
+		\includegraphics[width = 7cm, keepaspectratio=1]{pics/logo.pdf}\\[12pt]
+		{\sc Oddelek za fiziko}\\[4cm]
+	\end{figure}
+	\begin{center}
+		\large{Modelska analiza, zaklju\v cna naloga}\\[0.5cm]
+		\LARGE\textbf{Orbite planeta v dvozvezdnem sistemu}\\[1.0cm]
 
-Razi\v s\v ci prostor kro\v znih orbit planeta okrog dvojne zvezde v pribli\v zku zanemarljive mase
-planeta. Koliko parametrov ima model?
+		\vspace{0.0cm}
+
+		\begin{minipage}{0.4\textwidth}\small
+			\begin{flushleft}
+			\textsc{Avtor:}\\[0.2cm]
+			Jo\v ze Zobec, dipl. fiz. (UN)
+			\end{flushleft}
+		\end{minipage}
+		\begin{minipage}{0.4\textwidth}\small
+			\begin{flushright}
+				\textsc{Mentor:}\\[0.2cm]
+				Dr. Simon \v Copar,\\[0.5cm]
+				\textsc{Somentor:}\\[0.1cm]
+				Prof. Dr. Alojzij F. Kodre
+			\end{flushright}
+		\end{minipage}
+	\end{center}
+
+	\vspace{3.5cm}
+
+	\begin{navodilo}
+		Razi\v s\v ci prostor kro\v znih orbit planeta okrog dvojne zvezde v pribli\v zku zanemarljive mase
+		planeta. Koliko parametrov ima model?
+	\end{navodilo}
+	
+	\vfill
+
+	\centering{\footnotesize Ljubljana, \today}
+\end{titlepage}
 
 \section{Razmislek}
 
@@ -667,18 +716,6 @@ Zato bomo na za\v cetku vzeli \v casovni korak, ki je v iracionalnem razmerju z 
 pa bomo drobili po Rombergovem zaporedju (potence \v stevila $2$). Za primerjavo sem za integrator preizkusil
 \v se Runge-Kutta reda 4, ki pa se ni obnesel najbolje.
 
-Orbite planeta niso ve\v c preproste elipse, zato Laplance-Runge-Lenzov vektor ni ve\v c invarianta in ga bomo
-tudi spremljali. Z na\v simi opazljivkami $\zeta$, $\psi$, $p_\zeta$ in $p_\psi$ ga v kartezi\v cnih koordinatah
-na se\v cni ploskvi $\psi = 0$ zapi\v semo kot
-\begin{equation}
-	\ee = \left\{\left[p_\zeta^2 + \Big(\frac{p_\psi}{\zeta}\Big)^2\right]\zeta - \zeta p_\zeta^2 - 1\right\}
-		\ee_x - p_\zeta p_\psi \ee_y.
-\end{equation}
-To je v resnici vektor ekscentri\v cnosti, vendar pa se od Laplance-Runge-Lenz-ovega vektorja razlikuje le
-za multiplikativno konstanto. Glavna motivacija za ra\v cunanje tega Laplace-Runge-Lenz-ovega vektorja nam
-je bila izra\v cun smeri in ekscentri\v cnosti orbite, zato je ra\v cunanje vektorja ekscentri\v cnoti
-ustreznenj\v se.
-
 \section{Rezultati}
 
 Nalogo sem re\v seval s programskim jezikom {\tt C}, da bi dosegel \v cim vi\v sjo preciznost za \v cim
@@ -694,13 +731,14 @@ to\v ck preve\v c za eno periodo.
 
 Re\v sitve so nekak\v sne elipse, ki se vrtijo okrog te\v zi\v s\v ca zvezd (beri: pentlje), kar prikazuje
 graf~\ref{fig:pentlja}. 
+\pagebreak
 \begin{figure}[H]\centering
 	\input{pentlja.tex}
 	\caption{Orbite planeta okrog dvozvezdja so pentlje. Zaradi ve\v cje nazornosti graf ne prikazuj
-		celotne periode ampak samo prvih nekaj zavojev.}
+		celotne periode ampak samo prvih nekaj zavojev. Ta graf je bil narejen za primer $M_1 = 2000$,
+		$M_2 = 1000$, $\varepsilon = 0.4$ in $p_\psi = 160.$}
 	\label{fig:pentlja}
 \end{figure}
-
 Grafi~\ref{fig:L160},~\ref{fig:L180},~\ref{fig:L200} in~\ref{fig:L220} prikazujejo se\v cne ploskve stabilnih
 orbit v takem sistemu. Se\v cna ploskev je $\psi = 0$ in $\varepsilon = 0.4$, $M_1 = 2000$ in $M_2 = 1000$.
 Pri tem je $p_\psi$ konstanten (na se\v cni ploskvi), zaradi \v cesar imamo tu samo dve neodvisni
@@ -871,6 +909,12 @@ $\zeta$ pri\v cnemo. Vse orbite so nestabilne in planet po nekaj obhodih frcne i
 "`slingshot"' efektu, saj zvezdi v pribli\v zku zanemarljive mase planeta predstavljata "`rezervoar"'
 z neskon\v cno energije.
 
+\begin{figure}[H]\centering
+	\input{unstable.tex}
+	\caption{Ta orbita je bila na grafu~\ref{fig:fail} najbolj dolgo\v ziva. Kot vidimo, vplivi zvezd orbito
+		"`ponaklju\v cijo"', tj. ji dodajo nek na videz stohasti\v cen \v sum.}
+	\label{fig:unstable}
+\end{figure}
 
 \begin{thebibliography}{9}
 	\bibitem{bronstejn}
