@@ -11,7 +11,7 @@
 	labelfont=it,
 	labelsep=endash,
 	format=hang,
-	width=0.7\textwidth
+	width=0.8\textwidth
 }
 
 \hypersetup{
@@ -483,19 +483,19 @@ Od tod sledi
 Za $M_1 = 2000$ in $M_2 = 1000$ dobimo $p_\varphi \sim 10^4$. Ocenimo maksimalno dovoljeno energijo
 planeta kot
 \begin{equation}
-	E_3 = \frac{1}{2}(p^2_\zeta + p_\psi^2/\zeta^2) - \mu/\zeta
+	E_3 = \frac{1}{2}(p^2_\zeta + p_\psi^2/\zeta^2) - (M_1 + M_2)/\zeta
 \end{equation}
 Energija mora biti negativna za vezan sistem, tj. $T_3 < V_\odot$. Za za\v cetne pogoje si brez izgube
 splo\v snosti izberemo $p_\zeta = 0$, od koder dobimo oceno za $p_\psi(t = 0)$.
 \[
-	p_\psi^2 < 2\zeta^2 \mu/\zeta = 2\mu\zeta
+	p_\psi^2 < 2\zeta^2 (M_1 + M_2)/\zeta = 2(M_1 + M_2)\zeta
 \]
 oziroma malce druga\v ce
 \begin{equation}
-	-\sqrt{2\mu\zeta} \lesssim p_\psi \lesssim \sqrt{2\mu\zeta}.
+	-\sqrt{2(M_1 + M_2)\zeta} \lesssim p_\psi \lesssim \sqrt{2(M_1 + M_2)\zeta}.
 \end{equation}
-Oddaljenost planeta od dvozvezdja ne sme biti prevelika, tj. $\zeta \sim 10^2$, reducirana masa zvezd pa je
-reda $\mu \sim 10^3$. Odtod dobimo oceno za maksimalno dovoljeno vrtilno koli\v cino $p_\psi^\text{max}
+Oddaljenost planeta od dvozvezdja ne sme biti prevelika, tj. $\zeta \sim 10^2$, skupna masa zvezd pa je
+reda $M \sim 10^3$. Odtod dobimo oceno za maksimalno dovoljeno vrtilno koli\v cino $p_\psi^\text{max}
 \sim 10^{5/2} \approx 300$. Vidimo, da je $p_\psi^\text{max} \sim 10^2 \ll p_\varphi \sim 10^4$. To pomeni,
 da bo planet gotovo spreminjajo\v ce se polje \v cutil kot \v casovno povpre\v cno polje, torej lahko
 \v casovno odvisnost izintegriramo. Ozna\v cimo $\langle \bullet \rangle_t$ za operator \v casovnega povpre\v cja.
@@ -635,26 +635,84 @@ $c_{1,2}$ pa je \v se vedno enak $c_{1,2} = c = 1/2$. Od tod dobimo popravljen p
 		+ F\left(\frac{2\pi - \psi}{2}; -b_1\right)\right] \notag \\
 	&- \frac{2 M_2}{a_2}\left[F\left(\frac{\psi - \pi}{2}; -b_2\right)
 		+ F\left(\frac{3\pi - \psi}{2}; -b_2\right)\right],
+	\label{popravljen}
 \end{align}
-ki je pravilno definiran na $\zeta > 0$ in $\psi \in [0, 2\pi)$. Definirajmo
+ki je pravilno definiran na $\zeta > 0$ in $\psi \in [0, 2\pi)$. Izraz~\eqref{popravljen} pa lahko mo\v cno poenostavimo
+tako, da se elipti\v cnih integralov in kotne odvisnosti od $\varphi$ v celoti iznebimo. V~\cite{wolfram} je namre\v c
+omenjena slede\v ca identiteta:
+\begin{equation}
+	F(\phi;m) = \sum_{k = 0}^\infty \frac{(m - m_0)^k F(\phi;m_0)}{k!}.
+\end{equation}
+Z vso pravico lahko razvijamo okrog $m_0 = 0$, kjer velja $F(\phi;0) = \phi$, kar sledi kar iz definicije integrala.
+Torej velja
+\begin{equation}
+	F(\phi;m) = \sum_{k = 0}^\infty \phi \frac{m^k}{k!}
+	\label{razvoj}
+\end{equation}
+Ko to vstavimo v ena\v cbo~\eqref{popravljen}, dobimo
 \begin{align}
-	\Lambda_k (\zeta, \psi) \equiv &\frac{2\pi}{a_k}F(\psi/2;b_k) - \der{b_k}{\zeta}\der{F(\psi/2;-b_k)}{b_k} \notag \\
-	= &\frac{1}{b_k + 1}\Bigg[\frac{\sin\psi}{4\sqrt{1 + b_k\sin^2(\psi/2)}}
-		\bigg(1 - \frac{b_k}{\zeta}\bigg) + E(\psi/2; -b_k)\bigg(1 - \frac{1}{2\zeta}\bigg)\Bigg] \notag \\
-	&+\frac{1}{2b_k}F(\psi/2; -b_k)
+	\lim_{\varepsilon \to 0}\avgt{V_\odot} =\ &-\frac{2M_1}{a_1}\sum_{k = 0}^\infty \bigg[\frac{\psi}{2}
+		\bigg(\frac{(-b_1)^k}{k!} - \frac{(-b_1)^k}{k!}\bigg) + \pi\frac{(-b_1)^k}{k!}\bigg] \notag \\
+		&-\frac{2M_2}{a_2}\sum_{k = 0}^\infty \bigg[\frac{\psi}{2}
+	\bigg(\frac{(-b_2)^k}{k!} - \frac{(-b_2)^k}{k!}\bigg) + \frac{3\pi - \pi}{2}\frac{(-b_2)^k}{k!}\bigg] \notag \\
+	=\ &-\frac{2\pi M_1}{a_1}\e^{-b_1} -\frac{2\pi M_2}{a_2}\e^{-b_2}.
 \end{align}
-Popraviti je treba \v se nekatere odvode:
-\begin{align}
-	\der{}{\psi}\lim_{\varepsilon \to 0} \avgt{V_\odot} = &- \frac{2M_1/a_1}{\sqrt{1 + b_1\sin^2(\psi/2)}}
-		- \frac{2M_2/a_2}{\sqrt{1 + b_2\sin^2\big((\psi - \pi)/2\big)}} \\
-	\der{}{\zeta}\lim_{\varepsilon \to 0} \avgt{V_\odot} = &+ \frac{2M_1}{a_1}\Big[\Lambda_1(\zeta, \psi)
-	+ \Lambda_1(\zeta, 2\pi - \psi)\Big] \notag \\
-	&+ \frac{2M_2}{a_2}\Big[\Lambda_2(\zeta, \psi - \pi) + \Lambda_2(\zeta, 3\pi - \psi)\Big]
-\end{align}
+Vidimo, da se lahko v limiti $\varepsilon \to 0$ v celoti znebimo odvisnosti od $\psi$, torej imamo radialen
+potencial.
 
-Rezultate za $V_\odot(\r,t)$ bi bilo zanimivo primerjati z rezultati v povpre\v cnem polju, $\avgt{V_\odot}(\r)$ ob
-$\varepsilon \to 0$. Gibalni zakoni so isti, le $\partial V_\odot/\partial x$ zamenjamo z odvodi povpre\v cnega polja
-$\partial \avgt{V_\odot}/\partial x$.
+\paragraph{Razvoj za $\zeta \gg 1$:}
+
+Za velike $\zeta$ velja, da je $b_{1,2} \ll 1$, kar je tudi glavni razlog, da smo izbrali razvoj~\eqref{razvoj}.
+V primeru $\zeta \gg 1$ vidimo
+\begin{align}
+	b_{1,2} = 4 \frac{\mu\zeta/M_{1,2}}{\zeta^2(1 - \frac{\mu}{M_{1,2}\zeta})} = 4\frac{z_{1,2}}{(1 - z_{1,2})^2},
+	\quad z_{1,2} = \frac{\mu}{\zeta M_{1,2}}.
+\end{align}
+Analogno vidimo, da je potemtakem
+\begin{equation}
+	\frac{2\pi}{a_{1,2}} = \frac{1}{\zeta}\frac{1}{1 - z_{1,2}} = \frac{M_{1,2}}{\mu}\frac{z_{1,2}}{1 - z_{1,2}}.
+\end{equation}
+Potencial lahko zapi\v semo kot
+\begin{equation}
+	\lim_{\varepsilon \to 0}\avgt{V_\odot} = -\frac{M_1^2}{\mu}\frac{z_1}{1 - z_1}\exp\frac{-4z_1}{(1 - z_1)^2} +
+		\text{\v cleni z $z_2$}
+\end{equation}
+Za razvoj majhnih $z_{1,2}$ bomo uporabili vrste, definirane v~\cite{bronstejn}:
+\begin{align}
+	(1 \pm x)^{-1} &= 1 \mp x + x^2 \mp x^3 + x^4 + \ldots \\
+	(1 \pm x)^{-2} &= 1 \mp 2x + 3x^2 \mp 4 x^3 + 5x^4 + \ldots
+\end{align}
+Zmenimo se, da bomo vse razvijali do tretjega reda, tj. napaka bo~$\mathcal{O}(z^4)$. Najprej razvijmo eksponent:
+\begin{align}
+	\exp\frac{-4z}{(1 - z)^2} &= 1 - \frac{4z}{(1 - z)^2} + \frac{1}{2!}\bigg(\frac{-4z}{(1 - z)^2}\bigg)^2
+		+ \frac{1}{3!}\bigg(\frac{-4z}{(1 - z)^2}\bigg)^3 +\ \text{vi\v sji \v cleni}
+	\notag \\
+	&= 1 - 4z - 8z^2 - 12z^3 + 8z^2 + 32z^3 - \frac{32}{3}z^3 + \mathcal{O}(z^4) \notag \\
+	&= 1 - 4z - \frac{100}{3}z^3 + \mathcal{O}(z^4).
+\end{align}
+Predfaktor eksponenta lahko razvijemo v
+\begin{equation}
+	\frac{z}{1 - z} = z + z^2 + z^3 + \mathcal{O}(z^4).
+\end{equation}
+Produkt je potem enak
+\begin{align}
+	\frac{z}{1 - z}\exp\frac{-4z}{(1 - z)^2} &= (z + z^2 + z^3 + \ldots)(1 - 4z - 100z^3/3 + \ldots) \notag \\
+	&= z - 4z^2 + z^2 + z^3 + \mathcal{O}(z^4) \notag \\
+	&= z - 3z^2 + z^3 + \mathcal{O}(z^4).
+\end{align}
+Za majhne $z_{1,2}$ potencial razvijemo in dobimo asimptotski razvoj potenciala
+\begin{align}
+	\lim_{\varepsilon \to 0}\avgt{V_\odot} &= -\frac{M_1^2}{\mu}\big(z_1 - 3z_1^2 + z_1^3 + \mathcal{O}(z_1^4)\big)
+			-\frac{M_2^2}{\mu}\big(z_2 - 3z_2^2 + z_2^3 + \mathcal{O}(z_2^4)\big) \notag \\
+	&= -\bigg(\frac{M_1}{\zeta} - 3\frac{\mu}{\zeta^2} + \frac{\mu^2/M_1}{\zeta^3} + \mathcal{O}(\zeta^{-4})\bigg)
+			-\bigg(\frac{M_2}{\zeta} - 3\frac{\mu}{\zeta^2} + \frac{\mu^2/M_2}{\zeta^3} + \mathcal{O}(\zeta^{-4})\bigg)
+		\notag \\
+	&= -\frac{M_1 + M_2}{\zeta} + 6\frac{\mu}{\zeta^2} - 2\frac{\mu}{\zeta^3} + \mathcal{O}(\zeta^{-4}).
+	\label{razvoj1}
+\end{align}
+Prvi \v clen v razvoju~\eqref{razvoj1} predstavlja kar primer, ko dve zvezdi nadomestimo z eno, kar je v limiti za velike
+$\zeta$ pri\v cakovano obna\v sanje. Druga dva \v clena zgolj popravita obna\v sanje okrog divergence ($\zeta \to 0$),
+saj ki pa nas niti ne zanima.
 
 \subsection{Numeri\v cni izra\v cun}
 Ker imamo na planet vpliv zunanjega \v casovno odvisnega potenciala energija planeta ne bo konstantna. Vendar pa
@@ -850,7 +908,9 @@ glej sliko~\ref{krog}) in da v celotni stabilni regiji $\varepsilon$ lahko mirne
 dodatno utemeljimo pribli\v zek kro\v znih orbit v pribli\v zku povpre\v cnega polja.
 
 \v Ce bi hoteli eksaktno re\v sitev bi morali namesto $(M_1 + M_2)/\zeta$ vzeti potencial $V_\odot$,
-vendar pa dobimo transcendentno ena\v cbo, zato se bomo zadovoljili kar s tem izrazom.
+vendar pa dobimo transcendentno ena\v cbo, ki ni re\v sljiva analiti\v cno. Lahko bi vzeli nekaj \v clenov
+asimptotskega razvoja~\eqref{razvoj1} in dobili natan\v cnej\v so re\v sitev, vendar za nazornost ustreza
+\v ze prvi red.
 \begin{figure}[H]\centering
 	\input{orbite.tex}
 	\caption{Vidimo, da sta orbiti v zastojni to\v cki v obeh primerih skoraj kro\v znici. \v Ce bi mo\v cno
@@ -907,13 +967,29 @@ V tem re\v zimu prikaz s se\v cnimi ploskvami ni ve\v c primeren, zato bomo risa
 re\v zim nastopi za $M_1 = 2000$ in $M_2 = 1000$ pri $p_\psi \lesssim 140$, ne glede na to s kak\v snim
 $\zeta$ pri\v cnemo. Vse orbite so nestabilne in planet po nekaj obhodih frcne iz oson\v cja po
 "`slingshot"' efektu, saj zvezdi v pribli\v zku zanemarljive mase planeta predstavljata "`rezervoar"'
-z neskon\v cno energije.
+z neskon\v cno energije, kar vidimo na sliki~\ref{fig:unstable2}. Graf~\ref{fig:unstable} izvr\v ze po
+kar nekaj obhodih, ki jih nisem narisal. Pokazati ho\v cem predvsem to, da dinamika orbite ni tako lepa
+in "`deterministi\v cna"' kot npr. orbita na sliki~\ref{fig:pentlja}.
 
 \begin{figure}[H]\centering
 	\input{unstable.tex}
 	\caption{Ta orbita je bila na grafu~\ref{fig:fail} najbolj dolgo\v ziva. Kot vidimo, vplivi zvezd orbito
 		"`ponaklju\v cijo"', tj. ji dodajo nek na videz stohasti\v cen \v sum.}
 	\label{fig:unstable}
+\end{figure}
+
+\begin{figure}[H]\centering
+	\input{unstable2.tex}
+	\caption{Tirnica planeta je bila napraljvena pri $p = 120$, $\zeta(0) = 80$. Planet tukaj \v ze po enem
+		obhodu izvr\v ze iz oson\v cja.}
+	\label{fig:unstable2}
+\end{figure}
+
+\begin{figure}[H]\centering
+	\input{unstable3.tex}
+	\caption{To je \v se primer orbite, pri kateri je planet preblizu te\v zi\v s\v ca. Tudi vrtilna koli\v cina
+		je premajhna, saj $p_\psi (0) = 50$, vendar kljub temu pridobi zadosti energije, da zapusti oson\v cje.}
+	\label{fig:unstable3}
 \end{figure}
 
 \begin{thebibliography}{9}
@@ -923,6 +999,10 @@ z neskon\v cno energije.
 		Tehni\v ska zalo\v zba Slovenije v Ljubljani,
 		deseti ponatis,
 		(1988)
+
+	\bibitem{wolfram}
+		\href{https://www.wolframalpha.com/input/?i=series\%20representations\%20incomplete\%20elliptic\%20integrals\&lk=2}
+			{{\tt https://www.wolframalpha.com}}
 
     \bibitem{sirca}
         S. \v Sirca in M. Horvat,
